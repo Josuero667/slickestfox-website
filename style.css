@@ -1,54 +1,408 @@
-/* General Reset */
-body {
+/* ========== Theme / Base ========== */
+:root {
+	--bg: #0e0e12;
+	--bg-2: #151521;
+	--text: #e9e9ef;
+	--muted: #b9b9cc;
+	--accent: #ffd166;
+	--accent-2: #a0e7e5;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
 	margin: 0;
-	font-family: Arial, sans-serif;
-	background: #111;
-	color: #eee;
+	padding: 0;
+	background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+	color: var(--text);
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 	line-height: 1.6;
+	min-height: 100%;
+	overflow-x: hidden;
 }
 
-/* Header */
-header {
-	background: #222;
-	padding: 20px;
-	text-align: center;
+.container {
+	width: min(1100px, 92vw);
+	margin: 0 auto;
+	padding: 32px 0 56px;
 }
 
-header h1 {
+/* ========== Header & Nav ========== */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	backdrop-filter: saturate(130%) blur(6px);
+	background: linear-gradient(to bottom, rgba(20,20,28,0.85), rgba(20,20,28,0.35));
+	border-bottom: 1px solid rgba(255,255,255,0.06);
+	padding: 12px 16px;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+}
+
+.site-header h1 {
 	margin: 0;
-	color: #ffcc00;
+	font-size: 20px;
+	letter-spacing: 0.4px;
+	color: var(--accent);
 }
 
-/* Nav */
-nav {
-	margin-top: 10px;
-}
 nav a {
-	color: #eee;
-	margin: 0 10px;
+	display: inline-block;
+	margin-left: 14px;
+	color: var(--text);
 	text-decoration: none;
+	padding: 8px 10px;
+	border-radius: 10px;
+	transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
 }
+
 nav a:hover {
-	color: #ffcc00;
+	color: #111;
+	background: var(--accent);
+	transform: translateY(-1px);
 }
 
-/* Main */
-main {
-	padding: 20px;
+/* ========== Hero / Banner ========== */
+.hero {
+	position: relative;
+	height: clamp(320px, 60vh, 520px);
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+	border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.hero-img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: contrast(1.05) saturate(1.05) brightness(0.9);
+	transform: scale(1.04);
+}
+
+.hero-overlay {
+	position: relative;
+	z-index: 1;
 	text-align: center;
-}
-main img {
-	max-width: 400px;
-	margin: 10px;
-	border: 3px solid #444;
-	border-radius: 8px;
+	padding: 18px 22px;
+	background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+	border-radius: 16px;
+	box-shadow: 0 10px 40px rgba(0,0,0,0.35);
 }
 
-/* Footer */
+.hero-overlay h2 {
+	margin: 0 0 6px 0;
+	font-weight: 700;
+	font-size: clamp(22px, 3vw, 34px);
+}
+
+.tagline {
+	margin: 0 0 14px 0;
+	color: var(--muted);
+}
+
+.cta-row {
+	display: inline-flex;
+	gap: 10px;
+}
+
+.btn {
+	display: inline-block;
+	background: var(--accent);
+	color: #101015;
+	padding: 10px 16px;
+	border-radius: 12px;
+	text-decoration: none;
+	font-weight: 700;
+	box-shadow: 0 6px 22px rgba(255, 209, 102, 0.25);
+	transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+
+.btn-ghost {
+	background: transparent;
+	color: var(--text);
+	border: 1px solid rgba(255,255,255,0.18);
+	box-shadow: none;
+}
+
+.btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+/* ========== Content ========== */
+.intro h3 {
+	margin-top: 0;
+}
+
+/* ========== Background Pattern (diagonal scroll) ========== */
+.bg {
+	position: fixed;
+	inset: -100px;
+	z-index: -1;
+	pointer-events: none;
+}
+
+/* Outlined circle rings (two offset fields) */
+.bg-circles {
+	background-image:
+		radial-gradient(circle at 25% 25%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px),
+		radial-gradient(circle at 75% 75%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px);
+	background-size: 140px 140px, 140px 140px;
+	background-repeat: repeat;
+	animation: diag-move-a 42s linear infinite;
+	opacity: 0.8;
+}
+
+/* Plus sparkles as a single merged glyph (no additive stacking) */
+.bg-pluses {
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M18 6h4v12h12v4H22v12h-4V22H6v-4h12z' fill='rgba(255,255,255,0.08)'/></svg>");
+	background-size: 160px 160px;
+	background-repeat: repeat;
+	animation: diag-move-b 28s linear infinite;
+	/* no mix-blend-mode to avoid brightness compounding */
+}
+
+@keyframes diag-move-a {
+	from { transform: translate3d(-120px, -120px, 0); }
+	to { transform: translate3d(120px, 120px, 0); }
+}
+
+@keyframes diag-move-b {
+	from { transform: translate3d(160px, -160px, 0) rotate(0.001deg); }
+	to { transform: translate3d(-160px, 160px, 0) rotate(0.001deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bg-circles, .bg-pluses { animation: none; }
+}
+
+/* ========== Footer ========== */
 footer {
-	background: #222;
+	background: rgba(0,0,0,0.25);
+	border-top: 1px solid rgba(255,255,255,0.06);
 	text-align: center;
-	padding: 10px;
-	font-size: 0.9em;
-	margin-top: 40px;
+	padding: 16px;
+	font-size: 0.95rem;
+}
+
+/* =========================================================
+	=               MUSIC PAGE: GRID & CARDS               =
+   ========================================================= */
+.muted { color: var(--muted); }
+
+.releases-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 18px;
+	align-items: start;
+}
+
+/* Card shell (square corners) */
+.release {
+	position: relative;
+	background: rgba(255,255,255,0.03);
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 0; /* square */
+	overflow: hidden;
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+	will-change: transform, box-shadow;
+}
+
+.release:hover {
+	transform: translateY(-3px) scale(1.02);
+	border-color: rgba(255,255,255,0.14);
+	box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+}
+
+/* Subtle float/hover vibe */
+.release.hovering .cover-wrap { animation: hover-bob 1.8s ease-in-out infinite; }
+
+@keyframes hover-bob {
+	0% { transform: translateY(0px); }
+	50% { transform: translateY(-6px); }
+	100% { transform: translateY(0px); }
+}
+
+/* Cover block (square, no rounded corners) */
+.cover-wrap {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+	overflow: hidden;
+	border-radius: 0;
+}
+
+.cover {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	filter: saturate(1.05) contrast(1.02);
+	transition: transform 220ms ease;
+	border-radius: 0;
+}
+
+.release:hover .cover { transform: scale(1.06); }
+
+/* Soft shine overlay */
+.shine {
+	position: absolute;
+	inset: -20%;
+	background:
+		radial-gradient(160px 160px at 20% 10%, rgba(255,255,255,0.08), transparent 60%),
+		linear-gradient(120deg, rgba(255,255,255,0.06), transparent 40%, transparent 60%, rgba(255,255,255,0.06));
+	mix-blend-mode: screen;
+	pointer-events: none;
+}
+
+/* Title/year (hidden until hover/open) */
+.release .meta {
+	display: none;
+	padding: 10px 12px 6px 12px;
+	grid-template-columns: 1fr auto;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.release.hovering .meta,
+.release.open .meta {
+	display: grid;
+}
+
+.title {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.2;
+}
+
+.year {
+	margin: 0;
+	color: var(--muted);
+	font-size: 12px;
+}
+
+/* Tracklist toggle button */
+.toggle-tracks {
+	margin: 0 12px 12px 12px;
+	background: transparent;
+	color: var(--text);
+	border: 1px solid rgba(255,255,255,0.18);
+	border-radius: 10px;
+	padding: 8px 10px;
+	cursor: pointer;
+	transition: background-color 160ms ease, transform 120ms ease;
+}
+
+/* Desktop: hide the button (hover opens). Mobile: show button. */
+@media (hover: hover) {
+	.toggle-tracks { display: none; }
+}
+@media (hover: none) {
+	.toggle-tracks { display: inline-block; }
+}
+
+.toggle-tracks:hover {
+	background: rgba(255,255,255,0.08);
+	transform: translateY(-1px);
+}
+
+/* Tracklist panel */
+.tracklist {
+	padding: 6px 10px 12px 10px;
+	border-top: 1px solid rgba(255,255,255,0.08);
+	background: rgba(0,0,0,0.18);
+}
+
+/* List + items */
+.tracklist ul {
+	list-style: none;
+	margin: 8px 0 10px 0;
+	padding: 0;
+	display: grid;
+	gap: 6px;
+}
+
+.track {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 14px 1fr;
+	align-items: center;
+	gap: 8px;
+	background: transparent;
+	border: 0;
+	color: var(--text);
+	text-align: left;
+	padding: 8px 8px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 120ms ease, transform 120ms ease;
+}
+
+.track:hover {
+	background: rgba(255,255,255,0.08);
+	transform: translateX(2px);
+}
+
+.track .dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--accent);
+	box-shadow: 0 0 10px rgba(255,209,102,0.55);
+}
+
+.track .name {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Album links */
+.album-links {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.album-links a {
+	color: var(--accent-2);
+	text-decoration: none;
+	font-size: 12px;
+}
+
+.album-links a:hover {
+	text-decoration: underline;
+}
+
+/* Mobile tweaks */
+@media (max-width: 520px) {
+	.title { font-size: 15px; }
+	.releases-grid { gap: 14px; }
+}
+
+/* ====== Halftone pulse overlay (BPM-timed) ====== */
+.pulse {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	/* halftone-ish dot field, tinted by --pulse-color */
+	background-image: radial-gradient(var(--pulse-color, rgb(255 209 102)) 1.1px, transparent 1.2px);
+	background-size: 6px 6px;
+	mix-blend-mode: screen;
+	filter: brightness(1.15) saturate(1.15);
+	opacity: 0;
+	transition: opacity 180ms ease;
+}
+
+.release.pulsing .pulse {
+	animation: pulseFlash var(--pulse-period, 0.5s) infinite ease-in-out;
+	opacity: .45;
+}
+
+@keyframes pulseFlash {
+	0%, 100% { opacity: .18; }
+	50% { opacity: .68; }
 }

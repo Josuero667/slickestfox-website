@@ -7,8 +7,12 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<header>
-		<h1>Welcome to SlickestFox</h1>
+	<!-- Background pattern layers -->
+	<div class="bg bg-circles" aria-hidden="true"></div>
+	<div class="bg bg-pluses" aria-hidden="true"></div>
+
+	<header class="site-header">
+		<h1>SlickestFox</h1>
 		<nav>
 			<a href="index.html">Home</a>
 			<a href="art.html">Art</a>
@@ -18,9 +22,24 @@
 		</nav>
 	</header>
 
-	<main>
-		<h2>Hi, I'm SlickestFox 👋</h2>
-		<p>I make art, music, and videos. Explore my work using the links above!</p>
+	<!-- HERO / BANNER -->
+	<section class="hero">
+		<img class="hero-img" src="assets/banner.jpg" alt="Banner artwork">
+		<div class="hero-overlay">
+			<h2>Artist • Musician • Creator</h2>
+			<p class="tagline">Welcome to my world. Explore my latest art, tracks, and videos.</p>
+			<div class="cta-row">
+				<a class="btn" href="music.html">Listen</a>
+				<a class="btn btn-ghost" href="art.html">View Art</a>
+			</div>
+		</div>
+	</section>
+
+	<main class="container">
+		<section class="intro">
+			<h3>What I Do</h3>
+			<p>I make visual art, produce music, and post videos. New projects drop regularly—stick around.</p>
+		</section>
 	</main>
 
 	<footer>
@@ -28,4 +47,3 @@
 	</footer>
 </body>
 </html>
-

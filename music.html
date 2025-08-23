@@ -3,12 +3,16 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Music - SlickestFox</title>
+	<title>Music - slickestfox</title>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<header>
-		<h1>My Music</h1>
+	<!-- Reuse the animated background layers from index -->
+	<div class="bg bg-circles" aria-hidden="true"></div>
+	<div class="bg bg-pluses" aria-hidden="true"></div>
+
+	<header class="site-header">
+		<h1>SlickestFox</h1>
 		<nav>
 			<a href="index.html">Home</a>
 			<a href="art.html">Art</a>
@@ -18,18 +22,92 @@
 		</nav>
 	</header>
 
-	<main>
-		<h2>Listen to my tracks</h2>
-		<p>Embed your SoundCloud, Spotify, or Bandcamp here.</p>
-
-		<!-- Example: SoundCloud embed -->
-		<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
-			src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/123456789">
-		</iframe>
+	<main class="container">
+		<section>
+			<h2>Releases</h2>
+			<p class="muted">Hover a release to hear a random preview. Open the tracklist to audition songs and jump to Spotify.</p>
+			<div id="releases-grid" class="releases-grid"></div>
+		</section>
 	</main>
 
 	<footer>
-		<p>© 2025 SlickestFox</p>
+		<p>© 2025 slickestfox</p>
 	</footer>
+
+	<!-- 🔧 Your release data lives here (edit this) -->
+	<script type="application/json" id="releases-data">
+	{
+		"releases": [
+			{
+				"id": "sk-001",
+				"title": "Time Nexus",
+				"year": 2024,
+				"cover": "assets/music/covers/time-nexus-cover.jpg",
+				"spotify_album": "https://open.spotify.com/album/4qmSE8o7oJGAMLDyCBoOij?si=0b5245adde2e4cae",
+				"tracks": [
+					{
+						"title": "Dawn at the Horizon",
+						"spotify_url": "https://open.spotify.com/track/1pokV5hhUssZlvIHqydXLX?si=b988d4213b3f46d0",
+						"preview_url": "assets/music/previews/Dawn at the Horizon.mp3",
+						"bpm": 140
+					},
+					{
+						"title": "universal elevator",
+						"spotify_url": "https://open.spotify.com/track/7krGjvoyo6H1JttXEydaMF?si=b5849ecbdbec498d",
+						"preview_url": "assets/music/previews/Everlooming Eternity.mp3",
+						"bpm": 133
+					}
+				]
+			},
+			{
+				"id": "sk-002",
+				"title": "Mind Paperweights",
+				"year": 2024,
+				"cover": "assets/music/covers/mind-paperweights-cover.jpg",
+				"spotify_album": "https://open.spotify.com/album/0LOUY2XBREaCfUOvyRRAvh?si=384dfde8ec6f48db",
+				"tracks": [
+					{
+						"title": "Everlooming Eternity",
+						"spotify_url": "https://open.spotify.com/track/DDDDDDD",
+						"preview_url": "assets/music/previews/Everlooming Eternity.mp3",
+						"bpm": 133
+					},
+					{
+						"title": "Checkpoint Blues",
+						"spotify_url": "https://open.spotify.com/track/EEEEEEE",
+						"preview_url": ""
+					}
+				]
+			},
+			{
+				"id": "sk-003",
+				"title": "Analog Bloom",
+				"year": 2023,
+				"cover": "assets/cover-analog-bloom.jpg",
+				"spotify_album": "https://open.spotify.com/album/ZZZZZZZZ",
+				"tracks": [
+					{
+						"title": "Warm Grain",
+						"spotify_url": "https://open.spotify.com/track/FFFFFFF",
+						"preview_url": ""
+					},
+					{
+						"title": "Tape Hiss",
+						"spotify_url": "https://open.spotify.com/track/GGGGGGG",
+						"preview_url": ""
+					},
+					{
+						"title": "Memory Loop",
+						"spotify_url": "https://open.spotify.com/track/HHHHHHH",
+						"preview_url": ""
+					}
+				]
+			}
+		]
+	}
+	</script>
+
+	<!-- Behavior -->
+	<script src="music.js"></script>
 </body>
 </html>
