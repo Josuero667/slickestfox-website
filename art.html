@@ -7,26 +7,41 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<header>
-		<h1>My Art</h1>
+	<header class="site-header">
+		<h1>SlickestFox</h1>
 		<nav>
 			<a href="index.html">Home</a>
-			<a href="art.html">Art</a>
+			<a href="art.html" aria-current="page">Art</a>
 			<a href="music.html">Music</a>
 			<a href="videos.html">Videos</a>
 			<a href="about.html">About</a>
 		</nav>
 	</header>
 
-	<main>
-		<h2>Gallery</h2>
-		<p>Here are some examples of my artwork.</p>
-		<img src="https://via.placeholder.com/400" alt="Artwork Example">
-		<img src="https://via.placeholder.com/400" alt="Artwork Example">
+	<main class="container">
+		<h2 style="margin-top:0">Gallery</h2>
+		<p class="muted">Anything in <code>assets/art/</code> will show here automatically.</p>
+
+		<!-- Masonry collage target -->
+		<div id="art-grid" class="masonry"></div>
+
+		<!-- Optional fallback for file:// dev (safe to keep or remove) -->
+		<script id="art-manifest" type="application/json">
+		{ "images": [
+			{ "src": "assets/art/example-1.jpg", "title": "Example 1" }
+		]}
+		</script>
 	</main>
 
-	<footer>
-		<p>© 2025 SlickestFox</p>
-	</footer>
+	<!-- Lightbox -->
+	<div id="lightbox" hidden>
+		<button class="lb-close" aria-label="Close">✕</button>
+		<img id="lb-img" alt="">
+		<div id="lb-cap"></div>
+	</div>
+
+	<!-- load the script -->
+	<script src="art.js"></script>
+
 </body>
 </html>

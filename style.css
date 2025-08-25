@@ -469,3 +469,69 @@ footer {
 }
 #now-playing-text.show{ opacity: 1; transform: translateY(0); }
 
+/* =============================== A R T ==========================================================*/
+/* ===== Art masonry collage ===== */
+.masonry{
+	column-width: 260px;
+	column-gap: 14px;
+}
+.masonry-item{
+	display: inline-block;
+	width: 100%;
+	margin: 0 0 14px 0;
+	break-inside: avoid;
+	border: 1px solid rgba(255,255,255,0.10);
+	background: rgba(255,255,255,0.03);
+	overflow: hidden;
+}
+.masonry-item img{
+	display: block;
+	width: 100%;
+	height: auto;
+	transform: translateZ(0);
+	transition: transform 160ms ease, filter 160ms ease;
+}
+.masonry-item:hover img{
+	transform: scale(1.02);
+	filter: saturate(1.06) contrast(1.02);
+}
+
+/* ===== Lightbox ===== */
+#lightbox{
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: grid;
+	place-items: center;
+	background: rgba(0,0,0,0.72);
+	backdrop-filter: blur(3px) saturate(120%);
+}
+#lightbox[hidden]{ display: none; }
+#lightbox img{
+	max-width: min(92vw, 1280px);
+	max-height: 84vh;
+	display: block;
+	box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+	border: 1px solid rgba(255,255,255,0.08);
+	background: #0a0a10;
+}
+#lb-cap{
+	margin-top: 8px;
+	color: var(--muted);
+	font-weight: 600;
+	text-align: center;
+}
+.lb-close{
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	border: 1px solid rgba(255,255,255,0.18);
+	background: rgba(255,255,255,0.08);
+	color: #fff;
+	font-weight: 900;
+	cursor: pointer;
+}
+html.no-scroll, html.no-scroll body{ overflow: hidden; }
