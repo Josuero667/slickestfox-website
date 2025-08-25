@@ -21,19 +21,44 @@
 			"title": "Mind Paperweights",
 			"year": 2025,
 			"cover": "assets/music/covers/mind-paperweights-cover.jpg",
-			"flash_color": "#ffd166",
+			"flash_color": "#FCA59C",
 			"spotify_album": "https://open.spotify.com/album/0LOUY2XBREaCfUOvyRRAvh?si=384dfde8ec6f48db",
 			"tracks": [
 				{
 					"title": "Everlooming Eternity",
-					"spotify_url": "https://open.spotify.com/track/DDDDDDD",
+					"spotify_url": "https://open.spotify.com/track/4Qb9y9MZsF70j5W75EwL1J?si=4197bbea57b74ad8",
 					"preview_url": "assets/music/previews/Everlooming Eternity.mp3",
 					"bpm": 133
 				},
 				{
-					"title": "Checkpoint Blues",
-					"spotify_url": "https://open.spotify.com/track/EEEEEEE",
-					"preview_url": ""
+					"title": "i think about you all the time",
+					"spotify_url": "https://open.spotify.com/track/2MxZwBpvcolWA4csy1UOAM?si=30f9600f52564b06",
+					"preview_url": "assets/music/previews/i think about you all the time.mp3",
+					"bpm": 121
+				},
+				{
+					"title": "Emotional Capillarity",
+					"spotify_url": "https://open.spotify.com/track/5tb9FeB8287oeFdJEnSn57?si=c9be9b883f78499a",
+					"preview_url": "assets/music/previews/Emotional Capillarity.mp3",
+					"bpm": 121
+				},
+				{
+					"title": "The Forever Spiral",
+					"spotify_url": "https://open.spotify.com/track/0rMUUePsjNqswpWpVOUT2V?si=4a7288f7693a4aa8",
+					"preview_url": "assets/music/previews/The Forever Spiral.mp3",
+					"bpm": 70
+				},
+				{
+					"title": "Edge Of Despair",
+					"spotify_url": "https://open.spotify.com/track/0uqPVRApmSzcpE2g9OCTFI?si=0e66d6637c5c4d42",
+					"preview_url": "assets/music/previews/Edge Of Despair.mp3",
+					"bpm": 139
+				},
+				{
+					"title": "Mind Paperweights",
+					"spotify_url": "https://open.spotify.com/track/2EHL4Aiop36wJr0WSj4HH4?si=17a0c854cf094d24",
+					"preview_url": "assets/music/previews/Mind Paperweights.mp3",
+					"bpm": 132
 				}
 			]
 		},
@@ -42,7 +67,7 @@
 			"title": "Elegy From Yesterday",
 			"year": 2024,
 			"cover": "assets/music/covers/elegy-from-yesterday-cover.jpg",
-			"flash_color": "#ffd166",
+			"flash_color": "#064BF8",
 			"spotify_album": "https://open.spotify.com/album/31svWegGyWTRJJBLrbvjRl?si=HHpzofwWSQ2mvPD2jmGeKA",
 			"tracks": [
 				{
@@ -58,7 +83,7 @@
 			"title": "Time Nexus",
 			"year": 2024,
 			"cover": "assets/music/covers/time-nexus-cover.jpg",
-			"flash_color": "#ffd166",
+			"flash_color": "#9CFF5C",
 			"spotify_album": "https://open.spotify.com/album/4qmSE8o7oJGAMLDyCBoOij?si=0b5245adde2e4cae",
 			"tracks": [
 				{
@@ -72,6 +97,60 @@
 					"spotify_url": "https://open.spotify.com/track/7krGjvoyo6H1JttXEydaMF?si=eca83d06e9524cdd",
 					"preview_url": "assets/music/previews/universal elevator.mp3",
 					"bpm": 190
+				},
+				{
+					"title": "Sonus EX Machina",
+					"spotify_url": "https://open.spotify.com/track/1DzeFSyrngNJ5RNpwbhsvD?si=fe4994088df44f0c",
+					"preview_url": "assets/music/previews/Sonus EX Machina.mp3",
+					"bpm": 125
+				},
+				{
+					"title": "HARPSICORE",
+					"spotify_url": "https://open.spotify.com/track/02Gx5bOg6TusfYCfO8P0RY?si=ddc4fac713404b2e",
+					"preview_url": "assets/music/previews/HARPSICORE.mp3",
+					"bpm": 106
+				},
+				{
+					"title": "Noon at Midnight",
+					"spotify_url": "https://open.spotify.com/track/6phouecCt9firabtX0u9YQ?si=691590d75e6b4f4c",
+					"preview_url": "assets/music/previews/Noon at Midnight.mp3",
+					"bpm": 135
+				},
+				{
+					"title": "piano in the basement",
+					"spotify_url": "https://open.spotify.com/track/1yAuyGwzbQ6kcMqm5kxQge?si=3ce4d3dde4d54353",
+					"preview_url": "assets/music/previews/piano in the basement.mp3",
+					"bpm": 174
+				},
+				{
+					"title": "piano at 6pm",
+					"spotify_url": "https://open.spotify.com/track/34j6AeRIATvTFlBiNQv0QD?si=277e93936fbb4694",
+					"preview_url": "assets/music/previews/piano at 6pm.mp3",
+					"bpm": 122
+				},
+				{
+					"title": "no cats where harmed in the making of this song",
+					"spotify_url": "https://open.spotify.com/track/0sX7K2d5Y8waU0HgGIfoPI?si=bc764a2047764f71",
+					"preview_url": "assets/music/previews/no cats where harmed in the making of this song.mp3",
+					"bpm": 125
+				},
+				{
+					"title": "meownopédie",
+					"spotify_url": "https://open.spotify.com/track/1mh7gLxnjjRVzD9dqn644V?si=7d23ef333fce4c38",
+					"preview_url": "assets/music/previews/meownopédie.mp3",
+					"bpm": 76
+				},
+				{
+					"title": "Nocturne's Edge",
+					"spotify_url": "https://open.spotify.com/track/6hNVTww4kWM2fD4n8oaD87?si=d3e2689e6cc44838",
+					"preview_url": "assets/music/previews/Nocturne's Edge.mp3",
+					"bpm": 62.1
+				},
+				{
+					"title": "universal decay",
+					"spotify_url": "https://open.spotify.com/track/65zafc3JngaxEFqt3Q2ZWg?si=77b41a3d0870405b",
+					"preview_url": "assets/music/previews/universal decay.mp3",
+					"bpm": 170
 				}
 			]
 		},
@@ -96,7 +175,7 @@
 			"title": "slicing keys",
 			"year": 2023,
 			"cover": "assets/music/covers/slicing-keys-cover.jpg",
-			"flash_color": "#ffd166",
+			"flash_color": "#9651F9",
 			"spotify_album": "https://open.spotify.com/album/6IcUr4lEsWLMkQqhYM7DE9?si=hjIdanYHSkm3mzBtu0OVlw",
 			"tracks": [
 				{
@@ -104,31 +183,6 @@
 					"spotify_url": "https://open.spotify.com/track/2oLvFlROY5U17PcYCq4edX?si=cb6d7aadad0c4a7f",
 					"preview_url": "assets/music/previews/slicing keys.mp3",
 					"bpm": 157.24
-				}
-			]
-		},
-		{
-			"id": "sk-007",
-			"title": "Analog Bloom",
-			"year": 2023,
-			"cover": "assets/cover-analog-bloom.jpg",
-			"flash_color": "#ffd166",
-			"spotify_album": "https://open.spotify.com/album/ZZZZZZZZ",
-			"tracks": [
-				{
-					"title": "Warm Grain",
-					"spotify_url": "https://open.spotify.com/track/FFFFFFF",
-					"preview_url": ""
-				},
-				{
-					"title": "Tape Hiss",
-					"spotify_url": "https://open.spotify.com/track/GGGGGGG",
-					"preview_url": ""
-				},
-				{
-					"title": "Memory Loop",
-					"spotify_url": "https://open.spotify.com/track/HHHHHHH",
-					"preview_url": ""
 				}
 			]
 		}

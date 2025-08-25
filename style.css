@@ -427,7 +427,7 @@ footer {
 /* Simple flash curve */
 @keyframes bg-pulse {
 	0%   { opacity: 0; transform: scale(.98); }
-	10%  { opacity: .10; transform: scale(1.00); }
+	10%  { opacity: .2; transform: scale(1.00); }
 	55%  { opacity: 0; transform: scale(1.00); }
 	100% { opacity: 0; transform: scale(1.00); }
 }
