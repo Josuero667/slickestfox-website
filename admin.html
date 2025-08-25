@@ -1,0 +1,404 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>SlickestFox – Content Editor (Offline)</title>
+	<style>
+		:root{
+			--bg:#0e0e12;--bg2:#151521;--panel:#0b0b11;--panel2:#0f0f17;
+			--text:#e9e9ef;--muted:#b9b9cc;--accent:#ffd166;--ok:#5cffb0;--warn:#ffb86b;--err:#ff6b6b
+		}
+		html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;height:100%}
+		.app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+		.topbar{
+			display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+			padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);
+			background:linear-gradient(180deg,rgba(20,20,28,.85),rgba(20,20,28,.35));
+			backdrop-filter:saturate(130%) blur(6px);position:sticky;top:0;z-index:10
+		}
+		.brand{font-weight:800;color:var(--accent);margin-right:auto}
+		button,.btn{
+			cursor:pointer;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
+			color:#fff;border-radius:10px;padding:8px 12px;font-weight:700
+		}
+		button:hover,.btn:hover{filter:brightness(1.08)}
+		input[type=file]{display:none}
+		.badge{font:700 12px/1 system-ui;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+		.badge.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok),transparent 70%)}
+		.badge.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn),transparent 70%)}
+		.badge.err{color:var(--err);border-color:color-mix(in srgb,var(--err),transparent 70%)}
+
+		.main{display:grid;grid-template-columns:320px 1fr;min-height:0}
+		.sidebar{
+			border-right:1px solid rgba(255,255,255,.08);background:var(--panel);
+			padding:12px;overflow:auto
+		}
+		.search{width:100%;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:var(--text)}
+		.list{margin:10px 0 0 0;padding:0;list-style:none;display:grid;gap:8px}
+		.item{
+			display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+			padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:var(--panel2)
+		}
+		.item.active{outline:2px solid color-mix(in srgb,var(--accent),transparent 65%)}
+		.item-title{font-weight:700}
+		.item-sub{font-size:12px;color:var(--muted)}
+		.item-actions{display:flex;gap:6px}
+		.iconbtn{padding:6px 8px}
+
+		.editor{padding:16px;overflow:auto}
+		.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+		.kv{display:grid;grid-template-columns:160px 1fr;gap:8px;align-items:center}
+		.kv input,.kv textarea{
+			width:100%;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:var(--text);
+			border-radius:10px;padding:8px
+		}
+		.preview{
+			border:1px dashed rgba(255,255,255,.18);border-radius:12px;padding:8px;display:grid;place-items:center;background:#0a0a10
+		}
+		.preview img{max-width:100%;border-radius:8px}
+
+		.section{margin-top:18px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}
+		table{width:100%;border-collapse:separate;border-spacing:0 6px}
+		th,td{padding:6px 8px;text-align:left}
+		.row{
+			background:var(--panel2);border:1px solid rgba(255,255,255,.12);border-radius:10px
+		}
+		.row input{width:100%;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:var(--text)}
+		.row td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+		.row td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+
+		footer{padding:12px;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
+		hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
+
+		/* compact on mobile */
+		@media (max-width:900px){
+			.main{grid-template-columns:1fr}
+			.grid{grid-template-columns:1fr}
+			.kv{grid-template-columns:1fr}
+			.sidebar{order:2}
+			.editor{order:1}
+		}
+	</style>
+</head>
+<body>
+	<div class="app">
+		<div class="topbar">
+			<div class="brand">SlickestFox Editor (Offline)</div>
+
+			<label class="btn" for="file">Open JSON…</label><input id="file" type="file" accept=".json,application/json"/>
+			<button id="btn-new">New</button>
+			<button id="btn-add-release">Add Release</button>
+			<button id="btn-download">Download JSON</button>
+			<span id="status" class="badge">idle</span>
+		</div>
+
+		<div class="main">
+			<aside class="sidebar">
+				<input id="search" class="search" type="search" placeholder="Search releases…"/>
+				<ul id="release-list" class="list"></ul>
+			</aside>
+
+			<main class="editor" id="editor">
+				<div class="section">
+					<h2 style="margin:0 0 8px 0">Release</h2>
+					<div class="grid">
+						<div class="kv">
+							<label for="r-id">ID</label>
+							<input id="r-id" type="text" placeholder="sk-001"/>
+							<label for="r-title">Title</label>
+							<input id="r-title" type="text" placeholder="Title"/>
+							<label for="r-year">Year</label>
+							<input id="r-year" type="number" min="1900" max="2100" placeholder="2025"/>
+							<label for="r-cover">Cover</label>
+							<input id="r-cover" type="text" placeholder="assets/music/covers/example.jpg"/>
+							<label for="r-flash">Flash Color</label>
+							<input id="r-flash" type="text" placeholder="#ffd166"/>
+							<label for="r-spotify">Spotify Album</label>
+							<input id="r-spotify" type="text" placeholder="https://open.spotify.com/album/..."/>
+						</div>
+						<div class="preview">
+							<img id="cover-preview" alt="cover preview" src="" />
+						</div>
+					</div>
+				</div>
+
+				<div class="section">
+					<h2 style="margin:0 0 8px 0">Tracks</h2>
+					<table>
+						<thead>
+							<tr>
+								<th style="width:22%">Title</th>
+								<th style="width:24%">Spotify URL</th>
+								<th style="width:24%">Preview URL</th>
+								<th style="width:10%">BPM</th>
+								<th style="width:20%">Actions</th>
+							</tr>
+						</thead>
+						<tbody id="tracks-body"></tbody>
+					</table>
+					<button id="btn-add-track" class="iconbtn">+ Add Track</button>
+				</div>
+			</main>
+		</div>
+
+		<footer>Offline editor • Load your <code>releases.json</code>, edit, then download and commit.</footer>
+	</div>
+
+	<script>
+		/* ===== State ===== */
+		let data = { releases: [] };
+		let selected = 0;			// index of selected release
+		let filter = '';
+
+		/* ===== Shortcuts ===== */
+		const $ = (s, r=document) => r.querySelector(s);
+		const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+		/* ===== Utilities ===== */
+		function markDirty(msg='unsaved changes'){
+			const st = $('#status');
+			st.textContent = msg;
+			st.className = 'badge warn';
+		}
+		function markClean(msg='saved'){
+			const st = $('#status');
+			st.textContent = msg;
+			st.className = 'badge ok';
+			setTimeout(() => { st.textContent = 'idle'; st.className = 'badge'; }, 1200);
+		}
+		function errStatus(msg){
+			const st = $('#status');
+			st.textContent = msg;
+			st.className = 'badge err';
+		}
+		function pretty(obj){ return JSON.stringify(obj, null, '\t'); } // tabs only
+
+		function uniqueId(base='sk-'){
+			let n = 1;
+			const ids = new Set((data.releases||[]).map(r => r.id));
+			while (ids.has(base + String(n).padStart(3,'0'))) n++;
+			return base + String(n).padStart(3,'0');
+		}
+
+		function ensureReleaseShape(r={}){
+			return {
+				id: String(r.id||uniqueId()),
+				title: String(r.title||'Untitled'),
+				year: Number.isFinite(+r.year) ? +r.year : new Date().getFullYear(),
+				cover: String(r.cover||''),
+				flash_color: typeof r.flash_color==='string' ? r.flash_color : '',
+				spotify_album: String(r.spotify_album||''),
+				tracks: Array.isArray(r.tracks) ? r.tracks.map(t => ensureTrackShape(t)) : []
+			};
+		}
+		function ensureTrackShape(t={}){
+			const o = {
+				title: String(t.title||'Track'),
+				spotify_url: String(t.spotify_url||''),
+				preview_url: String(t.preview_url||'')
+			};
+			if (t.bpm !== undefined && t.bpm !== null && String(t.bpm).trim() !== '') {
+				const v = parseFloat(t.bpm);
+				if (!Number.isNaN(v)) o.bpm = v;
+			}
+			return o;
+		}
+
+		/* ===== Rendering: Sidebar ===== */
+		function renderList(){
+			const ul = $('#release-list');
+			ul.innerHTML = '';
+
+			const q = filter.trim().toLowerCase();
+			(data.releases||[]).forEach((r, i) => {
+				if (q && !(String(r.title||'').toLowerCase().includes(q) || String(r.id||'').toLowerCase().includes(q))) return;
+
+				const li = document.createElement('li');
+				li.className = 'item' + (i===selected ? ' active' : '');
+				li.innerHTML =
+					'<div>' +
+						'<div class="item-title">' + escapeHTML(r.title||'Untitled') + '</div>' +
+						'<div class="item-sub">' + escapeHTML(r.id||'') + ' • ' + (r.year||'') + ' • ' + (r.tracks?.length||0) + ' tracks</div>' +
+					'</div>' +
+					'<div class="item-actions">' +
+						'<button class="iconbtn" data-act="up" title="Move up">▲</button>' +
+						'<button class="iconbtn" data-act="down" title="Move down">▼</button>' +
+						'<button class="iconbtn" data-act="del" title="Delete">✕</button>' +
+					'</div>';
+
+				li.addEventListener('click', (e) => {
+					if (e.target.closest('.item-actions')) return; // handled below
+					selected = i;
+					renderList();
+					renderEditor();
+				});
+
+				li.querySelector('[data-act="up"]').addEventListener('click', (e) => {
+					e.stopPropagation();
+					if (i>0){ const tmp = data.releases[i-1]; data.releases[i-1]=data.releases[i]; data.releases[i]=tmp; selected=i-1; markDirty('reordered'); renderList(); renderEditor(); }
+				});
+				li.querySelector('[data-act="down"]').addEventListener('click', (e) => {
+					e.stopPropagation();
+					if (i<data.releases.length-1){ const tmp = data.releases[i+1]; data.releases[i+1]=data.releases[i]; data.releases[i]=tmp; selected=i+1; markDirty('reordered'); renderList(); renderEditor(); }
+				});
+				li.querySelector('[data-act="del"]').addEventListener('click', (e) => {
+					e.stopPropagation();
+					if (!confirm('Delete release "'+(r.title||'')+'"?')) return;
+					data.releases.splice(i,1);
+					if (selected>=data.releases.length) selected = Math.max(0, data.releases.length-1);
+					renderList(); renderEditor(); markDirty('deleted');
+				});
+
+				ul.appendChild(li);
+			});
+		}
+
+		/* ===== Rendering: Editor ===== */
+		function renderEditor(){
+			const r = data.releases[selected];
+			// If no releases, blank the form
+			$('#r-id').value = r?.id || '';
+			$('#r-title').value = r?.title || '';
+			$('#r-year').value = r?.year ?? '';
+			$('#r-cover').value = r?.cover || '';
+			$('#r-flash').value = r?.flash_color || '';
+			$('#r-spotify').value = r?.spotify_album || '';
+			$('#cover-preview').src = r?.cover || '';
+
+			renderTracks();
+		}
+
+		function renderTracks(){
+			const r = data.releases[selected];
+			const body = $('#tracks-body');
+			body.innerHTML = '';
+			if (!r){ return; }
+
+			r.tracks.forEach((t, idx) => {
+				const tr = document.createElement('tr');
+				tr.className = 'row';
+				tr.innerHTML =
+					'<td><input data-k="title" placeholder="Title" value="'+escapeAttr(t.title||'')+'"/></td>'+
+					'<td><input data-k="spotify_url" placeholder="https://open.spotify.com/track/..." value="'+escapeAttr(t.spotify_url||'')+'"/></td>'+
+					'<td><input data-k="preview_url" placeholder="assets/music/previews/song.mp3" value="'+escapeAttr(t.preview_url||'')+'"/></td>'+
+					'<td><input data-k="bpm" type="number" step="0.01" placeholder="BPM" value="'+(t.bpm ?? '')+'"/></td>'+
+					'<td>'+
+						'<button class="iconbtn" data-act="up">▲</button> '+
+						'<button class="iconbtn" data-act="down">▼</button> '+
+						'<button class="iconbtn" data-act="del">✕</button>'+
+					'</td>';
+
+				tr.addEventListener('input', (e) => {
+					const inp = e.target;
+					if (!(inp instanceof HTMLInputElement)) return;
+					const k = inp.getAttribute('data-k');
+					let v = inp.value;
+					if (k === 'bpm') {
+						if (v.trim()===''){ delete t.bpm; }
+						else { const n = parseFloat(v); if (!Number.isNaN(n)) t.bpm = n; }
+					}else{
+						t[k] = v;
+					}
+					markDirty('edited');
+				});
+
+				tr.querySelector('[data-act="up"]').addEventListener('click', () => {
+					if (idx>0){ const tmp=r.tracks[idx-1]; r.tracks[idx-1]=r.tracks[idx]; r.tracks[idx]=tmp; renderTracks(); markDirty('reordered'); }
+				});
+				tr.querySelector('[data-act="down"]').addEventListener('click', () => {
+					if (idx<r.tracks.length-1){ const tmp=r.tracks[idx+1]; r.tracks[idx+1]=r.tracks[idx]; r.tracks[idx]=tmp; renderTracks(); markDirty('reordered'); }
+				});
+				tr.querySelector('[data-act="del"]').addEventListener('click', () => {
+					if (!confirm('Delete track "'+(t.title||'')+'"?')) return;
+					r.tracks.splice(idx,1); renderTracks(); markDirty('deleted');
+				});
+
+				body.appendChild(tr);
+			});
+		}
+
+		/* ===== Inputs: Release fields ===== */
+		[['r-id','id'],['r-title','title'],['r-year','year'],['r-cover','cover'],['r-flash','flash_color'],['r-spotify','spotify_album']].forEach(([id,k])=>{
+			$('#'+id).addEventListener('input', (e)=>{
+				const r = data.releases[selected]; if (!r) return;
+				let val = e.target.value;
+				if (k==='year'){ const n = parseInt(val,10); if (!Number.isNaN(n)) r.year = n; else r.year = ''; }
+				else r[k] = val;
+				if (k==='cover'){ $('#cover-preview').src = val; }
+				markDirty('edited');
+				renderList(); // reflect titles/ids instantly
+			});
+		});
+
+		/* ===== Buttons ===== */
+		$('#btn-add-release').addEventListener('click', ()=>{
+			const r = ensureReleaseShape({});
+			data.releases.push(r);
+			selected = data.releases.length-1;
+			renderList(); renderEditor(); markDirty('added release');
+		});
+
+		$('#btn-add-track').addEventListener('click', ()=>{
+			const r = data.releases[selected]; if (!r) return;
+			r.tracks.push(ensureTrackShape({}));
+			renderTracks(); markDirty('added track');
+		});
+
+		$('#btn-download').addEventListener('click', ()=>{
+			try{
+				// quick sanity: unique IDs
+				const ids = new Set();
+				for (const r of data.releases){
+					if (ids.has(r.id)) throw new Error('Duplicate release id: '+r.id);
+					ids.add(r.id);
+				}
+				const blob = new Blob([pretty(data)], {type:'application/json'});
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url; a.download = 'releases.json';
+				document.body.appendChild(a); a.click();
+				setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+				markClean('downloaded');
+			}catch(e){ errStatus('error: '+e.message); alert('Fix issues:\n'+e.message); }
+		});
+
+		$('#btn-new').addEventListener('click', ()=>{
+			if (!confirm('Start a new empty file? Unsaved changes will be lost.')) return;
+			data = { releases: [] }; selected = 0;
+			renderList(); renderEditor(); markDirty('new file');
+		});
+
+		// File open
+		$('#file').addEventListener('change', (ev)=>{
+			const f = ev.target.files && ev.target.files[0];
+			if (!f) return;
+			const r = new FileReader();
+			r.onload = ()=>{
+				try{
+					const obj = JSON.parse(String(r.result));
+					if (!obj || !Array.isArray(obj.releases)) throw new Error("Top-level 'releases' must be an array.");
+					data = { releases: obj.releases.map(ensureReleaseShape) };
+					selected = 0;
+					renderList(); renderEditor(); markClean('loaded');
+				}catch(e){ errStatus('parse error'); alert('JSON error:\n'+e.message); }
+			};
+			r.readAsText(f);
+		});
+
+		// Search
+		$('#search').addEventListener('input', (e)=>{ filter = e.target.value; renderList(); });
+
+		/* ===== Helpers ===== */
+		function escapeHTML(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+		function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+		/* ===== Boot ===== */
+		(function boot(){
+			// start with empty doc
+			renderList();
+			renderEditor();
+		})();
+	</script>
+</body>
+</html>

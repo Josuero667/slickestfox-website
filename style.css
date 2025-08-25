@@ -201,12 +201,11 @@ footer {
 	align-items: start;
 }
 
-/* Card shell (square corners) */
 .release {
 	position: relative;
 	background: rgba(255,255,255,0.03);
 	border: 1px solid rgba(255,255,255,0.08);
-	border-radius: 0; /* square */
+	border-radius: 0;
 	overflow: hidden;
 	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 	will-change: transform, box-shadow;
@@ -218,7 +217,6 @@ footer {
 	box-shadow: 0 14px 36px rgba(0,0,0,0.35);
 }
 
-/* Subtle float/hover vibe */
 .release.hovering .cover-wrap { animation: hover-bob 1.8s ease-in-out infinite; }
 
 @keyframes hover-bob {
@@ -227,7 +225,6 @@ footer {
 	100% { transform: translateY(0px); }
 }
 
-/* Cover block (square, no rounded corners) */
 .cover-wrap {
 	position: relative;
 	aspect-ratio: 1 / 1;
@@ -248,7 +245,6 @@ footer {
 
 .release:hover .cover { transform: scale(1.06); }
 
-/* Soft shine overlay */
 .shine {
 	position: absolute;
 	inset: -20%;
@@ -259,7 +255,6 @@ footer {
 	pointer-events: none;
 }
 
-/* Title/year (hidden until hover/open) */
 .release .meta {
 	display: none;
 	padding: 10px 12px 6px 12px;
@@ -285,7 +280,6 @@ footer {
 	font-size: 12px;
 }
 
-/* Tracklist toggle button */
 .toggle-tracks {
 	margin: 0 12px 12px 12px;
 	background: transparent;
@@ -297,7 +291,6 @@ footer {
 	transition: background-color 160ms ease, transform 120ms ease;
 }
 
-/* Desktop: hide the button (hover opens). Mobile: show button. */
 @media (hover: hover) {
 	.toggle-tracks { display: none; }
 }
@@ -310,14 +303,12 @@ footer {
 	transform: translateY(-1px);
 }
 
-/* Tracklist panel */
 .tracklist {
 	padding: 6px 10px 12px 10px;
 	border-top: 1px solid rgba(255,255,255,0.08);
 	background: rgba(0,0,0,0.18);
 }
 
-/* List + items */
 .tracklist ul {
 	list-style: none;
 	margin: 8px 0 10px 0;
@@ -361,7 +352,6 @@ footer {
 	text-overflow: ellipsis;
 }
 
-/* Album links */
 .album-links {
 	display: flex;
 	justify-content: flex-end;
@@ -377,7 +367,6 @@ footer {
 	text-decoration: underline;
 }
 
-/* Mobile tweaks */
 @media (max-width: 520px) {
 	.title { font-size: 15px; }
 	.releases-grid { gap: 14px; }
@@ -388,7 +377,6 @@ footer {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
-	/* halftone-ish dot field, tinted by --pulse-color */
 	background-image: radial-gradient(var(--pulse-color, rgb(255 209 102)) 1.1px, transparent 1.2px);
 	background-size: 6px 6px;
 	mix-blend-mode: screen;
@@ -406,3 +394,78 @@ footer {
 	0%, 100% { opacity: .18; }
 	50% { opacity: .68; }
 }
+
+/* === Global flash container (always behind content) === */
+#global-flash {
+	position: fixed;
+	inset: 0;
+	z-index: 0;				/* behind your UI */
+	pointer-events: none;
+}
+
+/* Big soft glow from bottom */
+#global-flash .glow {
+	position: absolute;
+	inset: -12vmin;
+	opacity: 0;
+	background:
+		radial-gradient(circle at 50% 100%,
+			var(--pulse-color-global, #ffd166) 0%,
+			transparent 60%);
+	filter: blur(40px) saturate(1.1);
+	will-change: opacity, transform;
+}
+
+/* Random dots on a canvas; opacity animated with glow */
+#global-flash .dots {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	will-change: opacity, transform;
+}
+
+/* Simple flash curve */
+@keyframes bg-pulse {
+	0%   { opacity: 0; transform: scale(.98); }
+	10%  { opacity: .10; transform: scale(1.00); }
+	55%  { opacity: 0; transform: scale(1.00); }
+	100% { opacity: 0; transform: scale(1.00); }
+}
+
+#global-flash.on .glow,
+#global-flash.on .dots {
+	animation: bg-pulse var(--pulse-period-global, .6s) ease-in-out infinite;
+}
+
+/* Keep your site above the flash */
+.site-header, .container, footer { position: relative; z-index: 2; }
+
+/* Tracklist clearly above flashes */
+.tracklist { position: relative; z-index: 3; background: rgba(10,10,14,0.90); }
+
+/* === NOW PLAYING (bottom-left, bigger, with black translucent bg) === */
+#now-playing-text{
+	position: fixed;
+	left: 14px;
+	bottom: 12px;
+	z-index: 4;
+	font: 800 15px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+	color: color-mix(in srgb, var(--np-color, #ffd166), white 10%);
+	text-shadow: 0 1px 3px rgba(0,0,0,.55);
+
+	/* background + shape */
+	background: rgba(0,0,0,.65);	/* <- translucent black */
+	border: 1px solid rgba(255,255,255,.12);
+	border-radius: 10px;
+	padding: 6px 10px;
+
+	/* optional glassy vibe (safe to keep or remove) */
+	backdrop-filter: saturate(130%) blur(6px);
+
+	opacity: 0;
+	transform: translateY(6px);
+	transition: opacity 160ms ease, transform 160ms ease;
+	pointer-events: none;
+}
+#now-playing-text.show{ opacity: 1; transform: translateY(0); }
+
