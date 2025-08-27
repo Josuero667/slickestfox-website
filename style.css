@@ -471,20 +471,61 @@ footer {
 
 /* =============================== A R T ==========================================================*/
 /* ===== Art masonry collage ===== */
-.masonry{
+.masonry,
+#art-grid{
 	column-width: 260px;
+	-webkit-column-width: 260px;
+	-moz-column-width: 260px;
+
 	column-gap: 14px;
+	-webkit-column-gap: 14px;
+	-moz-column-gap: 14px;
 }
 .masonry-item{
 	display: inline-block;
 	width: 100%;
 	margin: 0 0 14px 0;
 	break-inside: avoid;
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+
+	position: relative;
+	overflow: hidden;
+
+	/* optional subtle frame — remove if you want edge-to-edge */
 	border: 1px solid rgba(255,255,255,0.10);
 	background: rgba(255,255,255,0.03);
-	overflow: hidden;
+
+	/* hover glow vars (set from JS) */
+	--tint: rgba(255,209,102,.90);
+	--gx: 50%;
+	--gy: 50%;
+}
+.masonry-item::before{
+	content: "";
+	position: absolute;
+	inset: -8%;
+	z-index: 0;
+	pointer-events: none;
+	background:
+		radial-gradient(
+			180% 140% at var(--gx) var(--gy),
+			color-mix(in oklab, var(--tint), white 6%) 0%,
+			color-mix(in oklab, var(--tint), transparent 60%) 52%,
+			transparent 70%
+		);
+	filter: blur(14px) saturate(1.08);
+	opacity: 0;
+	transform: scale(1.02);
+	transition: opacity 160ms ease;
+}
+.masonry-item:hover::before,
+.masonry-item:focus-visible::before{
+	opacity: .85;
 }
 .masonry-item img{
+	position: relative;
+	z-index: 1;
 	display: block;
 	width: 100%;
 	height: auto;
@@ -535,3 +576,4 @@ footer {
 	cursor: pointer;
 }
 html.no-scroll, html.no-scroll body{ overflow: hidden; }
+

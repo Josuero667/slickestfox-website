@@ -1,47 +1,505 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>Art - SlickestFox</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="style.css"/>
+	<style>
+		/* ===== Page-scoped styles (tabs for indent) ===== */
+		/* Full-bleed wrapper breaks out of the .container max-width */
+		.bleed {
+			width: 100vw;
+			margin-left: calc(50% - 50vw);
+			margin-right: calc(50% - 50vw);
+		}
+
+		/* Masonry-style collage using CSS columns */
+		.art-collage {
+			column-width: 270px;
+			column-gap: 10px;
+			padding: 0;
+		}
+		@media (max-width: 640px) {
+			.art-collage { column-width: 200px; column-gap: 8px; }
+		}
+
+		/* Each item breaks inside columns */
+		.art-item {
+			break-inside: avoid;
+			margin: 0 0 10px 0;
+			display: block;
+			position: relative;				/* for the glow layer */
+			--glow: rgba(255,209,102,.85);	/* default accent if sampling fails */
+			--gox: 50%;
+			--goy: 50%;
+		}
+
+		/* Glow gradient behind the image (tracks pointer; shows on hover/focus) */
+		.art-item::before {
+			content: "";
+			position: absolute;
+			inset: -3vmin;
+			z-index: 0;						/* behind the img */
+			background:
+				radial-gradient(
+					120% 120% at var(--gox) var(--goy),
+					var(--glow) 0%,
+					color-mix(in srgb, var(--glow), transparent 50%) 35%,
+					transparent 65%
+				);
+			filter: blur(28px) saturate(1.1);
+			opacity: 0;
+			transform: scale(.98);
+			transition: opacity .22s ease, transform .22s ease;
+			pointer-events: none;
+		}
+		.art-item:hover::before,
+		.art-item:focus-within::before {
+			opacity: .85;
+			transform: scale(1);
+		}
+
+		/* Images: no rounded corners, above the glow */
+		.art-item img {
+			width: 100%;
+			height: auto;
+			display: block;
+			border-radius: 0;
+			background: transparent;
+			vertical-align: top;
+			cursor: zoom-in;
+			position: relative;
+			z-index: 1;
+		}
+
+		/* Simple lightbox */
+		#lightbox {
+			position: fixed;
+			inset: 0;
+			display: none;
+			align-items: center;
+			justify-content: center;
+			background: rgba(0,0,0,.88);
+			backdrop-filter: blur(2px);
+			z-index: 9999;
+		}
+		#lightbox.show { display: flex; }
+		#lightbox img {
+			max-width: 96vw;
+			max-height: 92vh;
+			border-radius: 0;
+			box-shadow: 0 20px 60px rgba(0,0,0,.6);
+			cursor: zoom-out;
+		}
+		#lightbox .hint {
+			position: fixed;
+			bottom: 10px;
+			left: 50%;
+			transform: translateX(-50%);
+			font: 600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+			color: rgba(255,255,255,.7);
+			user-select: none;
+			pointer-events: none;
+		}
+
+		/* tiny “enable sound” pill */
+		#sound-gate{
+			position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+			z-index:9999; background:rgba(0,0,0,.65); border:1px solid rgba(255,255,255,.18);
+			backdrop-filter:saturate(130%) blur(6px); color:#e9e9ef; padding:10px 14px;
+			border-radius:12px; font:600 14px system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+			cursor:pointer; user-select:none; display:none;
+		}
+		#sound-gate.show{ display:block; }
+
+		/* Keep your global site chrome above background animations */
+		.site-header, footer { position: relative; z-index: 1; }
+	</style>
 </head>
 <body>
 	<header class="site-header">
 		<h1>SlickestFox</h1>
 		<nav>
 			<a href="index.html">Home</a>
-			<a href="art.html" aria-current="page">Art</a>
+			<a href="art.html">Art</a>
 			<a href="music.html">Music</a>
 			<a href="videos.html">Videos</a>
 			<a href="about.html">About</a>
 		</nav>
 	</header>
 
-	<main class="container">
-		<h2 style="margin-top:0">Gallery</h2>
-		<p class="muted">Anything in <code>assets/art/</code> will show here automatically.</p>
-
-		<!-- Masonry collage target -->
-		<div id="art-grid" class="masonry"></div>
-
-		<!-- Optional fallback for file:// dev (safe to keep or remove) -->
-		<script id="art-manifest" type="application/json">
-		{ "images": [
-			{ "src": "assets/art/example-1.jpg", "title": "Example 1" }
-		]}
-		</script>
-	</main>
-
-	<!-- Lightbox -->
-	<div id="lightbox" hidden>
-		<button class="lb-close" aria-label="Close">✕</button>
-		<img id="lb-img" alt="">
-		<div id="lb-cap"></div>
+	<!-- Full-bleed collage -->
+	<div class="bleed">
+		<div id="gallery" class="art-collage" aria-live="polite"></div>
 	</div>
 
-	<!-- load the script -->
-	<script src="art.js"></script>
+	<footer>
+		<p>© 2025 SlickestFox</p>
+	</footer>
 
+	<!-- Lightbox -->
+	<div id="lightbox" aria-modal="true" role="dialog">
+		<img id="lightbox-img" alt="Artwork"/>
+		<div class="hint">click / tap to close • ← / → to navigate</div>
+	</div>
+
+	<!-- Inline JSON (edit this). Keep double quotes. -->
+	<script id="images-data" type="application/json">
+	{
+	"images": [
+		{
+			"src": "assets/art/cold.png",
+			"title": "cold",
+			"color": "#A7A7A7"
+		},
+		{
+			"src": "assets/art/Macchi doodles.png",
+			"title": "Macchi doodles",
+			"color": "#E5E3E3"
+		},
+		{
+			"src": "assets/art/gayslop 2.png",
+			"title": "gayslop 2",
+			"color": "#C1ABAA"
+		},
+		{
+			"src": "assets/art/fox curled up.png",
+			"title": "fox curled up",
+			"color": "#8F5549"
+		},
+		{
+			"src": "assets/art/macchi guitar playing V2.png",
+			"title": "macchi guitar playing V2",
+			"color": "#7F5A47"
+		},
+		{
+			"src": "assets/art/serpertine art.png",
+			"title": "serpertine art",
+			"color": "#A0816E"
+		},
+		{
+			"src": "assets/art/GLUNGUS.png",
+			"title": "GLUNGUS",
+			"color": "#7C5A43"
+		},
+		{
+			"src": "assets/art/Macchi subway.png",
+			"title": "Macchi subway",
+			"color": "#B08B5E"
+		},
+		{
+			"src": "assets/art/asriel x ralsei.png",
+			"title": "asriel x ralsei",
+			"color": "#87785F"
+		},
+		{
+			"src": "assets/art/dog doodles.png",
+			"title": "dog doodles",
+			"color": "#F0D899"
+		},
+		{
+			"src": "assets/art/Frizk fanart.png",
+			"title": "Frizk fanart",
+			"color": "#476A6A"
+		},
+		{
+			"src": "assets/art/lucario underwater.png",
+			"title": "lucario underwater",
+			"color": "#356084"
+		},
+		{
+			"src": "assets/art/deltarune roaring knight fight.png",
+			"title": "deltarune roaring knight fight",
+			"color": "#7D7BA9"
+		},
+		{
+			"src": "assets/art/sylvius beach FINAL.png",
+			"title": "sylvius beach FINAL",
+			"color": "#B29FD1"
+		},
+		{
+			"src": "assets/art/devious.png",
+			"title": "devious",
+			"color": "#CCB7E0"
+		},
+		{
+			"src": "assets/art/Sylvius pfp remake.png",
+			"title": "Sylvius pfp remake",
+			"color": "#7E6784"
+		},
+		{
+			"src": "assets/art/catnap & dogday actually kiss.png",
+			"title": "catnap & dogday actually kiss",
+			"color": "#7A2C53"
+		},
+		{
+			"src": "assets/art/macchi bed guitar.png",
+			"title": "macchi bed guitar",
+			"color": "#62474B"
+		}
+	]
+}
+	</script>
+
+	<script>
+		/* tabs-only JS */
+		(()=>{"use strict";
+			const $ = (s, r=document)=>r.querySelector(s);
+			const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+
+			let images = [];
+			let current = -1;
+
+			/* ===== Sampler: hover notes & click chords ===== */
+			const NOTE_URLS = [
+				"assets/audio/notes/n1.mp3",
+				"assets/audio/notes/n2.mp3",
+				"assets/audio/notes/n3.mp3",
+				"assets/audio/notes/n4.mp3",
+				"assets/audio/notes/n5.mp3",
+				"assets/audio/notes/n6.mp3",
+				"assets/audio/notes/n7.mp3"
+			];
+			const CHORD_URLS = [
+				"assets/audio/chords/c1.mp3",
+				"assets/audio/chords/c2.mp3",
+				"assets/audio/chords/c3.mp3",
+				"assets/audio/chords/c4.mp3",
+				"assets/audio/chords/c5.mp3",
+				"assets/audio/chords/c6.mp3",
+				"assets/audio/chords/c7.mp3"
+			];
+			const PROB_NEXT = 0.70;	// chance to step up the scale (vs down) on a new hover
+
+			let gate = null;
+			function showGate(){
+				if (!gate){
+					gate = document.createElement("div");
+					gate.id = "sound-gate";
+					gate.textContent = "🔊 Click to enable sound";
+					document.body.appendChild(gate);
+				}
+				gate.classList.add("show");
+			}
+			function hideGate(){ gate && gate.classList.remove("show"); }
+
+			const Sampler = (()=> {
+				let ctx=null, master=null, unlocked=false, loading=false;
+				let notes=[], chords=[];
+				function ac(){
+					if (ctx) return ctx;
+					const AC = window.AudioContext || window.webkitAudioContext;
+					if (!AC) return null;
+					ctx = new AC();
+					master = ctx.createGain();
+					master.gain.value = 0.9;
+					master.connect(ctx.destination);
+					return ctx;
+				}
+				async function unlock(){
+					if (unlocked) return true;
+					const c = ac(); if (!c) return false;
+					if (c.state === "suspended"){ try{ await c.resume(); }catch{} }
+					unlocked = (c.state === "running" || c.state === "interactive");
+					return unlocked;
+				}
+				async function loadBuf(url){
+					const res = await fetch(url);
+					const arr = await res.arrayBuffer();
+					return await ctx.decodeAudioData(arr);
+				}
+				async function preload(){
+					if (loading) return;
+					if (!await unlock()) return;
+					loading = true;
+					try {
+						const n = await Promise.allSettled(NOTE_URLS.map(loadBuf));
+						const c = await Promise.allSettled(CHORD_URLS.map(loadBuf));
+						notes = n.map(x=>x.value).filter(Boolean);
+						chords = c.map(x=>x.value).filter(Boolean);
+					} finally { loading = false; }
+				}
+				function play(buf, vol=1){
+					if (!buf || !ctx) return;
+					const t = ctx.currentTime;
+					const src = ctx.createBufferSource();
+					src.buffer = buf;
+					const g = ctx.createGain();
+					g.gain.setValueAtTime(0, t);
+					g.gain.linearRampToValueAtTime(vol, t+0.005);
+					src.connect(g); g.connect(master);
+					const d = buf.duration;
+					src.start(t);
+					if (d>0.05){
+						g.gain.setValueAtTime(vol, t+d-0.04);
+						g.gain.linearRampToValueAtTime(0, t+d);
+					}
+					src.stop(t+d+0.02);
+				}
+				let idx = Math.floor(Math.random()*7);
+				function stepIndex(){
+					idx = (idx + (Math.random()<PROB_NEXT ? 1 : -1) + 7) % 7;
+					return idx;
+				}
+				return {
+					unlock,
+					preload,
+					playHover(){ if (notes.length) play(notes[stepIndex()], .85); },
+					playClick(){ if (chords.length) play(chords[(Math.random()*chords.length)|0], .95); }
+				};
+			})();
+
+			/* ===== Color sampling for glow ===== */
+			function extractColor(img, cb){
+				try{
+					const i = new Image();
+					i.crossOrigin = "anonymous";
+					i.onload = ()=>{
+						try{
+							const c = document.createElement("canvas");
+							const S = 24;
+							c.width = S; c.height = S;
+							const x = c.getContext("2d", { willReadFrequently:true });
+							x.drawImage(i, 0, 0, S, S);
+							const d = x.getImageData(0,0,S,S).data;
+							let r=0,g=0,b=0,n=0;
+							for (let p=0;p<d.length;p+=4){
+								const a = d[p+3]/255;
+								r+=d[p]*a; g+=d[p+1]*a; b+=d[p+2]*a; n+=a;
+							}
+							n = n||1; r=Math.round(r/n); g=Math.round(g/n); b=Math.round(b/n);
+							// slightly brighten towards white for a glow feel
+							const mix = .18;
+							const rr = Math.round(r + (255-r)*mix);
+							const gg = Math.round(g + (255-g)*mix);
+							const bb = Math.round(b + (255-b)*mix);
+							cb(`rgba(${rr}, ${gg}, ${bb}, 0.90)`);
+						}catch{ cb("rgba(255,209,102,.90)"); }
+					};
+					i.onerror = ()=>cb("rgba(255,209,102,.90)");
+					i.src = img.src;
+				}catch{
+					cb("rgba(255,209,102,.90)");
+				}
+			}
+
+			/* ===== Render gallery ===== */
+			function render(list){
+				const box = $("#gallery");
+				const frag = document.createDocumentFragment();
+
+				list.forEach((it, idx)=>{
+					const wrap = document.createElement("figure");
+					wrap.className = "art-item";
+
+					const img = document.createElement("img");
+					img.loading = "lazy";
+					img.decoding = "async";
+					img.crossOrigin = "anonymous";
+					img.src = String(it.src||"").trim();
+					img.alt = "Artwork";
+					img.dataset.index = String(idx);
+					img.tabIndex = 0;
+
+					// pointer glow origin follows cursor
+					wrap.addEventListener("pointermove", (e)=>{
+						const r = wrap.getBoundingClientRect();
+						const x = ((e.clientX - r.left) / r.width * 100).toFixed(2) + "%";
+						const y = ((e.clientY - r.top) / r.height * 100).toFixed(2) + "%";
+						wrap.style.setProperty("--gox", x);
+						wrap.style.setProperty("--goy", y);
+					});
+
+					// sample color once loaded
+					img.addEventListener("load", ()=>{
+						extractColor(img, (col)=>{
+							wrap.style.setProperty("--glow", col);
+						});
+					});
+
+					// hover/focus note
+					wrap.addEventListener("pointerenter", ()=>Sampler.playHover(), { passive:true });
+					img.addEventListener("focus", ()=>Sampler.playHover(), { passive:true });
+
+					// click -> chord + lightbox
+					img.addEventListener("click", ()=>{
+						Sampler.playClick();
+						openLightbox(idx);
+					});
+					img.addEventListener("keydown", (e)=>{
+						if (e.key === "Enter" || e.key === " ") {
+							e.preventDefault();
+							Sampler.playClick();
+							openLightbox(idx);
+						}
+					});
+
+					wrap.appendChild(img);
+					frag.appendChild(wrap);
+				});
+
+				box.innerHTML = "";
+				box.appendChild(frag);
+			}
+
+			/* ===== Lightbox ===== */
+			const lb = $("#lightbox");
+			const lbImg = $("#lightbox-img");
+
+			function openLightbox(i){
+				if (i<0 || i>=images.length) return;
+				current = i;
+				lbImg.src = images[i].src;
+				lb.classList.add("show");
+				document.body.style.overflow = "hidden";
+			}
+			function closeLightbox(){
+				lb.classList.remove("show");
+				lbImg.src = "";
+				current = -1;
+				document.body.style.overflow = "";
+			}
+			function next(){ if(images.length){ openLightbox((current+1)%images.length); } }
+			function prev(){ if(images.length){ openLightbox((current-1+images.length)%images.length); } }
+
+			lb.addEventListener("click", closeLightbox);
+			document.addEventListener("keydown", (e)=>{
+				if (!lb.classList.contains("show")) return;
+				if (e.key === "Escape") closeLightbox();
+				else if (e.key === "ArrowRight") next();
+				else if (e.key === "ArrowLeft") prev();
+			});
+
+			/* ===== Audio gate ===== */
+			function wireGate(){
+				showGate();
+				const clickUnlock = async ()=>{
+					if (await Sampler.unlock()){
+						hideGate();
+						Sampler.preload();
+						document.removeEventListener("click", clickUnlock, { capture:false });
+					}
+				};
+				document.addEventListener("click", clickUnlock, { capture:false });
+				// also click the pill
+				$("#sound-gate").addEventListener("click", clickUnlock, { passive:true });
+			}
+
+			/* ===== Boot ===== */
+			document.addEventListener("DOMContentLoaded", ()=>{
+				let data = { images: [] };
+				try {
+					const raw = $("#images-data")?.textContent || "{}";
+					data = JSON.parse(raw);
+				} catch {
+					data = { images: [] };
+				}
+				images = Array.isArray(data.images) ? data.images.map(it=>({ src:String(it.src||"").trim() })) : [];
+				render(images);
+				wireGate();
+			});
+		})();
+	</script>
 </body>
 </html>

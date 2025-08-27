@@ -11,18 +11,32 @@
 		}
 		html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;height:100%}
 		.app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+
 		.topbar{
-			display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+			display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
 			padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);
 			background:linear-gradient(180deg,rgba(20,20,28,.85),rgba(20,20,28,.35));
 			backdrop-filter:saturate(130%) blur(6px);position:sticky;top:0;z-index:10
 		}
-		.brand{font-weight:800;color:var(--accent);margin-right:auto}
+		.brand{font-weight:800;color:var(--accent)}
+		.tabs{display:flex;gap:8px;flex-wrap:wrap}
+		.tab{
+			cursor:pointer;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
+			color:#fff;border-radius:10px;padding:8px 12px;font-weight:800
+		}
+		.tab[aria-selected="true"]{outline:2px solid color-mix(in srgb,var(--accent),transparent 60%)}
+
+		.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+		.hidden{display:none!important}
 		button,.btn{
 			cursor:pointer;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
 			color:#fff;border-radius:10px;padding:8px 12px;font-weight:700
 		}
 		button:hover,.btn:hover{filter:brightness(1.08)}
+		select{
+			cursor:pointer;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:#fff;
+			border-radius:10px;padding:8px 12px;font-weight:700
+		}
 		input[type=file]{display:none}
 		.badge{font:700 12px/1 system-ui;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
 		.badge.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok),transparent 70%)}
@@ -68,6 +82,28 @@
 		.row td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
 		.row td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
 
+		/* ART VIEW */
+		#view-art .note{color:var(--muted);font-size:13px}
+		#art-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}
+		#art-base{width:280px;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:var(--text);border-radius:10px;padding:8px}
+		.drop{
+			border:2px dashed rgba(255,255,255,.18);border-radius:12px;padding:16px;text-align:center;background:#0a0a10;color:var(--muted)
+		}
+		.drop.drag{border-color:color-mix(in srgb,var(--accent),transparent 50%);background:#0b0b12;color:#fff}
+		#art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+		.card{
+			background:var(--panel2);border:1px solid rgba(255,255,255,.12);border-radius:10px;overflow:hidden;display:grid;grid-template-rows:auto auto auto 1fr
+		}
+		.card img{width:100%;height:160px;object-fit:cover;background:#0a0a10}
+		.card .meta{padding:8px;display:grid;gap:6px}
+		.card .meta input{
+			width:100%;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:var(--text)
+		}
+		.card .colorline{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+		.swatch{width:18px;height:18px;border-radius:4px;border:1px solid rgba(255,255,255,.18);background:var(--c,#888)}
+		.card .actions{display:flex;gap:6px;padding:8px}
+		.small{font-size:12px;color:var(--muted)}
+
 		footer{padding:12px;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
 		hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 
@@ -79,21 +115,56 @@
 			.sidebar{order:2}
 			.editor{order:1}
 		}
+
+		/* View toggles */
+		[data-view="music"] #toolbar-music{display:flex}
+		[data-view="music"] #toolbar-art{display:none}
+		[data-view="music"] #view-music{display:grid}
+		[data-view="music"] #view-art{display:none}
+
+		[data-view="art"] #toolbar-music{display:none}
+		[data-view="art"] #toolbar-art{display:flex}
+		[data-view="art"] #view-music{display:none}
+		[data-view="art"] #view-art{display:block}
 	</style>
 </head>
-<body>
+<body data-view="music">
 	<div class="app">
 		<div class="topbar">
-			<div class="brand">SlickestFox Editor (Offline)</div>
+			<div class="tabs">
+				<span class="brand">SlickestFox Editor (Offline)</span>
+				<button class="tab" id="tab-music" aria-selected="true">Releases</button>
+				<button class="tab" id="tab-art" aria-selected="false">Art manifest</button>
+			</div>
 
-			<label class="btn" for="file">Open JSON…</label><input id="file" type="file" accept=".json,application/json"/>
-			<button id="btn-new">New</button>
-			<button id="btn-add-release">Add Release</button>
-			<button id="btn-download">Download JSON</button>
-			<span id="status" class="badge">idle</span>
+			<div class="tools" id="toolbar-music">
+				<label class="btn" for="file">Open JSON…</label><input id="file" type="file" accept=".json,application/json"/>
+				<button id="btn-new">New</button>
+				<button id="btn-add-release">Add Release</button>
+				<button id="btn-download">Download JSON</button>
+				<span id="status" class="badge">idle</span>
+			</div>
+
+			<div class="tools hidden" id="toolbar-art">
+				<label class="btn" for="art-folder">Pick folder…</label>
+				<input id="art-folder" type="file" webkitdirectory multiple accept="image/*"/>
+				<label class="btn" for="art-files">Add images…</label>
+				<input id="art-files" type="file" multiple accept="image/*"/>
+				<select id="art-sort" title="Sort order">
+					<option value="none">Manual order</option>
+					<option value="hue">Sort by Hue</option>
+					<option value="light">Sort by Lightness</option>
+				</select>
+				<button id="art-recalc" title="Recompute dominant colors">Recompute colors</button>
+				<button id="art-open-json">Open images.json</button>
+				<button id="art-clear">Clear</button>
+				<button id="art-download">Download images.json</button>
+				<span id="status-art" class="badge">idle</span>
+			</div>
 		</div>
 
-		<div class="main">
+		<!-- MUSIC VIEW -->
+		<div class="main" id="view-music">
 			<aside class="sidebar">
 				<input id="search" class="search" type="search" placeholder="Search releases…"/>
 				<ul id="release-list" class="list"></ul>
@@ -118,7 +189,7 @@
 							<input id="r-spotify" type="text" placeholder="https://open.spotify.com/album/..."/>
 						</div>
 						<div class="preview">
-							<img id="cover-preview" alt="cover preview" src="" />
+							<img id="cover-preview" alt="cover preview" src=""/>
 						</div>
 					</div>
 				</div>
@@ -142,263 +213,530 @@
 			</main>
 		</div>
 
-		<footer>Offline editor • Load your <code>releases.json</code>, edit, then download and commit.</footer>
+		<!-- ART VIEW -->
+		<main class="editor" id="view-art" style="display:none">
+			<h2 style="margin:0 0 8px 0">Art manifest</h2>
+			<p class="note">Build <code>assets/data/images.json</code> from images in <code>assets/art/</code>. For best paths, use <b>Pick folder…</b> (preserves relative paths). Drag-drop can’t detect folders, so it assumes <code>base + filename</code>.</p>
+
+			<div id="art-controls">
+				<label class="small">Base path:&nbsp;<input id="art-base" type="text" value="assets/art/"/></label>
+				<span class="small">• Accepts: .jpg .jpeg .png .webp .avif .gif</span>
+			</div>
+
+			<div id="art-drop" class="drop">
+				<b>Drag & drop</b> images here<br/>
+				or use the buttons in the toolbar.
+			</div>
+
+			<div id="art-grid"></div>
+		</main>
+
+		<footer>Offline editor • Music: edit & download <code>releases.json</code>. Art: build & download <code>images.json</code>.</footer>
 	</div>
 
 	<script>
-		/* ===== State ===== */
+		/* ========= VIEW TABS ========= */
+		const bodyEl = document.body;
+		const tabMusic = document.getElementById('tab-music');
+		const tabArt = document.getElementById('tab-art');
+		const tlMusic = document.getElementById('toolbar-music');
+		const tlArt = document.getElementById('toolbar-art');
+
+		function setView(v){
+			bodyEl.setAttribute('data-view', v);
+			tabMusic.setAttribute('aria-selected', String(v==='music'));
+			tabArt.setAttribute('aria-selected', String(v==='art'));
+			tlMusic.classList.toggle('hidden', v!=='music');
+			tlArt.classList.toggle('hidden', v!=='art');
+		}
+		tabMusic.addEventListener('click', ()=>setView('music'));
+		tabArt.addEventListener('click', ()=>setView('art'));
+
+		/* ========= MUSIC (existing editor) ========= */
 		let data = { releases: [] };
-		let selected = 0;			// index of selected release
+		let selected = 0;
 		let filter = '';
 
-		/* ===== Shortcuts ===== */
-		const $ = (s, r=document) => r.querySelector(s);
-		const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+		const $ = (s,r=document)=>r.querySelector(s);
+		const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 
-		/* ===== Utilities ===== */
-		function markDirty(msg='unsaved changes'){
-			const st = $('#status');
-			st.textContent = msg;
-			st.className = 'badge warn';
-		}
-		function markClean(msg='saved'){
-			const st = $('#status');
-			st.textContent = msg;
-			st.className = 'badge ok';
-			setTimeout(() => { st.textContent = 'idle'; st.className = 'badge'; }, 1200);
-		}
-		function errStatus(msg){
-			const st = $('#status');
-			st.textContent = msg;
-			st.className = 'badge err';
-		}
+		function markDirty(msg='unsaved changes'){ const st=$('#status'); st.textContent=msg; st.className='badge warn'; }
+		function markClean(msg='saved'){ const st=$('#status'); st.textContent=msg; st.className='badge ok'; setTimeout(()=>{ st.textContent='idle'; st.className='badge'; },1200); }
+		function errStatus(msg){ const st=$('#status'); st.textContent=msg; st.className='badge err'; }
 		function pretty(obj){ return JSON.stringify(obj, null, '\t'); } // tabs only
+		function uniqueId(base='sk-'){ let n=1; const ids=new Set((data.releases||[]).map(r=>r.id)); while(ids.has(base+String(n).padStart(3,'0'))) n++; return base+String(n).padStart(3,'0'); }
 
-		function uniqueId(base='sk-'){
-			let n = 1;
-			const ids = new Set((data.releases||[]).map(r => r.id));
-			while (ids.has(base + String(n).padStart(3,'0'))) n++;
-			return base + String(n).padStart(3,'0');
-		}
+		function ensureReleaseShape(r={}){ return { id:String(r.id||uniqueId()), title:String(r.title||'Untitled'), year:Number.isFinite(+r.year)?+r.year:new Date().getFullYear(), cover:String(r.cover||''), flash_color: typeof r.flash_color==='string'?r.flash_color:'', spotify_album:String(r.spotify_album||''), tracks:Array.isArray(r.tracks)?r.tracks.map(t=>ensureTrackShape(t)):[] }; }
+		function ensureTrackShape(t={}){ const o={ title:String(t.title||'Track'), spotify_url:String(t.spotify_url||''), preview_url:String(t.preview_url||'') }; if(t.bpm!==undefined&&t.bpm!==null&&String(t.bpm).trim()!==''){ const v=parseFloat(t.bpm); if(!Number.isNaN(v)) o.bpm=v; } return o; }
 
-		function ensureReleaseShape(r={}){
-			return {
-				id: String(r.id||uniqueId()),
-				title: String(r.title||'Untitled'),
-				year: Number.isFinite(+r.year) ? +r.year : new Date().getFullYear(),
-				cover: String(r.cover||''),
-				flash_color: typeof r.flash_color==='string' ? r.flash_color : '',
-				spotify_album: String(r.spotify_album||''),
-				tracks: Array.isArray(r.tracks) ? r.tracks.map(t => ensureTrackShape(t)) : []
-			};
-		}
-		function ensureTrackShape(t={}){
-			const o = {
-				title: String(t.title||'Track'),
-				spotify_url: String(t.spotify_url||''),
-				preview_url: String(t.preview_url||'')
-			};
-			if (t.bpm !== undefined && t.bpm !== null && String(t.bpm).trim() !== '') {
-				const v = parseFloat(t.bpm);
-				if (!Number.isNaN(v)) o.bpm = v;
-			}
-			return o;
-		}
-
-		/* ===== Rendering: Sidebar ===== */
 		function renderList(){
-			const ul = $('#release-list');
-			ul.innerHTML = '';
+			const ul=$('#release-list'); ul.innerHTML='';
+			const q=filter.trim().toLowerCase();
+			(data.releases||[]).forEach((r,i)=>{
+				if(q && !(String(r.title||'').toLowerCase().includes(q) || String(r.id||'').toLowerCase().includes(q))) return;
+				const li=document.createElement('li');
+				li.className='item'+(i===selected?' active':'');
 
-			const q = filter.trim().toLowerCase();
-			(data.releases||[]).forEach((r, i) => {
-				if (q && !(String(r.title||'').toLowerCase().includes(q) || String(r.id||'').toLowerCase().includes(q))) return;
+				const metaTitle = escapeHTML(r.title||'Untitled');
+				const metaSub = escapeHTML(r.id||'')+' • '+(r.year||'')+' • '+(r.tracks?.length||0)+' tracks';
 
-				const li = document.createElement('li');
-				li.className = 'item' + (i===selected ? ' active' : '');
 				li.innerHTML =
-					'<div>' +
-						'<div class="item-title">' + escapeHTML(r.title||'Untitled') + '</div>' +
-						'<div class="item-sub">' + escapeHTML(r.id||'') + ' • ' + (r.year||'') + ' • ' + (r.tracks?.length||0) + ' tracks</div>' +
-					'</div>' +
-					'<div class="item-actions">' +
-						'<button class="iconbtn" data-act="up" title="Move up">▲</button>' +
-						'<button class="iconbtn" data-act="down" title="Move down">▼</button>' +
-						'<button class="iconbtn" data-act="del" title="Delete">✕</button>' +
+					'<div>'+
+						'<div class="item-title">'+metaTitle+'</div>'+
+						'<div class="item-sub">'+metaSub+'</div>'+
+					'</div>'+
+					'<div class="item-actions">'+
+						'<button class="iconbtn" data-act="up">▲</button>'+
+						'<button class="iconbtn" data-act="down">▼</button>'+
+						'<button class="iconbtn" data-act="del">✕</button>'+
 					'</div>';
 
-				li.addEventListener('click', (e) => {
-					if (e.target.closest('.item-actions')) return; // handled below
-					selected = i;
-					renderList();
-					renderEditor();
-				});
+				li.addEventListener('click',(e)=>{ if(e.target.closest('.item-actions'))return; selected=i; renderList(); renderEditor(); });
 
-				li.querySelector('[data-act="up"]').addEventListener('click', (e) => {
-					e.stopPropagation();
-					if (i>0){ const tmp = data.releases[i-1]; data.releases[i-1]=data.releases[i]; data.releases[i]=tmp; selected=i-1; markDirty('reordered'); renderList(); renderEditor(); }
-				});
-				li.querySelector('[data-act="down"]').addEventListener('click', (e) => {
-					e.stopPropagation();
-					if (i<data.releases.length-1){ const tmp = data.releases[i+1]; data.releases[i+1]=data.releases[i]; data.releases[i]=tmp; selected=i+1; markDirty('reordered'); renderList(); renderEditor(); }
-				});
-				li.querySelector('[data-act="del"]').addEventListener('click', (e) => {
-					e.stopPropagation();
-					if (!confirm('Delete release "'+(r.title||'')+'"?')) return;
-					data.releases.splice(i,1);
-					if (selected>=data.releases.length) selected = Math.max(0, data.releases.length-1);
-					renderList(); renderEditor(); markDirty('deleted');
-				});
+				li.querySelector('[data-act="up"]').addEventListener('click',(e)=>{ e.stopPropagation(); if(i>0){ const tmp=data.releases[i-1]; data.releases[i-1]=data.releases[i]; data.releases[i]=tmp; selected=i-1; markDirty('reordered'); renderList(); renderEditor(); }});
+				li.querySelector('[data-act="down"]').addEventListener('click',(e)=>{ e.stopPropagation(); if(i<data.releases.length-1){ const tmp=data.releases[i+1]; data.releases[i+1]=data.releases[i]; data.releases[i]=tmp; selected=i+1; markDirty('reordered'); renderList(); renderEditor(); }});
+				li.querySelector('[data-act="del"]').addEventListener('click',(e)=>{ e.stopPropagation(); if(!confirm('Delete release "'+(r.title||'')+'"?'))return; data.releases.splice(i,1); if(selected>=data.releases.length) selected=Math.max(0,data.releases.length-1); renderList(); renderEditor(); markDirty('deleted'); });
 
 				ul.appendChild(li);
 			});
 		}
 
-		/* ===== Rendering: Editor ===== */
 		function renderEditor(){
-			const r = data.releases[selected];
-			// If no releases, blank the form
-			$('#r-id').value = r?.id || '';
-			$('#r-title').value = r?.title || '';
-			$('#r-year').value = r?.year ?? '';
-			$('#r-cover').value = r?.cover || '';
-			$('#r-flash').value = r?.flash_color || '';
-			$('#r-spotify').value = r?.spotify_album || '';
-			$('#cover-preview').src = r?.cover || '';
-
+			const r=data.releases[selected];
+			$('#r-id').value=r?.id||'';
+			$('#r-title').value=r?.title||'';
+			$('#r-year').value=r?.year??'';
+			$('#r-cover').value=r?.cover||'';
+			$('#r-flash').value=r?.flash_color||'';
+			$('#r-spotify').value=r?.spotify_album||'';
+			$('#cover-preview').src=r?.cover||'';
 			renderTracks();
 		}
 
 		function renderTracks(){
-			const r = data.releases[selected];
-			const body = $('#tracks-body');
-			body.innerHTML = '';
-			if (!r){ return; }
+			const r=data.releases[selected];
+			const body=$('#tracks-body');
+			body.innerHTML='';
+			if(!r) return;
 
-			r.tracks.forEach((t, idx) => {
-				const tr = document.createElement('tr');
-				tr.className = 'row';
-				tr.innerHTML =
+			r.tracks.forEach((t,idx)=>{
+				const tr=document.createElement('tr'); tr.className='row';
+				tr.innerHTML=
 					'<td><input data-k="title" placeholder="Title" value="'+escapeAttr(t.title||'')+'"/></td>'+
 					'<td><input data-k="spotify_url" placeholder="https://open.spotify.com/track/..." value="'+escapeAttr(t.spotify_url||'')+'"/></td>'+
 					'<td><input data-k="preview_url" placeholder="assets/music/previews/song.mp3" value="'+escapeAttr(t.preview_url||'')+'"/></td>'+
-					'<td><input data-k="bpm" type="number" step="0.01" placeholder="BPM" value="'+(t.bpm ?? '')+'"/></td>'+
-					'<td>'+
-						'<button class="iconbtn" data-act="up">▲</button> '+
-						'<button class="iconbtn" data-act="down">▼</button> '+
-						'<button class="iconbtn" data-act="del">✕</button>'+
-					'</td>';
+					'<td><input data-k="bpm" type="number" step="0.01" placeholder="BPM" value="'+(t.bpm??'')+'"/></td>'+
+					'<td><button class="iconbtn" data-act="up">▲</button> <button class="iconbtn" data-act="down">▼</button> <button class="iconbtn" data-act="del">✕</button></td>';
 
-				tr.addEventListener('input', (e) => {
-					const inp = e.target;
-					if (!(inp instanceof HTMLInputElement)) return;
-					const k = inp.getAttribute('data-k');
-					let v = inp.value;
-					if (k === 'bpm') {
-						if (v.trim()===''){ delete t.bpm; }
-						else { const n = parseFloat(v); if (!Number.isNaN(n)) t.bpm = n; }
-					}else{
-						t[k] = v;
-					}
+				tr.addEventListener('input',(e)=>{
+					const inp=e.target; if(!(inp instanceof HTMLInputElement)) return;
+					const k=inp.getAttribute('data-k'); let v=inp.value;
+					if(k==='bpm'){ if(v.trim()===''){ delete t.bpm; } else { const n=parseFloat(v); if(!Number.isNaN(n)) t.bpm=n; } }
+					else { t[k]=v; }
 					markDirty('edited');
 				});
 
-				tr.querySelector('[data-act="up"]').addEventListener('click', () => {
-					if (idx>0){ const tmp=r.tracks[idx-1]; r.tracks[idx-1]=r.tracks[idx]; r.tracks[idx]=tmp; renderTracks(); markDirty('reordered'); }
-				});
-				tr.querySelector('[data-act="down"]').addEventListener('click', () => {
-					if (idx<r.tracks.length-1){ const tmp=r.tracks[idx+1]; r.tracks[idx+1]=r.tracks[idx]; r.tracks[idx]=tmp; renderTracks(); markDirty('reordered'); }
-				});
-				tr.querySelector('[data-act="del"]').addEventListener('click', () => {
-					if (!confirm('Delete track "'+(t.title||'')+'"?')) return;
-					r.tracks.splice(idx,1); renderTracks(); markDirty('deleted');
-				});
+				tr.querySelector('[data-act="up"]').addEventListener('click',()=>{ if(idx>0){ const tmp=r.tracks[idx-1]; r.tracks[idx-1]=r.tracks[idx]; r.tracks[idx]=tmp; renderTracks(); markDirty('reordered'); }});
+				tr.querySelector('[data-act="down"]').addEventListener('click',()=>{ if(idx<r.tracks.length-1){ const tmp=r.tracks[idx+1]; r.tracks[idx+1]=r.tracks[idx]; r.tracks[idx]=tmp; renderTracks(); markDirty('reordered'); }});
+				tr.querySelector('[data-act="del"]').addEventListener('click',()=>{ if(!confirm('Delete track "'+(t.title||'')+'"?')) return; r.tracks.splice(idx,1); renderTracks(); markDirty('deleted'); });
 
 				body.appendChild(tr);
 			});
 		}
 
-		/* ===== Inputs: Release fields ===== */
 		[['r-id','id'],['r-title','title'],['r-year','year'],['r-cover','cover'],['r-flash','flash_color'],['r-spotify','spotify_album']].forEach(([id,k])=>{
-			$('#'+id).addEventListener('input', (e)=>{
-				const r = data.releases[selected]; if (!r) return;
-				let val = e.target.value;
-				if (k==='year'){ const n = parseInt(val,10); if (!Number.isNaN(n)) r.year = n; else r.year = ''; }
-				else r[k] = val;
-				if (k==='cover'){ $('#cover-preview').src = val; }
+			document.getElementById(id).addEventListener('input',(e)=>{
+				const r=data.releases[selected]; if(!r) return;
+				let val=e.target.value;
+				if(k==='year'){
+					const n=parseInt(val,10);
+					if(!Number.isNaN(n)) r.year=n; else r.year='';
+				}else r[k]=val;
+				if(k==='cover'){ $('#cover-preview').src=val; }
 				markDirty('edited');
-				renderList(); // reflect titles/ids instantly
+				renderList();
 			});
 		});
 
-		/* ===== Buttons ===== */
-		$('#btn-add-release').addEventListener('click', ()=>{
-			const r = ensureReleaseShape({});
+		document.getElementById('btn-add-release').addEventListener('click',()=>{
+			const r=ensureReleaseShape({});
 			data.releases.push(r);
-			selected = data.releases.length-1;
+			selected=data.releases.length-1;
 			renderList(); renderEditor(); markDirty('added release');
 		});
 
-		$('#btn-add-track').addEventListener('click', ()=>{
-			const r = data.releases[selected]; if (!r) return;
+		document.getElementById('btn-add-track').addEventListener('click',()=>{
+			const r=data.releases[selected]; if(!r) return;
 			r.tracks.push(ensureTrackShape({}));
 			renderTracks(); markDirty('added track');
 		});
 
-		$('#btn-download').addEventListener('click', ()=>{
+		document.getElementById('btn-download').addEventListener('click',()=>{
 			try{
-				// quick sanity: unique IDs
-				const ids = new Set();
-				for (const r of data.releases){
-					if (ids.has(r.id)) throw new Error('Duplicate release id: '+r.id);
+				const ids=new Set();
+				for(const r of data.releases){
+					if(ids.has(r.id)) throw new Error('Duplicate release id: '+r.id);
 					ids.add(r.id);
 				}
-				const blob = new Blob([pretty(data)], {type:'application/json'});
-				const url = URL.createObjectURL(blob);
-				const a = document.createElement('a');
-				a.href = url; a.download = 'releases.json';
+				const blob=new Blob([pretty(data)],{type:'application/json'});
+				const url=URL.createObjectURL(blob);
+				const a=document.createElement('a');
+				a.href=url; a.download='releases.json';
 				document.body.appendChild(a); a.click();
-				setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+				setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); },0);
 				markClean('downloaded');
-			}catch(e){ errStatus('error: '+e.message); alert('Fix issues:\n'+e.message); }
+			}catch(e){
+				errStatus('error: '+e.message);
+				alert('Fix issues:\n'+e.message);
+			}
 		});
 
-		$('#btn-new').addEventListener('click', ()=>{
-			if (!confirm('Start a new empty file? Unsaved changes will be lost.')) return;
-			data = { releases: [] }; selected = 0;
+		document.getElementById('btn-new').addEventListener('click',()=>{
+			if(!confirm('Start a new empty file? Unsaved changes will be lost.')) return;
+			data={releases:[]}; selected=0;
 			renderList(); renderEditor(); markDirty('new file');
 		});
 
-		// File open
-		$('#file').addEventListener('change', (ev)=>{
-			const f = ev.target.files && ev.target.files[0];
-			if (!f) return;
-			const r = new FileReader();
-			r.onload = ()=>{
+		document.getElementById('file').addEventListener('change',(ev)=>{
+			const f=ev.target.files&&ev.target.files[0];
+			if(!f) return;
+			const r=new FileReader();
+			r.onload=()=>{
 				try{
-					const obj = JSON.parse(String(r.result));
-					if (!obj || !Array.isArray(obj.releases)) throw new Error("Top-level 'releases' must be an array.");
-					data = { releases: obj.releases.map(ensureReleaseShape) };
-					selected = 0;
+					const obj=JSON.parse(String(r.result));
+					if(!obj||!Array.isArray(obj.releases)) throw new Error("Top-level 'releases' must be an array.");
+					data={releases:obj.releases.map(ensureReleaseShape)};
+					selected=0;
 					renderList(); renderEditor(); markClean('loaded');
 				}catch(e){ errStatus('parse error'); alert('JSON error:\n'+e.message); }
 			};
 			r.readAsText(f);
 		});
 
-		// Search
-		$('#search').addEventListener('input', (e)=>{ filter = e.target.value; renderList(); });
+		document.getElementById('search').addEventListener('input',(e)=>{ filter=e.target.value; renderList(); });
 
-		/* ===== Helpers ===== */
 		function escapeHTML(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 		function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-		/* ===== Boot ===== */
-		(function boot(){
-			// start with empty doc
-			renderList();
-			renderEditor();
-		})();
+		(function boot(){ renderList(); renderEditor(); })();
+
+		/* ========= ART MANIFEST ========= */
+		const statusArt = document.getElementById('status-art');
+		function setArtStatus(type,msg){ statusArt.textContent=msg; statusArt.className='badge '+(type||''); }
+
+		const EXT_OK = new Set(['.jpg','.jpeg','.png','.webp','.avif','.gif']);
+
+		let artBase = document.getElementById('art-base').value; // base path prefix for src
+		let artItems = []; // {file?, name, rel, title, previewUrl?, hex?, h?, s?, l?}
+		let currentSort = 'none';
+
+		document.getElementById('art-base').addEventListener('input',(e)=>{
+			artBase = e.target.value.trim();
+			if(artBase && !artBase.endsWith('/')) artBase += '/';
+			setArtStatus('warn','base updated');
+			renderArtGrid();
+		});
+
+		const fileInputFolder = document.getElementById('art-folder');
+		const fileInputFiles  = document.getElementById('art-files');
+
+		fileInputFolder.addEventListener('change', (e)=>{
+			addFiles(e.target.files, /*useRelative*/ true);
+			e.target.value = '';
+		});
+		fileInputFiles.addEventListener('change', (e)=>{
+			addFiles(e.target.files, /*useRelative*/ false);
+			e.target.value = '';
+		});
+
+		document.getElementById('art-sort').addEventListener('change',(e)=>{
+			currentSort = e.target.value;
+			sortArtItems();
+			renderArtGrid();
+			setArtStatus('ok', currentSort==='none' ? 'manual order' : `sorted by ${currentSort}`);
+		});
+
+		document.getElementById('art-recalc').addEventListener('click', ()=>{
+			recomputeAllColors().then(()=>{ sortArtItems(); renderArtGrid(); setArtStatus('ok','colors recomputed'); });
+		});
+
+		const drop = document.getElementById('art-drop');
+		;['dragenter','dragover'].forEach(evt=>{
+			drop.addEventListener(evt,(e)=>{ e.preventDefault(); e.stopPropagation(); drop.classList.add('drag'); });
+		});
+		;['dragleave','drop'].forEach(evt=>{
+			drop.addEventListener(evt,(e)=>{ e.preventDefault(); e.stopPropagation(); drop.classList.remove('drag'); });
+		});
+		drop.addEventListener('drop',(e)=>{
+			const files = e.dataTransfer?.files || [];
+			addFiles(files, /*useRelative*/ false);
+		});
+
+		function addFiles(fileList, useRelative){
+			if(!fileList || !fileList.length) return;
+			let added = 0;
+			const tasks = [];
+			for(const f of fileList){
+				const ext = extOf(f.name);
+				if(!EXT_OK.has(ext)) continue;
+				const rel = computeRel(f, useRelative);
+				const title = toTitle(rel || f.name);
+				const previewUrl = URL.createObjectURL(f);
+				const it = { file:f, name:f.name, rel, title, previewUrl };
+				artItems.push(it);
+				added++;
+
+				// Compute color from the object URL (allowed by canvas)
+				tasks.push(computeColorForItem(it, previewUrl).catch(()=>{}));
+			}
+			Promise.allSettled(tasks).then(()=>{
+				sortArtItems();
+				renderArtGrid();
+			});
+			if(added===0){ setArtStatus('err','no valid images'); return; }
+			setArtStatus('warn', 'added '+added+' image'+(added>1?'s':'')); 
+		}
+
+		function computeRel(file, useRelative){
+			if(useRelative && file.webkitRelativePath){
+				let p = file.webkitRelativePath.replace(/^([^/]+)\//,''); // drop chosen root folder
+				return p;
+			}
+			return file.name;
+		}
+
+		function sortArtItems(){
+			if(currentSort==='none') return;
+			const byHue = (a,b)=>{
+				const ah=(a.h??999), bh=(b.h??999);
+				return ah===bh ? ((a.l??0)-(b.l??0)) : (ah-bh);
+			};
+			const byLight = (a,b)=> (a.l??999) - (b.l??999);
+			if(currentSort==='hue') artItems.sort(byHue);
+			else if(currentSort==='light') artItems.sort(byLight);
+		}
+
+		function renderArtGrid(){
+			const base = artBase.endsWith('/') ? artBase : (artBase? (artBase+'/') : '');
+			const wrap = document.getElementById('art-grid');
+			wrap.innerHTML = '';
+			if(!artItems.length){
+				wrap.innerHTML = '<p class="small">No images yet. Use <b>Pick folder…</b> or <b>Add images…</b>, or drop files above.</p>';
+				return;
+			}
+			artItems.forEach((it, idx)=>{
+				const card = document.createElement('div');
+				card.className = 'card';
+
+				const img = document.createElement('img');
+				img.alt = it.title || it.rel || it.name;
+				// Prefer previewUrl (object URL), fallback to relative src (for manifests)
+				img.src = it.previewUrl || (base + (it.rel || it.name));
+				img.loading = 'lazy';
+
+				// If we don't have a color yet and this is a file preview, try to compute once the <img> loads
+				if(!it.hex && it.previewUrl){
+					img.addEventListener('load', ()=>{
+						computeColorForItem(it, it.previewUrl).then(()=>{
+							updateColorLine(card, it);
+						}).catch(()=>{});
+					}, { once:true });
+				}
+
+				const meta = document.createElement('div');
+				meta.className = 'meta';
+				meta.innerHTML =
+					'<div class="small">src → <code>'+escapeHTML(joinSrc(base, it.rel||it.name))+'</code></div>'+
+					'<input data-k="title" placeholder="Title" value="'+escapeAttr(it.title||'')+'"/>'+
+					'<div class="colorline"><span class="swatch" style="--c:'+escapeAttr(it.hex||'#888')+'"></span>'+
+						'<span>'+ (it.hex ? it.hex.toUpperCase() : 'no color') + (Number.isFinite(it.h) ? ` • H:${Math.round(it.h)}° L:${Math.round((it.l??0)*100)}%` : '') +'</span>'+
+					'</div>';
+
+				const controls = document.createElement('div');
+				controls.className = 'actions';
+				controls.innerHTML =
+					'<button class="iconbtn" data-act="up">▲</button>'+
+					'<button class="iconbtn" data-act="down">▼</button>'+
+					'<button class="iconbtn" data-act="del">✕</button>';
+
+				card.appendChild(img);
+				card.appendChild(meta);
+				card.appendChild(controls);
+				wrap.appendChild(card);
+
+				meta.querySelector('[data-k="title"]').addEventListener('input',(e)=>{ it.title = e.target.value; setArtStatus('warn','edited'); });
+
+				controls.querySelector('[data-act="up"]').addEventListener('click',()=>{ if(idx>0){ const tmp=artItems[idx-1]; artItems[idx-1]=artItems[idx]; artItems[idx]=tmp; renderArtGrid(); setArtStatus('warn','reordered'); }});
+				controls.querySelector('[data-act="down"]').addEventListener('click',()=>{ if(idx<artItems.length-1){ const tmp=artItems[idx+1]; artItems[idx+1]=artItems[idx]; artItems[idx]=tmp; renderArtGrid(); setArtStatus('warn','reordered'); }});
+				controls.querySelector('[data-act="del"]').addEventListener('click',()=>{ if(!confirm('Remove this image?'))return; if(it.previewUrl) URL.revokeObjectURL(it.previewUrl); artItems.splice(idx,1); renderArtGrid(); setArtStatus('warn','deleted'); });
+			});
+		}
+
+		function updateColorLine(card, it){
+			const sw = card.querySelector('.swatch');
+			const line = card.querySelector('.colorline span:nth-child(2)');
+			if(sw) sw.style.setProperty('--c', it.hex || '#888');
+			if(line) line.textContent = (it.hex ? it.hex.toUpperCase() : 'no color') + (Number.isFinite(it.h) ? ` • H:${Math.round(it.h)}° L:${Math.round((it.l??0)*100)}%` : '');
+		}
+
+		document.getElementById('art-open-json').addEventListener('click',()=>{
+			const input = document.createElement('input');
+			input.type='file'; input.accept='.json,application/json';
+			input.addEventListener('change',(e)=>{
+				const f=e.target.files&&e.target.files[0]; if(!f) return;
+				const r=new FileReader();
+				r.onload=()=>{
+					try{
+						const obj=JSON.parse(String(r.result||'{}'));
+						if(!Array.isArray(obj.images)) throw new Error("Missing images[]");
+						artItems = obj.images.map(x=>{
+							const src = String(x.src||'');
+							const rel = src.replace(/^assets\/art\//,'');
+							const color = x.color || '';
+							const parsed = parseHex(color);
+							return {
+								name: src.split('/').pop(),
+								rel,
+								title: String(x.title||''),
+								previewUrl: src || '',
+								hex: color || '',
+								h: parsed ? parsed.h : undefined,
+								s: parsed ? parsed.s : undefined,
+								l: parsed ? parsed.l : undefined
+							};
+						});
+						sortArtItems();
+						renderArtGrid(); setArtStatus('ok','loaded manifest');
+					}catch(e){ setArtStatus('err','parse error'); alert('JSON error:\n'+e.message); }
+				};
+				r.readAsText(f);
+			});
+			input.click();
+		});
+
+		document.getElementById('art-clear').addEventListener('click',()=>{
+			if(!confirm('Clear current list?')) return;
+			for(const it of artItems){ if(it.previewUrl && it.previewUrl.startsWith('blob:')) URL.revokeObjectURL(it.previewUrl); }
+			artItems = [];
+			renderArtGrid();
+			setArtStatus('warn','cleared');
+		});
+
+		document.getElementById('art-download').addEventListener('click',()=>{
+			if(!artItems.length){ setArtStatus('err','nothing to save'); alert('Add some images first.'); return; }
+			// Ensure current sorting is reflected
+			sortArtItems();
+			const images = artItems.map(it=>{
+				const src = joinSrc(artBase, it.rel || it.name);
+				const o = { src };
+				if((it.title||'').trim()!=='') o.title = it.title;
+				if(it.hex) o.color = it.hex.toUpperCase();
+				return o;
+			});
+			const json = { images };
+			const blob = new Blob([JSON.stringify(json, null, '\t')], {type:'application/json'});
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url; a.download = 'images.json';
+			document.body.appendChild(a); a.click();
+			setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); },0);
+			setArtStatus('ok','downloaded');
+		});
+
+		/* ===== Color utils ===== */
+		async function recomputeAllColors(){
+			const tasks = artItems.map(it=>{
+				// Prefer object URL if available (no CORS/taint issues)
+				const src = it.previewUrl || joinSrc(artBase, it.rel || it.name);
+				return computeColorForItem(it, src).catch(()=>{ /* ignore */ });
+			});
+			await Promise.allSettled(tasks);
+		}
+
+		function computeColorForItem(it, src){
+			return new Promise((resolve, reject)=>{
+				const img = new Image();
+				// For blob: (object URL), crossOrigin is unnecessary; for file/relative it may taint — we try anyway.
+				img.crossOrigin = 'anonymous';
+				img.onload = ()=>{
+					try{
+						const {hex, h, s, l} = dominantColor(img);
+						it.hex = hex; it.h = h; it.s = s; it.l = l;
+						resolve();
+					}catch(err){ reject(err); }
+				};
+				img.onerror = ()=>reject(new Error('image load failed'));
+				img.src = src;
+			});
+		}
+
+		function dominantColor(img){
+			// downsample to small canvas, simple weighted average ignoring transparent pixels
+			const S = 32;
+			const c = document.createElement('canvas');
+			c.width = S; c.height = S;
+			const g = c.getContext('2d', { willReadFrequently:true });
+			g.drawImage(img, 0, 0, S, S);
+			const data = g.getImageData(0,0,S,S).data;
+			let r=0,gc=0,b=0, w=0;
+			for(let i=0;i<data.length;i+=4){
+				const a = data[i+3]/255;
+				if(a<0.1) continue;
+				const rr=data[i], gg=data[i+1], bb=data[i+2];
+				// perceptual-ish luminance to weight mid-tones more
+				const lum = 0.2126*rr + 0.7152*gg + 0.0722*bb;
+				const wgt = 0.5 + 0.5*(lum/255);
+				r += rr * a * wgt;
+				gc+= gg * a * wgt;
+				b += bb * a * wgt;
+				w += a * wgt;
+			}
+			if(w===0) { return { hex:'#888888', h:0, s:0, l:0.5 }; }
+			r = Math.round(r/w); gc = Math.round(gc/w); b = Math.round(b/w);
+			const {h,s,l} = rgbToHsl(r,gc,b);
+			const hex = toHex(r,gc,b);
+			return { hex, h, s, l };
+		}
+
+		function toHex(r,g,b){
+			const h = (n)=>n.toString(16).padStart(2,'0');
+			return '#'+h(r)+h(g)+h(b);
+		}
+		function parseHex(hex){
+			if(!/^#?[0-9a-f]{6}$/i.test(String(hex||''))) return null;
+			const s = hex.replace('#','');
+			const r = parseInt(s.slice(0,2),16);
+			const g = parseInt(s.slice(2,4),16);
+			const b = parseInt(s.slice(4,6),16);
+			return { ...rgbToHsl(r,g,b), r, g, b };
+		}
+		function rgbToHsl(r,g,b){
+			r/=255; g/=255; b/=255;
+			const max=Math.max(r,g,b), min=Math.min(r,g,b);
+			let h,s,l=(max+min)/2;
+			if(max===min){ h=s=0; }
+			else{
+				const d=max-min;
+				s = l>0.5 ? d/(2-max-min) : d/(max+min);
+				switch(max){
+					case r: h=(g-b)/d + (g<b?6:0); break;
+					case g: h=(b-r)/d + 2; break;
+					case b: h=(r-g)/d + 4; break;
+				}
+				h*=60;
+			}
+			return {h, s, l};
+		}
+
+		function joinSrc(base, rel){
+			base = String(base||'').trim();
+			if(base && !base.endsWith('/')) base += '/';
+			rel = String(rel||'').replace(/^\/+/,'');
+
+			return base + rel;
+		}
+		function extOf(name){ const i=name.lastIndexOf('.'); return i>=0 ? name.slice(i).toLowerCase() : ''; }
+		function toTitle(p){ return p.replace(/^.*\//,'').replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim(); }
 	</script>
 </body>
 </html>
