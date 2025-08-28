@@ -5,117 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>Art - SlickestFox</title>
 	<link rel="stylesheet" href="style.css"/>
-	<style>
-		/* ===== Page-scoped styles (tabs for indent) ===== */
-		/* Full-bleed wrapper breaks out of the .container max-width */
-		.bleed {
-			width: 100vw;
-			margin-left: calc(50% - 50vw);
-			margin-right: calc(50% - 50vw);
-		}
-
-		/* Masonry-style collage using CSS columns */
-		.art-collage {
-			column-width: 270px;
-			column-gap: 10px;
-			padding: 0;
-		}
-		@media (max-width: 640px) {
-			.art-collage { column-width: 200px; column-gap: 8px; }
-		}
-
-		/* Each item breaks inside columns */
-		.art-item {
-			break-inside: avoid;
-			margin: 0 0 10px 0;
-			display: block;
-			position: relative;				/* for the glow layer */
-			--glow: rgba(255,209,102,.85);	/* default accent if sampling fails */
-			--gox: 50%;
-			--goy: 50%;
-		}
-
-		/* Glow gradient behind the image (tracks pointer; shows on hover/focus) */
-		.art-item::before {
-			content: "";
-			position: absolute;
-			inset: -3vmin;
-			z-index: 0;						/* behind the img */
-			background:
-				radial-gradient(
-					120% 120% at var(--gox) var(--goy),
-					var(--glow) 0%,
-					color-mix(in srgb, var(--glow), transparent 50%) 35%,
-					transparent 65%
-				);
-			filter: blur(28px) saturate(1.1);
-			opacity: 0;
-			transform: scale(.98);
-			transition: opacity .22s ease, transform .22s ease;
-			pointer-events: none;
-		}
-		.art-item:hover::before,
-		.art-item:focus-within::before {
-			opacity: .85;
-			transform: scale(1);
-		}
-
-		/* Images: no rounded corners, above the glow */
-		.art-item img {
-			width: 100%;
-			height: auto;
-			display: block;
-			border-radius: 0;
-			background: transparent;
-			vertical-align: top;
-			cursor: zoom-in;
-			position: relative;
-			z-index: 1;
-		}
-
-		/* Simple lightbox */
-		#lightbox {
-			position: fixed;
-			inset: 0;
-			display: none;
-			align-items: center;
-			justify-content: center;
-			background: rgba(0,0,0,.88);
-			backdrop-filter: blur(2px);
-			z-index: 9999;
-		}
-		#lightbox.show { display: flex; }
-		#lightbox img {
-			max-width: 96vw;
-			max-height: 92vh;
-			border-radius: 0;
-			box-shadow: 0 20px 60px rgba(0,0,0,.6);
-			cursor: zoom-out;
-		}
-		#lightbox .hint {
-			position: fixed;
-			bottom: 10px;
-			left: 50%;
-			transform: translateX(-50%);
-			font: 600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-			color: rgba(255,255,255,.7);
-			user-select: none;
-			pointer-events: none;
-		}
-
-		/* tiny “enable sound” pill */
-		#sound-gate{
-			position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-			z-index:9999; background:rgba(0,0,0,.65); border:1px solid rgba(255,255,255,.18);
-			backdrop-filter:saturate(130%) blur(6px); color:#e9e9ef; padding:10px 14px;
-			border-radius:12px; font:600 14px system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-			cursor:pointer; user-select:none; display:none;
-		}
-		#sound-gate.show{ display:block; }
-
-		/* Keep your global site chrome above background animations */
-		.site-header, footer { position: relative; z-index: 1; }
-	</style>
 </head>
 <body>
 	<header class="site-header">
@@ -125,7 +14,7 @@
 			<a href="art.html">Art</a>
 			<a href="music.html">Music</a>
 			<a href="videos.html">Videos</a>
-			<a href="about.html">About</a>
+			<a href="dog-posting.html">Dog-Posting™</a>
 		</nav>
 	</header>
 
@@ -240,266 +129,176 @@
 		}
 	]
 }
-	</script>
+</script>
 
 	<script>
-		/* tabs-only JS */
-		(()=>{"use strict";
-			const $ = (s, r=document)=>r.querySelector(s);
-			const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+	(()=>{"use strict";
+	  const $ = (s,r=document)=>r.querySelector(s);
+	  const IS_FILE = location.protocol === "file:";
+	  const rgbaFromHex = (hex,a=0.9)=>{
+		let h=String(hex||"").trim(); if(!h) return "";
+		if(h[0]==="#") h=h.slice(1);
+		if(h.length===3) h=h.split("").map(c=>c+c).join("");
+		if(h.length!==6) return "";
+		const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
+		return `rgba(${r}, ${g}, ${b}, ${a})`;
+	  };
 
-			let images = [];
-			let current = -1;
+	  /* ---------- audio files ---------- */
+	  const NOTE_URLS = [
+		"assets/audio/notes/n1.mp3","assets/audio/notes/n2.mp3","assets/audio/notes/n3.mp3",
+		"assets/audio/notes/n4.mp3","assets/audio/notes/n5.mp3","assets/audio/notes/n6.mp3","assets/audio/notes/n7.mp3"
+	  ];
+	  const CHORD_URLS = [
+		"assets/audio/chords/c1.mp3","assets/audio/chords/c2.mp3","assets/audio/chords/c3.mp3",
+		"assets/audio/chords/c4.mp3","assets/audio/chords/c5.mp3","assets/audio/chords/c6.mp3","assets/audio/chords/c7.mp3"
+	  ];
+	  const SFX_URLS = ["assets/audio/sfx/a.mp3","assets/audio/sfx/b.mp3","assets/audio/sfx/c.mp3","assets/audio/sfx/d.mp3","assets/audio/sfx/e.mp3"];
 
-			/* ===== Sampler: hover notes & click chords ===== */
-			const NOTE_URLS = [
-				"assets/audio/notes/n1.mp3",
-				"assets/audio/notes/n2.mp3",
-				"assets/audio/notes/n3.mp3",
-				"assets/audio/notes/n4.mp3",
-				"assets/audio/notes/n5.mp3",
-				"assets/audio/notes/n6.mp3",
-				"assets/audio/notes/n7.mp3"
-			];
-			const CHORD_URLS = [
-				"assets/audio/chords/c1.mp3",
-				"assets/audio/chords/c2.mp3",
-				"assets/audio/chords/c3.mp3",
-				"assets/audio/chords/c4.mp3",
-				"assets/audio/chords/c5.mp3",
-				"assets/audio/chords/c6.mp3",
-				"assets/audio/chords/c7.mp3"
-			];
-			const PROB_NEXT = 0.70;	// chance to step up the scale (vs down) on a new hover
+	  /* ---------- gate ---------- */
+	  let audioGate=false;
+	  function showGate(){ let g=$("#sound-gate"); if(!g){ g=document.createElement("div"); g.id="sound-gate"; g.textContent="🔊 Click to enable sound"; document.body.appendChild(g);} g.classList.add("show"); }
+	  function hideGate(){ const g=$("#sound-gate"); if(g) g.classList.remove("show"); }
+	  function wireGate(){ showGate(); const enable=()=>{ audioGate=true; hideGate(); document.removeEventListener("click",enable); }; document.addEventListener("click",enable); $("#sound-gate").addEventListener("click",enable,{passive:true}); }
 
-			let gate = null;
-			function showGate(){
-				if (!gate){
-					gate = document.createElement("div");
-					gate.id = "sound-gate";
-					gate.textContent = "🔊 Click to enable sound";
-					document.body.appendChild(gate);
-				}
-				gate.classList.add("show");
-			}
-			function hideGate(){ gate && gate.classList.remove("show"); }
+	  /* ---------- polyphonic notes (no cut-off) ---------- */
+	  const MAX_POLY = 6;
+	  const playingNotes = [];
+	  let currentNote = Math.floor(Math.random()*7);
+	  const PROB_NEXT = 0.70;
 
-			const Sampler = (()=> {
-				let ctx=null, master=null, unlocked=false, loading=false;
-				let notes=[], chords=[];
-				function ac(){
-					if (ctx) return ctx;
-					const AC = window.AudioContext || window.webkitAudioContext;
-					if (!AC) return null;
-					ctx = new AC();
-					master = ctx.createGain();
-					master.gain.value = 0.9;
-					master.connect(ctx.destination);
-					return ctx;
-				}
-				async function unlock(){
-					if (unlocked) return true;
-					const c = ac(); if (!c) return false;
-					if (c.state === "suspended"){ try{ await c.resume(); }catch{} }
-					unlocked = (c.state === "running" || c.state === "interactive");
-					return unlocked;
-				}
-				async function loadBuf(url){
-					const res = await fetch(url);
-					const arr = await res.arrayBuffer();
-					return await ctx.decodeAudioData(arr);
-				}
-				async function preload(){
-					if (loading) return;
-					if (!await unlock()) return;
-					loading = true;
-					try {
-						const n = await Promise.allSettled(NOTE_URLS.map(loadBuf));
-						const c = await Promise.allSettled(CHORD_URLS.map(loadBuf));
-						notes = n.map(x=>x.value).filter(Boolean);
-						chords = c.map(x=>x.value).filter(Boolean);
-					} finally { loading = false; }
-				}
-				function play(buf, vol=1){
-					if (!buf || !ctx) return;
-					const t = ctx.currentTime;
-					const src = ctx.createBufferSource();
-					src.buffer = buf;
-					const g = ctx.createGain();
-					g.gain.setValueAtTime(0, t);
-					g.gain.linearRampToValueAtTime(vol, t+0.005);
-					src.connect(g); g.connect(master);
-					const d = buf.duration;
-					src.start(t);
-					if (d>0.05){
-						g.gain.setValueAtTime(vol, t+d-0.04);
-						g.gain.linearRampToValueAtTime(0, t+d);
-					}
-					src.stop(t+d+0.02);
-				}
-				let idx = Math.floor(Math.random()*7);
-				function stepIndex(){
-					idx = (idx + (Math.random()<PROB_NEXT ? 1 : -1) + 7) % 7;
-					return idx;
-				}
-				return {
-					unlock,
-					preload,
-					playHover(){ if (notes.length) play(notes[stepIndex()], .85); },
-					playClick(){ if (chords.length) play(chords[(Math.random()*chords.length)|0], .95); }
-				};
-			})();
+	  function playNoteIndex(i, hostEl){
+		if (!audioGate || !NOTE_URLS.length) return;
+		while (playingNotes.length >= MAX_POLY){ const a = playingNotes.shift(); try{ a.pause(); }catch{} }
+		const a = new Audio();
+		if (!IS_FILE) a.crossOrigin = "anonymous";
+		a.src = NOTE_URLS[i];
+		a.volume = 0.9;
+		a.play().catch(()=>{});
+		a.addEventListener("ended", ()=>{ const k=playingNotes.indexOf(a); if(k>=0) playingNotes.splice(k,1); });
+		playingNotes.push(a);
 
-			/* ===== Color sampling for glow ===== */
-			function extractColor(img, cb){
-				try{
-					const i = new Image();
-					i.crossOrigin = "anonymous";
-					i.onload = ()=>{
-						try{
-							const c = document.createElement("canvas");
-							const S = 24;
-							c.width = S; c.height = S;
-							const x = c.getContext("2d", { willReadFrequently:true });
-							x.drawImage(i, 0, 0, S, S);
-							const d = x.getImageData(0,0,S,S).data;
-							let r=0,g=0,b=0,n=0;
-							for (let p=0;p<d.length;p+=4){
-								const a = d[p+3]/255;
-								r+=d[p]*a; g+=d[p+1]*a; b+=d[p+2]*a; n+=a;
-							}
-							n = n||1; r=Math.round(r/n); g=Math.round(g/n); b=Math.round(b/n);
-							// slightly brighten towards white for a glow feel
-							const mix = .18;
-							const rr = Math.round(r + (255-r)*mix);
-							const gg = Math.round(g + (255-g)*mix);
-							const bb = Math.round(b + (255-b)*mix);
-							cb(`rgba(${rr}, ${gg}, ${bb}, 0.90)`);
-						}catch{ cb("rgba(255,209,102,.90)"); }
-					};
-					i.onerror = ()=>cb("rgba(255,209,102,.90)");
-					i.src = img.src;
-				}catch{
-					cb("rgba(255,209,102,.90)");
-				}
-			}
+		hostEl.classList.add("playing","focused");
+		setTimeout(()=>hostEl.classList.remove("playing"),220);
+	  }
+	  function stopAllNotes(){ while(playingNotes.length){ const a=playingNotes.pop(); try{ a.pause(); }catch{} } }
 
-			/* ===== Render gallery ===== */
-			function render(list){
-				const box = $("#gallery");
-				const frag = document.createDocumentFragment();
+	  /* ---------- chords (I/IV/V favored) ---------- */
+	  const CHORD_WEIGHTS = [0.28,0.10,0.08,0.22,0.22,0.09,0.01];
+	  function weightedPick(ws){ const r=Math.random(); let a=0; for(let i=0;i<ws.length;i++){ a+=ws[i]; if(r<=a) return i; } return ws.length-1; }
+	  function playChord(){
+		if (!audioGate || !CHORD_URLS.length) return;
+		const a = new Audio(); if(!IS_FILE) a.crossOrigin="anonymous";
+		a.src = CHORD_URLS[weightedPick(CHORD_WEIGHTS)]; a.volume=0.95; a.play().catch(()=>{});
+	  }
 
-				list.forEach((it, idx)=>{
-					const wrap = document.createElement("figure");
-					wrap.className = "art-item";
+	  /* ---------- burst SFX (harder to trigger) ---------- */
+	  // These are the ones to tweak:
+	  // friendlier burst sensitivity
+		const NOTE_BURST_WINDOW_MS   = 500;  // look over ~1.2s
+		const NOTE_BURST_THRESHOLD   = 9;     // total notes needed
+		const NOTE_BURST_DISTINCT_MIN= 7;    // from at least 5 different images
+		const SFX_COOLDOWN_MS        = 2500;  // cooldown after triggering
 
-					const img = document.createElement("img");
-					img.loading = "lazy";
-					img.decoding = "async";
-					img.crossOrigin = "anonymous";
-					img.src = String(it.src||"").trim();
-					img.alt = "Artwork";
-					img.dataset.index = String(idx);
-					img.tabIndex = 0;
 
-					// pointer glow origin follows cursor
-					wrap.addEventListener("pointermove", (e)=>{
-						const r = wrap.getBoundingClientRect();
-						const x = ((e.clientX - r.left) / r.width * 100).toFixed(2) + "%";
-						const y = ((e.clientY - r.top) / r.height * 100).toFixed(2) + "%";
-						wrap.style.setProperty("--gox", x);
-						wrap.style.setProperty("--goy", y);
-					});
+	  let noteEvents=[];                     // {t, id}
+	  let lastSfxAt = 0;
 
-					// sample color once loaded
-					img.addEventListener("load", ()=>{
-						extractColor(img, (col)=>{
-							wrap.style.setProperty("--glow", col);
-						});
-					});
+	  function registerNoteAndMaybeSfx(el){
+		const now = performance.now();
+		const id = el.dataset._id;
+		noteEvents.push({ t: now, id });
 
-					// hover/focus note
-					wrap.addEventListener("pointerenter", ()=>Sampler.playHover(), { passive:true });
-					img.addEventListener("focus", ()=>Sampler.playHover(), { passive:true });
+		// keep only recent
+		noteEvents = noteEvents.filter(e => now - e.t <= NOTE_BURST_WINDOW_MS);
 
-					// click -> chord + lightbox
-					img.addEventListener("click", ()=>{
-						Sampler.playClick();
-						openLightbox(idx);
-					});
-					img.addEventListener("keydown", (e)=>{
-						if (e.key === "Enter" || e.key === " ") {
-							e.preventDefault();
-							Sampler.playClick();
-							openLightbox(idx);
-						}
-					});
+		const total = noteEvents.length;
+		const distinct = new Set(noteEvents.map(e=>e.id)).size;
 
-					wrap.appendChild(img);
-					frag.appendChild(wrap);
-				});
+		if (total >= NOTE_BURST_THRESHOLD &&
+			distinct >= NOTE_BURST_DISTINCT_MIN &&
+			(now - lastSfxAt) > SFX_COOLDOWN_MS){
+		  lastSfxAt = now;
+		  const s = new Audio(); if(!IS_FILE) s.crossOrigin="anonymous";
+		  s.src = SFX_URLS[(Math.random()*SFX_URLS.length)|0];
+		  s.volume = 1.0; s.play().catch(()=>{});
+		  noteEvents.length = 0;
+		}
+	  }
 
-				box.innerHTML = "";
-				box.appendChild(frag);
-			}
+	  /* ---------- render ---------- */
+	  let images=[];
+	  function render(list){
+		const box = $("#gallery"); const frag=document.createDocumentFragment();
+		list.forEach((it, idx)=>{
+		  const fig = document.createElement("figure");
+		  fig.className = "art-item";
+		  fig.dataset._id = String(idx);         // for burst distinct counting
+		  fig.style.setProperty("--gox","50%");  fig.style.setProperty("--goy","85%");
+		  if (it.color){ const tint=rgbaFromHex(it.color,0.90); if(tint) fig.style.setProperty("--glow",tint); }
 
-			/* ===== Lightbox ===== */
-			const lb = $("#lightbox");
-			const lbImg = $("#lightbox-img");
+		  const img = document.createElement("img");
+		  img.loading="lazy"; img.decoding="async";
+		  if(!IS_FILE) img.crossOrigin="anonymous";
+		  img.src = it.src; img.alt = it.title || "Artwork"; img.tabIndex = 0;
 
-			function openLightbox(i){
-				if (i<0 || i>=images.length) return;
-				current = i;
-				lbImg.src = images[i].src;
-				lb.classList.add("show");
-				document.body.style.overflow = "hidden";
-			}
-			function closeLightbox(){
-				lb.classList.remove("show");
-				lbImg.src = "";
-				current = -1;
-				document.body.style.overflow = "";
-			}
-			function next(){ if(images.length){ openLightbox((current+1)%images.length); } }
-			function prev(){ if(images.length){ openLightbox((current-1+images.length)%images.length); } }
+		  // pointer tracks glow origin
+		  fig.addEventListener("pointermove",(e)=>{
+			const r=fig.getBoundingClientRect();
+			const x=((e.clientX-r.left)/r.width*100).toFixed(2)+"%";
+			const y=((e.clientY-r.top )/r.height*100).toFixed(2)+"%";
+			fig.style.setProperty("--gox",x); fig.style.setProperty("--goy",y);
+		  });
 
-			lb.addEventListener("click", closeLightbox);
-			document.addEventListener("keydown", (e)=>{
-				if (!lb.classList.contains("show")) return;
-				if (e.key === "Escape") closeLightbox();
-				else if (e.key === "ArrowRight") next();
-				else if (e.key === "ArrowLeft") prev();
-			});
+		  // focus/hover state (for CSS glow)
+		  fig.addEventListener("pointerenter",()=>fig.classList.add("focused"));
+		  fig.addEventListener("pointerleave",()=>fig.classList.remove("focused"));
+		  img.addEventListener("focus",()=>fig.classList.add("focused"));
+		  img.addEventListener("blur",()=>fig.classList.remove("focused"));
 
-			/* ===== Audio gate ===== */
-			function wireGate(){
-				showGate();
-				const clickUnlock = async ()=>{
-					if (await Sampler.unlock()){
-						hideGate();
-						Sampler.preload();
-						document.removeEventListener("click", clickUnlock, { capture:false });
-					}
-				};
-				document.addEventListener("click", clickUnlock, { capture:false });
-				// also click the pill
-				$("#sound-gate").addEventListener("click", clickUnlock, { passive:true });
-			}
+		  // sound on hover/focus
+		  fig.addEventListener("pointerenter", ()=>{
+			const r=Math.random();
+			if (r < PROB_NEXT) currentNote = (currentNote + 1) % NOTE_URLS.length;
+			else if (r >= 0.85) currentNote = (currentNote - 1 + NOTE_URLS.length) % NOTE_URLS.length;
+			playNoteIndex(currentNote, fig);
+			registerNoteAndMaybeSfx(fig);
+		  }, {passive:true});
+		  img.addEventListener("focus", ()=>{
+			playNoteIndex(currentNote, fig);
+			registerNoteAndMaybeSfx(fig);
+		  }, {passive:true});
 
-			/* ===== Boot ===== */
-			document.addEventListener("DOMContentLoaded", ()=>{
-				let data = { images: [] };
-				try {
-					const raw = $("#images-data")?.textContent || "{}";
-					data = JSON.parse(raw);
-				} catch {
-					data = { images: [] };
-				}
-				images = Array.isArray(data.images) ? data.images.map(it=>({ src:String(it.src||"").trim() })) : [];
-				render(images);
-				wireGate();
-			});
-		})();
+		  // click → chord + lightbox
+		  img.addEventListener("click", ()=>{ playChord(); openLightbox(idx); });
+		  img.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); playChord(); openLightbox(idx);} });
+
+		  fig.appendChild(img);
+		  frag.appendChild(fig);
+		});
+		box.innerHTML=""; box.appendChild(frag);
+	  }
+
+	  /* ---------- lightbox ---------- */
+	  const lb=$("#lightbox"), lbImg=$("#lightbox-img");
+	  function openLightbox(i){ if(i<0||i>=images.length) return; lbImg.src=images[i].src; lb.classList.add("show"); document.body.style.overflow="hidden"; }
+	  function closeLightbox(){ lb.classList.remove("show"); lbImg.src=""; document.body.style.overflow=""; }
+	  function next(){ if(images.length) openLightbox((currentIndex()+1)%images.length); }
+	  function prev(){ if(images.length) openLightbox((currentIndex()-1+images.length)%images.length); }
+	  function currentIndex(){ const s=lbImg.src; return Math.max(0, images.findIndex(x=>x.src===s)); }
+	  lb.addEventListener("click", closeLightbox);
+	  document.addEventListener("keydown",(e)=>{ if(!lb.classList.contains("show"))return; if(e.key==="Escape")closeLightbox(); else if(e.key==="ArrowRight")next(); else if(e.key==="ArrowLeft")prev(); });
+
+	  /* ---------- boot ---------- */
+	  document.addEventListener("DOMContentLoaded", ()=>{
+		let data={images:[]};
+		try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
+		images = Array.isArray(data.images) ? data.images.map(it=>({ src:String(it.src||"").trim(), title:String(it.title||""), color:String(it.color||"") })) : [];
+		render(images);
+		wireGate();
+	  });
+	})();
 	</script>
+
 </body>
 </html>

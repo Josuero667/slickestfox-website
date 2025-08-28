@@ -2,31 +2,6 @@
 (() => {
 	'use strict';
 
-	// ---------- Paths (change if your folders differ) ----------
-	const NOTE_FILES = [
-		"assets/audio/notes/1.mp3",
-		"assets/audio/notes/2.mp3",
-		"assets/audio/notes/3.mp3",
-		"assets/audio/notes/4.mp3",
-		"assets/audio/notes/5.mp3",
-		"assets/audio/notes/6.mp3",
-		"assets/audio/notes/7.mp3"
-	];
-	const CHORD_FILES = [
-		"assets/audio/chords/1.mp3", // I
-		"assets/audio/chords/2.mp3", // ii
-		"assets/audio/chords/3.mp3", // iii
-		"assets/audio/chords/4.mp3", // IV
-		"assets/audio/chords/5.mp3", // V
-		"assets/audio/chords/6.mp3", // vi
-		"assets/audio/chords/7.mp3"  // vii°
-	];
-	const SFX_FILES = [
-		"assets/audio/sfx/a.mp3",
-		"assets/audio/sfx/b.mp3",
-		"assets/audio/sfx/c.mp3"
-	];
-
 	// Prefer inline JSON when present (works on file://), otherwise fetch
 	const JSON_PATH = "assets/data/images.json";
 
@@ -57,12 +32,22 @@
 	if (!IS_FILE) sfxAudio.crossOrigin = "anonymous";
 	sfxAudio.volume = 1.0;
 
+	function duckNotes(amount = 0.6, duration = 500){
+	  const restores = [];
+	  for (const a of playingNotes){
+		const prev = a.volume;
+		a.volume = Math.max(0, prev * amount);
+		restores.push(()=>{ if (!a.paused) a.volume = prev; });
+	  }
+	  setTimeout(()=>restores.forEach(fn=>fn()), duration);
+	}
+
 	// ---------- Note stepping + SFX burst ----------
 	let currentNote = 0;               // 0..6
 	let lastHoverEl = null;
 
-	const NOTE_BURST_WINDOW_MS = 900;  // time window for burst
-	const NOTE_BURST_THRESHOLD  = 7;   // notes inside window → trigger SFX
+	const NOTE_BURST_WINDOW_MS = 1000;  // time window for burst
+	const NOTE_BURST_THRESHOLD  = 10;   // notes inside window → trigger SFX
 	const SFX_COOLDOWN_MS       = 2500;
 	let noteTimes = [];
 	let lastSfxAt = 0;
@@ -73,9 +58,19 @@
 		// keep only events in window
 		noteTimes = noteTimes.filter(t => now - t <= NOTE_BURST_WINDOW_MS);
 		if (noteTimes.length >= NOTE_BURST_THRESHOLD && (now - lastSfxAt) > SFX_COOLDOWN_MS){
-			lastSfxAt = now;
-			playRandomSfx();
-			noteTimes.length = 0; // reset
+		  lastSfxAt = now;
+
+		  // don't stop everything — just duck what's playing:
+		  duckNotes(0.2, 520);
+
+		  // play a fun SFX over the ducked bed
+		  const s = new Audio();
+		  if (!IS_FILE) s.crossOrigin = "anonymous";
+		  s.src = SFX_URLS[(Math.random()*SFX_URLS.length)|0];
+		  s.volume = 1.0;
+		  s.play().catch(()=>{});
+
+		  noteTimes.length = 0;
 		}
 	}
 
