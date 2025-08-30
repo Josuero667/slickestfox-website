@@ -8,6 +8,50 @@
 	--accent-2: #a0e7e5;
 }
 
+/* UI fonts (assets/ui/fonts) */
+@font-face {
+  font-family: 'Ari';
+  src: url('assets/ui/fonts/Ari-W9500.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ari';
+  src: url('assets/ui/fonts/Ari-W9500Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ari Condensed';
+  src: url('assets/ui/fonts/Ari-W9500Condensed.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ari Condensed';
+  src: url('assets/ui/fonts/Ari-W9500CondensedBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ari Display';
+  src: url('assets/ui/fonts/Ari-W9500Display.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ari Display Condensed';
+  src: url('assets/ui/fonts/Ari-W9500CondensedDisplay.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -238,8 +282,17 @@ footer {
 	inset: 0;
 	background-size: cover;
 	background-position: center;
-	filter: saturate(1.05) contrast(1.02);
-	transition: transform 220ms ease;
+	/* unified, animatable filter list; default strength = 0 (no recolor) */
+	--base-sat: 1.05;
+	--base-ctr: 1.02;
+	filter:
+		grayscale(var(--rec-strength, 0))
+		sepia(var(--rec-strength, 0))
+		hue-rotate(var(--recolor-angle, 0deg))
+		saturate(calc(var(--base-sat) + var(--rec-strength, 0) * 1.4))
+		brightness(calc(1 - var(--rec-strength, 0) * 0.06))
+		contrast(calc(var(--base-ctr) - var(--rec-strength, 0) * 0.02));
+	transition: filter var(--recolor-ms, 200ms) ease, transform 220ms ease;
 	border-radius: 0;
 }
 
@@ -469,6 +522,32 @@ footer {
 }
 #now-playing-text.show{ opacity: 1; transform: translateY(0); }
 
+/* ===== Global Recolor-on-Hover for release covers ===== */
+:root {
+  --recolor-angle: 0deg;
+  --rec-strength: 0;          /* 0..1 strength for smooth fades */
+  --recolor-ms: 300ms;        /* transition duration; set via JS to match audio */
+}
+
+/* Set strength to 1 while recolor mode is active */
+body.recolor-active { --rec-strength: 1; }
+
+/* When active, recolor all covers except the hovered card */
+body.recolor-active .release .cover {
+  /* Luminance-preserving recolor with tunable strength */
+  /* Full strength approximates hue replacement; brightness slightly reduced to avoid over-illumination */
+  filter:
+    grayscale(var(--rec-strength))
+    sepia(var(--rec-strength))
+    hue-rotate(var(--recolor-angle))
+    saturate(calc(1 + var(--rec-strength) * 1.4))
+    brightness(calc(1 - var(--rec-strength) * 0.06))
+    contrast(calc(1 - var(--rec-strength) * 0.02));
+  transition: filter var(--recolor-ms) ease;
+}
+/* Keep same filter list on hover to allow smooth hue transitions; just zero strength */
+body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
+
 /* =============================== A R T ==========================================================*/
 /* ===== Page-scoped styles ===== */
 
@@ -610,5 +689,222 @@ footer {
   width: 100px;
   opacity: 1;
 }
+
+
+/* =========================================================
+	=                  LUNA WINDOW (UI TEST)                =
+   ========================================================= */
+/* Notes:
+   - Expects optional image assets at assets/ui/luna/
+     window-frame-active.png, window-frame-inactive.png,
+     titlebar-active.png, titlebar-inactive.png
+   - Provides a CSS-only .fallback style until assets exist.
+*/
+/* Tunable variables so slice geometry matches your PNG
+   - --luna-slice: how far in from each edge the 9-slice cut is (px in source image)
+   - --luna-width: visual border thickness on the page (can differ from slice)
+*/
+.luna-window {
+  /* 8px 9-slice with 8px visible border (tweak as you like) */
+  --luna-slice: 8;    /* pixels in source image (unitless OK) */
+  --luna-width: 8px;  /* visible border thickness on page */
+  --luna-radius: 12px;/* top corner radius to match caps */
+  --titlebar-h: 40px; /* keep in sync with .luna-titlebar height */
+
+  position: relative;
+  border: none; /* frame is drawn on inner wrapper so it can start below titlebar */
+  isolation: isolate; /* keep pseudo-element glow underneath contained */
+
+  /* Clip side borders under the rounded titlebar corners */
+  border-top-left-radius: var(--luna-radius);
+  border-top-right-radius: var(--luna-radius);
+  overflow: hidden;
+
+  background-color: color-mix(in srgb, var(--bg-2), white 3%); /* subtle body tint */
+  background-clip: padding-box; /* keep background out of the border area */
+  box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+}
+
+/* Pseudo-element frame: starts below titlebar so sides don't overlap it */
+.luna-window::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0; top: var(--titlebar-h);
+  pointer-events: none;
+  border-style: solid; border-color: transparent;
+  border-width: 0 var(--luna-width) var(--luna-width) var(--luna-width);
+  border-image-source: url('assets/ui/luna/window-frame-active.png');
+  border-image-slice: var(--luna-slice) fill;
+  border-image-width: 0 var(--luna-width) var(--luna-width) var(--luna-width);
+  border-image-repeat: stretch;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+
+/* Subtle exterior hover glow using layered shadows (outside even with overflow hidden) */
+.luna-window:hover {
+  box-shadow:
+    0 14px 36px rgba(0,0,0,0.35),
+    0 0 0 2px rgba(255, 200, 80, 0.12),
+    0 0 14px 6px rgba(255, 210, 100, 0.16),
+    0 0 28px 12px rgba(255, 240, 160, 0.10);
+}
+.luna-window.glow-off:hover {
+  box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+}
+
+/* Optional modifier to enable center fill from the PNG if ever desired */
+.luna-window.with-fill { border-image-slice: var(--luna-slice) fill; }
+
+.luna-window.is-inactive { /* unused */ }
+.luna-window.is-inactive::after { /* unused */ }
+
+.luna-window.is-inactive .luna-titlebar {
+  /* inactive variant removed */
+}
+.luna-window.is-inactive .luna-titlebar::before { /* inactive variant removed */ }
+.luna-window.is-inactive .luna-titlebar::after  { /* inactive variant removed */ }
+
+.luna-titlebar {
+  position: relative; /* for caps */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Non-stretch caps + adjustable inner padding */
+  --cap-w: 24px;   /* width of left/right cap art */
+  --inner-pad: 0px;/* breathing room inside caps */
+  padding-left: calc(var(--cap-w) + var(--inner-pad));
+  padding-right: calc(var(--cap-w) + var(--inner-pad));
+  /* Center strip tiles across the middle; gradient fallback underneath */
+  background-image: url('assets/ui/luna/titlebar-center.png'),
+                    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.12));
+  background-repeat: repeat-x, no-repeat;
+  background-size: auto 100%, 100% 100%;
+  background-position: 0 0, 0 0;
+  /* Keep the center strip out from under the caps by clipping to content box */
+  background-origin: content-box, border-box;
+  background-clip: content-box, border-box;
+  image-rendering: pixelated;
+  /* inherit rounded top corners so the caps align with clipped border */
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Ari Display', 'Ari Condensed', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  user-select: none;
+}
+
+/* Window title text: subtle pixel-style shadow for readability */
+.luna-titlebar .luna-title {
+  /* Softer, lower shadow for readability */
+  text-shadow: 0 3px 6px rgba(0,0,0,0.55);
+}
+
+/* Wave animation for title text */
+.luna-titlebar .luna-title.wave { --wave-amp: 2px; --wave-period: 2.2s; }
+.luna-titlebar .luna-title.wave .char {
+  display: inline-block;
+  transform: translateY(0);
+  animation: luna-wave var(--wave-period) ease-in-out infinite;
+  animation-delay: calc(var(--i) * 80ms);
+  will-change: transform;
+}
+@keyframes luna-wave {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(calc(var(--wave-amp) * -1)); }
+  50%  { transform: translateY(0); }
+  75%  { transform: translateY(var(--wave-amp)); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .luna-titlebar .luna-title.wave .char { animation: none; }
+}
+
+/* Left/Right cap images — fixed size, not stretched */
+.luna-titlebar::before,
+.luna-titlebar::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: var(--cap-w);
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+.luna-titlebar::before { left: 0;  background: url('assets/ui/luna/titlebar-left.png') left top / 100% 100% no-repeat; }
+.luna-titlebar::after  { right: 0; background: url('assets/ui/luna/titlebar-right.png') right top / 100% 100% no-repeat; }
+
+/* removing non-stretch caps for now (first-iteration behavior) */
+
+/* Inactive titlebar rules removed (unused) */
+
+.luna-body {
+  padding: 14px;
+  font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Images inside windows */
+.luna-body img.luna-img { display:block; max-width:100%; height:auto; border-radius:8px; }
+.luna-body img.pixelated { image-rendering: pixelated; image-rendering: crisp-edges; }
+
+/* CSS-only fallback look while assets are not present */
+.luna-window.fallback {
+  border: none;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.14)) padding-box,
+    radial-gradient(140% 100% at 50% -20%, rgba(255,255,255,0.12), rgba(0,0,0,0)) border-box;
+  box-shadow:
+    0 14px 36px rgba(0,0,0,0.35),
+    inset 0 0 0 2px rgba(255,255,255,0.06);
+}
+.luna-window.fallback::after { content: none; }
+
+.luna-window.fallback .luna-titlebar {
+  background: linear-gradient(180deg, rgba(80,120,220,0.65), rgba(60,90,180,0.65));
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+/* Debug: force a visible 9-slice border with inline SVG if your PNGs aren't ready */
+.luna-window.debug::after {
+  --luna-slice: 8;
+  --luna-width: 8px;
+  border-image-source: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'><rect x='0' y='0' width='256' height='256' fill='none'/><rect x='0' y='248' width='256' height='8' fill='%2300fff0'/><rect x='0' y='0' width='8' height='256' fill='%23ff1a1a'/><rect x='248' y='0' width='8' height='256' fill='%232fff00'/></svg>");
+}
+
+/* ======= Titlebar controls (min, max, close) ======= */
+.luna-controls {
+  position: absolute;
+  top: 0; right: calc(var(--cap-w) + var(--inner-pad));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+.luna-btn {
+  width: 40px; height: 26px;
+  display: inline-block;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  image-rendering: pixelated; /* preserve pixel art */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; /* avoid stretch */
+  line-height: 0;
+}
+.luna-btn:hover { filter: brightness(1.05); }
+.luna-btn:active { filter: brightness(0.95); }
+
+/* Icon mapping (provide PNGs in assets/ui/luna) */
+.luna-btn.minimize { background-image: url('assets/ui/luna/btn-minimize.png'); }
+.luna-btn.maximize { background-image: url('assets/ui/luna/btn-maximize.png'); }
+.luna-btn.close    { background-image: url('assets/ui/luna/btn-close.png'); }
+
+/* Inactive tint removed (unused) */
 
 

@@ -1,51 +1,101 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>About - slickestFox</title>
-	<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Posting - slickestfox</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<header>
-		<h1>About Me</h1>
-		<nav>
-			<a href="index.html">Home</a>
-			<a href="art.html">Art</a>
-			<a href="music.html">Music</a>
-			<a href="videos.html">Videos</a>
-			<a href="dog-posting.html">Dog-Posting™</a>
-		</nav>
-	</header>
+    <!-- Background pattern layers -->
+    <div class="bg bg-circles" aria-hidden="true"></div>
+    <div class="bg bg-pluses" aria-hidden="true"></div>
 
-	<main>
-		<h2>Who I Am</h2>
-		<p>Hi, I’m slickestfox. I’m an artist and musician who also makes videos. This is my little corner of the web where I share my creative work.</p>
-	</main>
+    <header class="site-header">
+        <h1>slickestfox</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="art.html">Art</a>
+            <a href="music.html">Music</a>
+            <a href="videos.html">Videos</a>
+            <a href="comissions.html">Commissions</a>
+            <a href="dog-posting.html">Dog-PostingT</a>
+        </nav>
+    </header>
 
-	<footer>
-		<p>© 2025 slickestFox</p>
-	</footer>
+    <main class="container">
+        <section>
+            <h2>Dog Posts</h2>
+            <p class="muted">A lightweight feed for dog thoughts, boops, zoomies, and pics. Edit the posts below in-page — no extra files needed.</p>
+            <div id="posts-list"></div>
+        </section>
+    </main>
 
-	<!-- Inline JSON (loop config) -->
-	<script id="loop-data" type="application/json">
-	{
-		"loops": [
-			{ "src": "assets/audio/loops/dogposting.ogg" }
-		]
-	}
-	</script>
+    <footer>
+        <p>c 2025 slickestFox</p>
+    </footer>
 
-	<!-- Background Audio Script -->
+    <!-- Inline JSON (loop config) -->
+    <script id="loop-data" type="application/json">
+    {
+        "loops": [
+            { "src": "assets/audio/loops/dogposting.ogg" }
+        ]
+    }
+    </script>
+
+    <!-- Inline JSON (simple blog posts) -->
+    <script id="posts-data" type="application/json">
+    {
+        "posts": [
+            {
+                "id": "dp-003",
+                "title": "First Official Dog Post",
+                "date": "2025-08-27",
+                "content": "Launching the dog feed! Expect boops, bleps, and turbo zoomies.",
+                "image": "assets/art/dog doodles.png"
+            },
+            {
+                "id": "dp-002",
+                "title": "Snoot science",
+                "date": "2025-08-25",
+                "content": "Peer‑reviewed: boops increase happiness by 300%. Very serious study.",
+                "tags": ["boop", "science"]
+            },
+            {
+                "id": "dp-001",
+                "title": "Meet Macchi",
+                "date": "2025-08-20",
+                "content": "Macchi did a big zoom today. 12/10 would zoom again."
+            }
+        ]
+    }
+    </script>
+
+	<!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
 	<script>
 	(() => {
+		const LS_MUTE_KEY = 'siteAudioMuted';
+		const LS_VOL_KEY = 'siteAudioVolume';
 		let audioEl = null;
 
 		// Inline JSON with loop sources
 		let data = {};
 		try { data = JSON.parse(document.getElementById("loop-data").textContent); } catch {}
 		const loops = Array.isArray(data.loops) ? data.loops : [];
+
+		const loadPrefs = () => {
+			let muted = true, vol = 0.5;
+			try {
+				const m = localStorage.getItem(LS_MUTE_KEY);
+				const v = localStorage.getItem(LS_VOL_KEY);
+				if (m !== null) muted = (m === '1');
+				if (v !== null) { const nv = Math.max(0, Math.min(1, parseFloat(v))); if (!Number.isNaN(nv)) vol = nv; }
+			} catch {}
+			return { muted, vol };
+		};
+		const saveMute = (m) => { try { localStorage.setItem(LS_MUTE_KEY, m ? '1' : '0'); } catch {} };
+		const saveVol  = (v) => { try { localStorage.setItem(LS_VOL_KEY, String(v)); } catch {} };
 
 		document.addEventListener("DOMContentLoaded", ()=>{
 			if (!loops.length) return;
@@ -54,10 +104,20 @@
 			// create <audio>
 			audioEl = new Audio(src);
 			audioEl.loop = true;
-			audioEl.volume = 0.5;   // start half volume
-			audioEl.muted = true;   // start muted
-			// Try to play silently (will often succeed because muted)
+			const { muted, vol } = loadPrefs();
+			audioEl.volume = vol;
+			audioEl.muted = muted;
 			audioEl.play().catch(()=>{});
+
+			// If unmuted but autoplay blocked, start on first user gesture
+			const onFirstGesture = () => {
+				if (!audioEl) return;
+				if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
+				window.removeEventListener('pointerdown', onFirstGesture);
+				window.removeEventListener('keydown', onFirstGesture);
+			};
+			window.addEventListener('pointerdown', onFirstGesture, { once:false, passive:true });
+			window.addEventListener('keydown', onFirstGesture, { once:false });
 
 			// create controls
 			const controls = document.createElement("div");
@@ -65,33 +125,46 @@
 
 			const btn = document.createElement("button");
 			btn.id = "mute-btn";
-			btn.textContent = "🔇"; // start muted
+			btn.textContent = (muted || vol === 0) ? "🔇" : "🔊";
 
 			const slider = document.createElement("input");
 			slider.type = "range";
 			slider.id = "volume-slider";
 			slider.min = "0"; slider.max = "1"; slider.step = "0.01";
-			slider.value = audioEl.volume;
+			slider.value = String(vol);
 
 			// toggle mute/unmute
 			btn.addEventListener("click", ()=>{
 				if (!audioEl) return;
 				audioEl.muted = !audioEl.muted;
-				btn.textContent = audioEl.muted ? "🔇" : "🔊";
-				// ensure playback actually starts on unmute
+				saveMute(audioEl.muted);
+				btn.textContent = audioEl.muted || audioEl.volume == 0 ? "🔇" : "🔊";
 				if (!audioEl.muted && audioEl.paused){
-					audioEl.play().catch(err=>console.warn("Play blocked:", err));
+					audioEl.play().catch(()=>{});
 				}
 			});
 
 			// adjust volume
 			slider.addEventListener("input", ()=>{
 				if (!audioEl) return;
-				audioEl.volume = slider.value;
-				if (audioEl.volume == 0 || audioEl.muted){
-					btn.textContent = "🔇";
-				} else {
-					btn.textContent = "🔊";
+				const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
+				audioEl.volume = v;
+				saveVol(v);
+				btn.textContent = (audioEl.muted || v === 0) ? "🔇" : "🔊";
+			});
+
+			// listen for other tabs
+			window.addEventListener('storage', (e)=>{
+				if (!audioEl) return;
+				if (e.key === LS_MUTE_KEY && e.newValue != null) {
+					audioEl.muted = (e.newValue === '1');
+					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
+					if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
+				}
+				if (e.key === LS_VOL_KEY && e.newValue != null) {
+					const v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
+					if (!Number.isNaN(v)) { audioEl.volume = v; slider.value = String(v); }
+					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
 				}
 			});
 
@@ -101,6 +174,169 @@
 		});
 	})();
 	</script>
+
+    <!-- Simple renderer for posts -->
+    <script>
+    (() => {
+        const el = document.getElementById('posts-list');
+        if (!el) return;
+        let data = {};
+        try { data = JSON.parse(document.getElementById('posts-data').textContent); } catch {}
+        const posts = (data && Array.isArray(data.posts)) ? [...data.posts] : [];
+        // newest first
+        posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+        const fmtDate = (iso) => {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return isNaN(d) ? iso : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        };
+
+        const frag = document.createDocumentFragment();
+        posts.forEach(p => {
+            // Luna window container
+            const win = document.createElement('div');
+            win.className = 'luna-window';
+            win.style.margin = '20px 0';
+
+            // Titlebar with controls
+            const titlebar = document.createElement('div');
+            titlebar.className = 'luna-titlebar';
+            const title = document.createElement('span');
+            title.className = 'luna-title';
+            title.textContent = p.title || 'Untitled';
+            titlebar.appendChild(title);
+
+            const controls = document.createElement('div');
+            controls.className = 'luna-controls';
+            const btnMin = document.createElement('button'); btnMin.className = 'luna-btn minimize'; btnMin.title = 'Minimize'; btnMin.ariaLabel = 'Minimize';
+            const btnMax = document.createElement('button'); btnMax.className = 'luna-btn maximize'; btnMax.title = 'Maximize'; btnMax.ariaLabel = 'Maximize';
+            const btnClose = document.createElement('button'); btnClose.className = 'luna-btn close'; btnClose.title = 'Close'; btnClose.ariaLabel = 'Close';
+            controls.append(btnMin, btnMax, btnClose);
+            titlebar.appendChild(controls);
+            win.appendChild(titlebar);
+
+            // Body
+            const body = document.createElement('div');
+            body.className = 'luna-body';
+
+            const meta = document.createElement('div');
+            meta.className = 'muted';
+            meta.style.fontSize = '0.95rem';
+            meta.textContent = fmtDate(p.date);
+            body.appendChild(meta);
+
+            if (p.image) {
+                const img = document.createElement('img');
+                img.className = 'luna-img';
+                img.src = p.image;
+                img.alt = p.title || 'post image';
+                img.style.margin = '10px 0';
+                body.appendChild(img);
+            }
+
+            if (p.content) {
+                const para = document.createElement('p');
+                para.textContent = p.content;
+                body.appendChild(para);
+            }
+
+            win.appendChild(body);
+            frag.appendChild(win);
+        });
+
+        if (!posts.length) {
+            const empty = document.createElement('p');
+            empty.className = 'muted';
+            empty.textContent = 'No dog posts yet. Add some in the posts-data block below!';
+            frag.appendChild(empty);
+        }
+
+        el.appendChild(frag);
+    })();
+    </script>
+
+    <!-- Titlebar button SFX (per-button, overlapping, on press) -->
+    <script>
+    (function(){
+      const SOURCES = {
+        minimize: 'assets/ui/luna/minimize.mp3',
+        maximize: 'assets/ui/luna/maximize.mp3',
+        close:    'assets/ui/luna/close.mp3',
+        default:  'assets/ui/luna/click.mp3'
+      };
+      const cache = new Map();
+      const LS_MUTE_KEY = 'siteAudioMuted';
+      const LS_VOL_KEY  = 'siteAudioVolume';
+      function getGlobal(){
+        let muted = false, vol = 1;
+        try {
+          const m = localStorage.getItem(LS_MUTE_KEY);
+          const v = localStorage.getItem(LS_VOL_KEY);
+          if (m !== null) muted = (m === '1');
+          if (v !== null) { const nv = parseFloat(v); if (!Number.isNaN(nv)) vol = Math.max(0, Math.min(1, nv)); }
+        } catch {}
+        return { muted, vol };
+      }
+      function getAudio(key){
+        const src = SOURCES[key] || SOURCES.default;
+        if (!cache.has(src)){
+          try {
+            const a = new Audio(src);
+            a.preload = 'auto';
+            a.volume = 0.6; // base SFX level, scaled by global vol
+            cache.set(src, a);
+          } catch { cache.set(src, null); }
+        }
+        return cache.get(src);
+      }
+      function playKey(key){
+        const { muted, vol } = getGlobal();
+        if (muted || vol === 0) return;
+        const base = getAudio(key);
+        if (!base) return;
+        try {
+          const inst = base.cloneNode(true);
+          inst.volume = base.volume * vol;
+          inst.play().catch(()=>{});
+        } catch {}
+      }
+      window.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('pointerdown', (e) => {
+          const btn = e.target.closest('.luna-btn');
+          if (!btn) return;
+          if (btn.classList.contains('minimize')) return playKey('minimize');
+          if (btn.classList.contains('maximize')) return playKey('maximize');
+          if (btn.classList.contains('close'))    return playKey('close');
+          playKey('default');
+        }, { passive: true });
+      });
+    })();
+    </script>
+
+    <!-- Optional: title wave effect for dog posting titles -->
+    <script>
+    (function(){
+      function applyWave(el){
+        const text = el.textContent;
+        el.textContent = '';
+        el.classList.add('wave');
+        let idx = 0;
+        for (let i=0; i<text.length; i++){
+          const ch = text[i];
+          if (ch === ' '){ el.appendChild(document.createTextNode(' ')); continue; }
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.style.setProperty('--i', idx++);
+          span.textContent = ch;
+          el.appendChild(span);
+        }
+      }
+      window.addEventListener('DOMContentLoaded', ()=>{
+        document.querySelectorAll('.luna-titlebar .luna-title').forEach(applyWave);
+      });
+    })();
+    </script>
 
 </body>
 </html>

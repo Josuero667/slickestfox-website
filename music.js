@@ -9,7 +9,23 @@
 	// ========= config =========
 	var FADE_IN_MS = 300;
 	var FADE_OUT_MS = 500;
-	var FULL_VOL = 0.9;
+	// Global site volume/mute keys (shared with pages)
+	var LS_MUTE_KEY = 'siteAudioMuted';
+	var LS_VOL_KEY = 'siteAudioVolume';
+	function loadSitePrefs(){
+		var muted = false, vol = 0.5;
+		try {
+			var m = localStorage.getItem(LS_MUTE_KEY);
+			var v = localStorage.getItem(LS_VOL_KEY);
+			if (m !== null) muted = (m === '1');
+			if (v !== null) {
+				var nv = Math.max(0, Math.min(1, parseFloat(v)));
+				if (!isNaN(nv)) vol = nv;
+			}
+		} catch {}
+		return { muted: muted, vol: vol };
+	}
+	function targetVolume(){ var p = loadSitePrefs(); return p.muted ? 0 : p.vol; }
 	var LEAVE_GRACE_MS = 0;            // close tracklist / stop a bit after leaving card
 	var MIN_DURATION_FOR_END_FADE = 6;   // only near-end fade long clips
 
@@ -38,7 +54,10 @@
 	// ========= audio (single <audio> with element-volume fades) =========
 	var audio = new Audio();
 	audio.preload = 'none';
-	audio.volume = 0;
+	// initialize to saved prefs
+	(function(){ var p = loadSitePrefs(); audio.volume = p.muted ? 0 : p.vol; audio.muted = !!p.muted; })();
+
+	// (SFX removed by request)
 
 	var fadeRAF = 0;
 	function cancelFade(){ if (fadeRAF) cancelAnimationFrame(fadeRAF); fadeRAF = 0; }
@@ -104,6 +123,62 @@
 		return sec;
 	}
 
+	// ========= recolor helpers (global hue for non-hover covers) =========
+	function parseHex(c){
+		c = String(c||'').trim();
+		if (!c) return null;
+		if (c[0] === '#') c = c.slice(1);
+		if (c.length === 3){
+			var r = parseInt(c[0]+c[0],16), g = parseInt(c[1]+c[1],16), b = parseInt(c[2]+c[2],16);
+			if (isFinite(r)&&isFinite(g)&&isFinite(b)) return {r:r,g:g,b:b};
+		}
+		if (c.length === 6){
+			var r6 = parseInt(c.slice(0,2),16), g6 = parseInt(c.slice(2,4),16), b6 = parseInt(c.slice(4,6),16);
+			if (isFinite(r6)&&isFinite(g6)&&isFinite(b6)) return {r:r6,g:g6,b:b6};
+		}
+		return null;
+	}
+	function parseColorToHue(str){
+		if (!str) return 0;
+		// hex
+		var rgb = parseHex(str);
+		if (!rgb && /^rgb/i.test(str)){
+			var m = str.match(/rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
+			if (m){ rgb = { r: +m[1], g: +m[2], b: +m[3] }; }
+		}
+		if (!rgb && /^hsl/i.test(str)){
+			var hm = str.match(/hsl\s*\(\s*([\-\d\.]+)\s*[,\s]/i);
+			if (hm){ return ((+hm[1])%360+360)%360; }
+		}
+		if (!rgb) return 0;
+		var r = rgb.r/255, g=rgb.g/255, b=rgb.b/255;
+		var max = Math.max(r,g,b), min = Math.min(r,g,b);
+		var h = 0, d = max - min;
+		if (d === 0) h = 0;
+		else if (max === r) h = ((g - b) / d) % 6;
+		else if (max === g) h = (b - r) / d + 2;
+		else h = (r - g) / d + 4;
+		h = Math.round(((h * 60) + 360) % 360);
+		return h;
+	}
+
+	var BASE_SEPIA_HUE = 30; // CSS sepia(1) hue baseline is ~30deg (orange)
+	function setRecolorForCard(card, colorStr){
+		var hue = parseColorToHue(colorStr);
+		var angle = ((hue - BASE_SEPIA_HUE) % 360 + 360) % 360;
+		document.documentElement.style.setProperty('--recolor-angle', angle + 'deg');
+		// Match audio fade-in time for visual recolor
+		document.body.style.setProperty('--recolor-ms', (FADE_IN_MS|0) + 'ms');
+		document.body.classList.add('recolor-active');
+	}
+	function clearRecolorForCard(card){
+		// Use audio fade-out time for visual recolor fade
+		document.body.style.setProperty('--recolor-ms', (FADE_OUT_MS|0) + 'ms');
+		// Reset hue so base image colors are restored exactly
+		document.documentElement.style.setProperty('--recolor-angle', '0deg');
+		document.body.classList.remove('recolor-active');
+	}
+
 	// ========= playback state =========
 	var currentUrl = '';
 	var currentCard = null;
@@ -111,6 +186,9 @@
 	var endFadeArmed = false;
 	var endFadeAllowed = false;
 	var leaveTimers = new WeakMap(); // card -> timeout
+	// Guard against late timeouts from previous hovers cutting new audio
+	var pauseTimer = 0;     // setTimeout id for fadeOutAndPause
+	var sessionId = 0;      // increments on each new play to invalidate old timers
 
 	function normalize(url){ return encodeURI(String(url || '').trim()); }
 	function armEndFade(){ if (endFadeAllowed) endFadeArmed = true; }
@@ -134,18 +212,27 @@
 		setPulsing(currentCard, false);
 		stopGlobalFlash();
 		hideNowPlaying();
+		// ensure visuals fully reset when audio ends naturally
+		clearRecolorForCard(null);
 	});
 
 	function fadeOutAndPause(){
 		cancelEndFade();
 		isFadingOut = true;
 		fadeToVolume(0, FADE_OUT_MS);
-		setTimeout(function(){
+		if (pauseTimer){ clearTimeout(pauseTimer); pauseTimer = 0; }
+		var sid = sessionId;
+		pauseTimer = setTimeout(function(){
+			// If a new session started after this timeout was queued, ignore
+			if (sid !== sessionId) return;
 			try{ audio.pause(); }catch(e){}
 			isFadingOut = false;
 			setPulsing(currentCard, false);
 			stopGlobalFlash();
 			hideNowPlaying();
+			// final safety: ensure recolor fades out when we stop previews
+			clearRecolorForCard(null);
+			pauseTimer = 0;
 		}, FADE_OUT_MS + 30);
 	}
 
@@ -171,7 +258,7 @@
 
 		// same URL → don't restart; just bring it back up and update flash/label
 		if (candidate === currentUrl && !audio.paused){
-			if (isFadingOut){ isFadingOut = false; fadeToVolume(FULL_VOL, 180); }
+			if (isFadingOut){ isFadingOut = false; fadeToVolume(targetVolume(), 180); }
 			var sec0 = setPulsePeriod(card, bpm) || 0.6;
 			var color0 = flashColor || (getComputedStyle(card).getPropertyValue('--pulse-color').trim() || '#ffd166');
 			startGlobalFlash(color0, sec0);
@@ -179,12 +266,16 @@
 			return;
 		}
 
+		// Cancel any pending pause from a previous card hover
+		if (pauseTimer){ clearTimeout(pauseTimer); pauseTimer = 0; }
 		cancelEndFade();
 		endFadeAllowed = !!autoEndFade;
 
 		var sec = setPulsePeriod(card, bpm) || 0.6;
 		var color = flashColor || (getComputedStyle(card).getPropertyValue('--pulse-color').trim() || '#ffd166');
 
+		// New session: invalidate any previously queued fadeOutAndPause
+		sessionId++;
 		isFadingOut = true;
 		fadeToVolume(0, 180);
 
@@ -197,13 +288,28 @@
 				endFadeAllowed = autoEndFade && isFinite(audio.duration) && audio.duration >= MIN_DURATION_FOR_END_FADE;
 			};
 			audio.play().then(function(){
-				fadeToVolume(FULL_VOL, FADE_IN_MS);
+				fadeToVolume(targetVolume(), FADE_IN_MS);
 				armEndFade();
 				startGlobalFlash(color, sec);
 				setNowPlaying(trackTitle, releaseTitle, color, singleRelease);
 			}).catch(function(){ /* wait for unlock */ });
 		}, 140);
 	}
+
+	// Reflect changes from other tabs or from page UI controls
+	window.addEventListener('storage', function(e){
+		if (!audio) return;
+		if (e.key === LS_MUTE_KEY && e.newValue != null){
+			audio.muted = (e.newValue === '1');
+			if (!audio.muted && audio.paused){ /* do not auto-play previews */ }
+		}
+		if (e.key === LS_VOL_KEY && e.newValue != null){
+			var v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
+			if (!isNaN(v)){
+				if (!audio.muted){ audio.volume = v; }
+			}
+		}
+	});
 
 	// ========= utils =========
 	function escapeHTML(str){
@@ -311,6 +417,8 @@
 			// Hover cover → play: for single release, play its only track; for multi, pick random
 			if (coverWrap){
 				coverWrap.addEventListener('mouseenter', function(){
+					// Activate global recolor to this card's hue
+					setRecolorForCard(card, flashColor || getComputedStyle(card).getPropertyValue('--pulse-color'));
 					if (single){
 						var t = tracks[0] || {};
 						var bpm = Number(t.bpm) || 120;
@@ -350,17 +458,22 @@
 				});
 
 				// stop shortly after leaving the card + hide any open list
-				card.addEventListener('mouseleave', function(){
+				card.addEventListener('mouseleave', function(e){
 					var t = leaveTimers.get(card);
 					if (t) clearTimeout(t);
 					leaveTimers.set(card, setTimeout(function(){
 						if (!single) setOpen(card, false);
 						fadeOutAndPause();
 					}, LEAVE_GRACE_MS));
+					// Remove recolor unless moving directly into another release
+					var to = e && e.relatedTarget ? (e.relatedTarget.closest ? e.relatedTarget.closest('.release') : null) : null;
+					if (!to) clearRecolorForCard(card);
 				});
 				card.addEventListener('mouseenter', function(){
 					var t = leaveTimers.get(card);
 					if (t){ clearTimeout(t); leaveTimers.delete(card); }
+					// Entering anywhere on the card ensures recolor stays on
+					setRecolorForCard(card, flashColor || getComputedStyle(card).getPropertyValue('--pulse-color'));
 				});
 			}
 
@@ -456,6 +569,7 @@
 		ensureFlashRoot();
 
 		let data = { releases: [] };
+		// (SFX loading removed)
 
 		// Adjust the path if music.html lives in a subfolder:
 		// - if music.html is at site root → 'assets/data/releases.json'

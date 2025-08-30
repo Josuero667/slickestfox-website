@@ -1,41 +1,6 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Music - slickestfox</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-	<!-- Reuse the animated background layers from index -->
-	<div class="bg bg-circles" aria-hidden="true"></div>
-	<div class="bg bg-pluses" aria-hidden="true"></div>
 
-	<header class="site-header">
-		<h1>slickestfox</h1>
-		<nav>
-			<a href="index.html">Home</a>
-			<a href="art.html">Art</a>
-			<a href="music.html">Music</a>
-			<a href="videos.html">Videos</a>
-			<a href="comissions.html">Commissions</a>
-			<a href="dog-posting.html">Dog-Posting™</a>
-		</nav>
-	</header>
 
-	<main class="container">
-		<section>
-			<h2>Releases</h2>
-			<p class="muted">Hover a release to hear a random preview. Open the tracklist to audition songs and jump to Spotify.</p>
-			<div id="releases-grid" class="releases-grid"></div>
-		</section>
-	</main>
-
-	<footer>
-		<p>© 2025 slickestfox</p>
-	</footer>
-
-	<!-- 🔧 Your release data lives here (edit this) -->
+	<!-- ?? Your release data lives here (edit this) -->
 	<script type="application/json" id="releases-data">
 	{
 		"releases": [
@@ -44,7 +9,7 @@
 				"title": "Pyramid-CORE",
 				"year": 2025,
 				"cover": "assets/music/covers/pyramid-core-cover.jpg",
-				"flash_color": "#FF6980",
+				"flash_color": "#ffd166",
 				"spotify_album": "https://open.spotify.com/album/2k38h7XX9QM5SGPKo6Kfzl?si=UVvuujfCTR2swLMkfgv2qw",
 				"tracks": [
 					{
@@ -174,9 +139,9 @@
 						"bpm": 125
 					},
 					{
-						"title": "meownopédie",
+						"title": "meownop�die",
 						"spotify_url": "https://open.spotify.com/track/1mh7gLxnjjRVzD9dqn644V?si=7d23ef333fce4c38",
-						"preview_url": "assets/music/previews/meownopédie.mp3",
+						"preview_url": "assets/music/previews/meownop�die.mp3",
 						"bpm": 76
 					},
 					{
@@ -231,99 +196,7 @@
 
 	<!-- Behavior -->
 	<script src="music.js"></script>
-
-	<!-- Inline JSON (loop config) -->
-	<script id="loop-data" type="application/json">
-	{
-		"loops": [
-			{ "src": "assets/audio/loops/placeholder.ogg" }
-		]
-	}
-	</script>
-
-
-	<!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
-	<script>
-	(() => {
-		const LS_MUTE_KEY = 'siteAudioMuted';
-		const LS_VOL_KEY = 'siteAudioVolume';
-		let audioEl = null;
-
-		const loadPrefs = () => {
-			let muted = true; let vol = 0.5;
-			try {
-				const m = localStorage.getItem(LS_MUTE_KEY);
-				const v = localStorage.getItem(LS_VOL_KEY);
-				if (m !== null) muted = (m === '1');
-				if (v !== null) { const nv = Math.max(0, Math.min(1, parseFloat(v))); if (!Number.isNaN(nv)) vol = nv; }
-			} catch {}
-			return { muted, vol };
-		};
-		const saveMute = (m) => { try { localStorage.setItem(LS_MUTE_KEY, m ? '1' : '0'); } catch {} };
-		const saveVol  = (v) => { try { localStorage.setItem(LS_VOL_KEY, String(v)); } catch {} };
-
-		document.addEventListener('DOMContentLoaded', () => {
-			let data = {};
-			try { data = JSON.parse(document.getElementById('loop-data').textContent); } catch {}
-			const loops = Array.isArray(data.loops) ? data.loops : [];
-			if (!loops.length) return;
-
-			const src = loops[Math.floor(Math.random() * loops.length)].src;
-			audioEl = new Audio(src);
-			audioEl.loop = true;
-			const { muted, vol } = loadPrefs();
-			audioEl.volume = vol; audioEl.muted = muted;
-			audioEl.play().catch(()=>{});
-
-			const controls = document.createElement('div'); controls.id = 'music-controls';
-			const btn = document.createElement('button'); btn.id = 'mute-btn';
-			btn.textContent = (muted || vol === 0) ? '🔇' : '🔊';
-			const slider = document.createElement('input'); slider.type = 'range'; slider.id = 'volume-slider';
-			slider.min = '0'; slider.max = '1'; slider.step = '0.01'; slider.value = String(vol);
-
-			btn.addEventListener('click', () => {
-				if (!audioEl) return;
-				audioEl.muted = !audioEl.muted; saveMute(audioEl.muted);
-				btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
-				if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(()=>{}); }
-			});
-
-			slider.addEventListener('input', () => {
-				if (!audioEl) return;
-				const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
-				audioEl.volume = v; saveVol(v);
-				btn.textContent = (audioEl.muted || v === 0) ? '🔇' : '🔊';
-			});
-
-			const onFirstGesture = () => {
-				if (!audioEl) return;
-				if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
-				window.removeEventListener('pointerdown', onFirstGesture);
-				window.removeEventListener('keydown', onFirstGesture);
-			};
-			window.addEventListener('pointerdown', onFirstGesture, { passive:true });
-			window.addEventListener('keydown', onFirstGesture);
-
-			window.addEventListener('storage', (e) => {
-				if (!audioEl) return;
-				if (e.key === LS_MUTE_KEY && e.newValue != null) {
-					audioEl.muted = (e.newValue === '1');
-					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
-					if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
-				}
-				if (e.key === LS_VOL_KEY && e.newValue != null) {
-					const v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
-					if (!Number.isNaN(v)) { audioEl.volume = v; slider.value = String(v); }
-					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
-				}
-			});
-
-			controls.appendChild(btn);
-			controls.appendChild(slider);
-			document.body.appendChild(controls);
-		});
-	})();
-	</script>
 </body>
 </html>
+
 

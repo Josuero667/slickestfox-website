@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -18,7 +18,8 @@
 			<a href="art.html">Art</a>
 			<a href="music.html">Music</a>
 			<a href="videos.html">Videos</a>
-			<a href="dog-posting.html">Dog-Posting™</a>
+			<a href="comissions.html">Commissions</a>
+			<a href="dog-posting.html">Dog-PostingT</a>
 		</nav>
 	</header>
 
@@ -38,12 +39,12 @@
 	<main class="container">
 		<section class="intro">
 			<h3>What I Do</h3>
-			<p>I make visual art, produce music, and post videos. New projects drop regularly—stick around.</p>
+			<p>I make visual art, produce music, and post videos. New projects drop regularly-stick around.</p>
 		</section>
 	</main>
 
 	<footer>
-		<p>© 2025 slickestFox</p>
+		<p>c 2025 slickestFox</p>
 	</footer>
 
 	<!-- Inline JSON (loop config) -->
@@ -55,10 +56,29 @@
 	}
 	</script>
 
-	<!-- Background Audio Script -->
+	<!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
 	<script>
 	(() => {
+		const LS_MUTE_KEY = 'siteAudioMuted';
+		const LS_VOL_KEY = 'siteAudioVolume';
 		let audioEl = null;
+
+		const loadPrefs = () => {
+			let muted = true; // default
+			let vol = 0.5;    // default
+			try {
+				const m = localStorage.getItem(LS_MUTE_KEY);
+				const v = localStorage.getItem(LS_VOL_KEY);
+				if (m !== null) muted = m === '1';
+				if (v !== null) {
+					const nv = Math.max(0, Math.min(1, parseFloat(v)));
+					if (!Number.isNaN(nv)) vol = nv;
+				}
+			} catch {}
+			return { muted, vol };
+		};
+		const saveMute = (m) => { try { localStorage.setItem(LS_MUTE_KEY, m ? '1' : '0'); } catch {} };
+		const saveVol = (v) => { try { localStorage.setItem(LS_VOL_KEY, String(v)); } catch {} };
 
 		// Inline JSON with loop sources
 		let data = {};
@@ -72,44 +92,72 @@
 			// create <audio>
 			audioEl = new Audio(src);
 			audioEl.loop = true;
-			audioEl.volume = 0.5;   // start half volume
-			audioEl.muted = true;   // start muted
-			// Try to play silently (will often succeed because muted)
+
+			// apply saved prefs
+			const { muted, vol } = loadPrefs();
+			audioEl.volume = vol;
+			audioEl.muted = muted;
+
+			// Try to play (will often succeed if muted)
 			audioEl.play().catch(()=>{});
 
-			// create controls
+			// If unmuted but autoplay blocked, start on first user gesture
+			const onFirstGesture = () => {
+				if (!audioEl) return;
+				if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
+				window.removeEventListener('pointerdown', onFirstGesture);
+				window.removeEventListener('keydown', onFirstGesture);
+			};
+			window.addEventListener('pointerdown', onFirstGesture, { once:false, passive:true });
+			window.addEventListener('keydown', onFirstGesture, { once:false });
+
+			// controls
 			const controls = document.createElement("div");
 			controls.id = "music-controls";
 
 			const btn = document.createElement("button");
 			btn.id = "mute-btn";
-			btn.textContent = "🔇"; // start muted
+			btn.textContent = muted || vol === 0 ? "🔇" : "🔊";
 
 			const slider = document.createElement("input");
 			slider.type = "range";
 			slider.id = "volume-slider";
 			slider.min = "0"; slider.max = "1"; slider.step = "0.01";
-			slider.value = audioEl.volume;
+			slider.value = String(vol);
 
-			// toggle mute/unmute
 			btn.addEventListener("click", ()=>{
 				if (!audioEl) return;
 				audioEl.muted = !audioEl.muted;
-				btn.textContent = audioEl.muted ? "🔇" : "🔊";
-				// ensure playback actually starts on unmute
+				saveMute(audioEl.muted);
+				btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
 				if (!audioEl.muted && audioEl.paused){
-					audioEl.play().catch(err=>console.warn("Play blocked:", err));
+					audioEl.play().catch(()=>{});
 				}
 			});
 
-			// adjust volume
 			slider.addEventListener("input", ()=>{
 				if (!audioEl) return;
-				audioEl.volume = slider.value;
-				if (audioEl.volume == 0 || audioEl.muted){
-					btn.textContent = "🔇";
-				} else {
-					btn.textContent = "🔊";
+				const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
+				audioEl.volume = v;
+				saveVol(v);
+				btn.textContent = (audioEl.muted || v === 0) ? "🔇" : "🔊";
+			});
+
+			// react to other tabs changing settings
+			window.addEventListener('storage', (e)=>{
+				if (!audioEl) return;
+				if (e.key === LS_MUTE_KEY && e.newValue != null) {
+					audioEl.muted = e.newValue === '1';
+					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
+					if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
+				}
+				if (e.key === LS_VOL_KEY && e.newValue != null) {
+					const v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
+					if (!Number.isNaN(v)) {
+						audioEl.volume = v;
+						slider.value = String(v);
+						btn.textContent = (audioEl.muted || v === 0) ? "🔇" : "🔊";
+					}
 				}
 			});
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Videos - SlickestFox</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<header>
+		<h1>My Videos</h1>
+		<nav>
+			<a href="index.html">Home</a>
+			<a href="art.html">Art</a>
+			<a href="music.html">Music</a>
+			<a href="videos.html">Videos</a>
+			<a href="dog-posting.html">Dog-Posting™</a>
+		</nav>
+	</header>
+
+	<main>
+		<h2>Check out my YouTube</h2>
+		<p>Embed your channel or videos here.</p>
+
+		<!-- Example YouTube embed -->
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/AmDmsaxqf9U?si=SqaW8y57fCCSaO7Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+	</main>
+
+	<footer>
+		<p>© 2025 SlickestFox</p>
+	</footer>
+</body>
+</html>
+

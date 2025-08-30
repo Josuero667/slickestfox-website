@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Music - slickestfox</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<!-- Reuse the animated background layers from index -->
+	<div class="bg bg-circles" aria-hidden="true"></div>
+	<div class="bg bg-pluses" aria-hidden="true"></div>
+
+	<header class="site-header">
+		<h1>slickestfox</h1>
+		<nav>
+			<a href="index.html">Home</a>
+			<a href="art.html">Art</a>
+			<a href="music.html">Music</a>
+			<a href="videos.html">Videos</a>
+			<a href="dog-posting.html">Dog-Posting™</a>
+		</nav>
+	</header>
+
+	<main class="container">
+		<section>
+			<h2>Releases</h2>
+			<p class="muted">Hover a release to hear a random preview. Open the tracklist to audition songs and jump to Spotify.</p>
+			<div id="releases-grid" class="releases-grid"></div>
+		</section>
+	</main>
+
+	<footer>
+		<p>© 2025 slickestfox</p>
+	</footer>
