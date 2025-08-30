@@ -725,8 +725,22 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
   box-shadow: 0 14px 36px rgba(0,0,0,0.35);
 }
 
-/* Pseudo-element frame: starts below titlebar so sides don't overlap it */
-.luna-window::after {
+/* Frame element: real child so Chrome reliably paints border-image */
+.luna-frame {
+  position: absolute;
+  left: 0; right: 0; bottom: 0; top: var(--titlebar-h);
+  pointer-events: none;
+  border-style: solid; border-color: transparent;
+  border-width: 0 var(--luna-width) var(--luna-width) var(--luna-width);
+  border-image-source: url('assets/ui/luna/window-frame-active.png');
+  border-image-slice: var(--luna-slice) fill;
+  border-image-width: 0 var(--luna-width) var(--luna-width) var(--luna-width);
+  border-image-repeat: stretch;
+  z-index: 1;
+}
+/* Use pseudo-element only when no .luna-frame child exists (Chrome-safe with :has) */
+.luna-window::after { content: none; }
+.luna-window:not(:has(.luna-frame))::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 0; top: var(--titlebar-h);
@@ -737,7 +751,6 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
   border-image-slice: var(--luna-slice) fill;
   border-image-width: 0 var(--luna-width) var(--luna-width) var(--luna-width);
   border-image-repeat: stretch;
-  image-rendering: pixelated;
   z-index: 1;
 }
 
@@ -868,7 +881,7 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
 }
 
 /* Debug: force a visible 9-slice border with inline SVG if your PNGs aren't ready */
-.luna-window.debug::after {
+.luna-window.debug .luna-frame {
   --luna-slice: 8;
   --luna-width: 8px;
   border-image-source: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'><rect x='0' y='0' width='256' height='256' fill='none'/><rect x='0' y='248' width='256' height='8' fill='%2300fff0'/><rect x='0' y='0' width='8' height='256' fill='%23ff1a1a'/><rect x='248' y='0' width='8' height='256' fill='%232fff00'/></svg>");
