@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background pattern layers -->
-    <div class="bg bg-circles" aria-hidden="true"></div>
-    <div class="bg bg-pluses" aria-hidden="true"></div>
+    
 
     <header class="site-header">
         <h1>slickestfox</h1>
@@ -196,7 +194,7 @@
         posts.forEach(p => {
             // Luna window container
             const win = document.createElement('div');
-            win.className = 'luna-window';
+            win.className = 'luna-window post';
             win.style.margin = '20px 0';
 
             // Titlebar with controls
@@ -222,15 +220,52 @@
             frame.setAttribute('aria-hidden','true');
             win.appendChild(frame);
 
+            // Toolbar (date, etc.)
+            const toolbar = document.createElement('div');
+            toolbar.className = 'luna-toolbar';
+            // Date chip
+            const dateChip = document.createElement('div');
+            dateChip.className = 'tool-chip tool-date';
+            dateChip.textContent = fmtDate(p.date);
+            toolbar.appendChild(dateChip);
+            // Spacer to push icons right if needed
+            toolbar.appendChild(Object.assign(document.createElement('div'),{className:'spacer'}));
+            // Tag chips: one per tag with a random icon (if tags exist)
+            const icons = [
+              { key:'paw',     title:'Paw',     src:'assets/ui/luna/icons/paw.png' },
+              { key:'bone',    title:'Bone',    src:'assets/ui/luna/icons/bone.png' },
+              { key:'star',    title:'Star',    src:'assets/ui/luna/icons/star.png' },
+              { key:'camera',  title:'Camera',  src:'assets/ui/luna/icons/camera.png' },
+              { key:'music',   title:'Music',   src:'assets/ui/luna/icons/music.png' },
+              { key:'sparkle', title:'Sparkle', src:'assets/ui/luna/icons/sparkle.png' }
+            ];
+            if (Array.isArray(p.tags) && p.tags.length){
+              p.tags.forEach((tag, idx) => {
+                const ic = icons[(Math.random()*icons.length)|0];
+                const chip = document.createElement('div');
+                chip.className = 'tool-chip tool-tag';
+                const img = document.createElement('img');
+                img.width = 16; img.height = 16;
+                img.loading = 'lazy'; img.decoding = 'async';
+                img.src = ic.src; img.alt = ic.title;
+                img.addEventListener('error', ()=>{
+                  const ph = document.createElement('span');
+                  ph.textContent = ic.title ? ic.title[0].toUpperCase() : '?';
+                  ph.style.cssText = 'display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;font:700 11px/16px Ari,system-ui;background:rgba(255,255,255,0.08);';
+                  img.replaceWith(ph);
+                }, { once:true });
+                const label = document.createElement('span');
+                label.className = 'tag-text';
+                label.textContent = String(tag);
+                chip.append(img, label);
+                toolbar.appendChild(chip);
+              });
+            }
+            win.appendChild(toolbar);
+
             // Body
             const body = document.createElement('div');
             body.className = 'luna-body';
-
-            const meta = document.createElement('div');
-            meta.className = 'muted';
-            meta.style.fontSize = '0.95rem';
-            meta.textContent = fmtDate(p.date);
-            body.appendChild(meta);
 
             if (p.image) {
                 const img = document.createElement('img');

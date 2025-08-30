@@ -1,46 +1,104 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 	<meta charset="UTF-8">
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<title>Videos - SlickestFox</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
-	<header>
-		<h1>My Videos</h1>
+<body style="--rock-bottom-space: 240px; --rock-rail-gap: 0px;">
+
+	<header class="site-header">		<h1>SlickestFox</h1>
+
 		<nav>
+
 			<a href="index.html">Home</a>
+
 			<a href="art.html">Art</a>
+
 			<a href="music.html">Music</a>
+
 			<a href="videos.html">Videos</a>
 			<a href="comissions.html">Commissions</a>
 			<a href="dog-posting.html">Dog-Posting™</a>
+
 		</nav>
+
 	</header>
 
-	<main>
-		<h2>Check out my YouTube</h2>
-		<p>Embed your channel or videos here.</p>
 
-		<!-- Example YouTube embed -->
-		<iframe width="560" height="315" src="https://www.youtube.com/embed/AmDmsaxqf9U?si=SqaW8y57fCCSaO7Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-	</main>
+
+		<main class="container videos-page" style="padding-bottom: var(--rock-bottom-space);">
+		<section>
+			<div class="luna-window" id="latest-window">
+				<div class="luna-titlebar">
+					<div class="luna-title" id="latest-title">Latest Upload</div>
+					<div class="luna-controls" aria-hidden="true">
+						<span class="luna-btn minimize" title="Minimize"></span>
+						<span class="luna-btn maximize" title="Maximize"></span>
+						<span class="luna-btn close" title="Close"></span>
+					</div>
+				</div>
+				<div class="luna-frame"></div>
+				<div class="luna-body">
+					<div class="yt-latest">
+						<div class="latest-player">
+							<div class="aspect-16x9" id="latest-embed">
+								<!-- latest iframe injected by videos.js -->
+							</div>
+						</div>
+						<div class="latest-meta">
+							<h3 id="latest-meta-title" class="muted">Loading title…</h3>
+							<div id="latest-description" class="yt-description muted">Loading description…</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section style="margin-top:22px;">
+			<h3 style="margin: 0 0 10px 2px;">Recent Uploads</h3>
+			<div class="yt-grid" id="recent-grid"><!-- filled by videos.js --></div>
+		</section>
+	
+		<section style="margin-top:22px;">
+			<h3 style="margin: 0 0 10px 2px;">Latest Shorts</h3>
+			<div class="yt-grid" id="shorts-grid"><!-- 3 shorts by videos.js --></div>
+		</section>
+</main>
+
+
 
 	<footer>
+
 		<p>© 2025 SlickestFox</p>
+
 	</footer>
 
 	<!-- Inline JSON (loop config) -->
 	<script id="loop-data" type="application/json">
 	{
 		"loops": [
-			{ "src": "assets/audio/loops/index.ogg" }
+			{ "src": "assets/audio/loops/dogposting w piano.ogg" }
 		]
 	}
 	</script>
+	<!-- YouTube config: set your channel URL here. If possible, include channelId or API key. -->
+	<script id="youtube-config" type="application/json">
+{
+  "channelUrl": "https://youtube.com/@slickestfoxmusic",
+  "channelId": "UCJn4ObvPuAo4K5QfP4JvKUg",
+  "apiKey": "AIzaSyDjdY27g-IR4lq0pSwrBj6c-ACSJcFHgCs"
+}
+	</script>
 
-	<!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
+	<script src="videos.js"></script>
+<!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
 	<script>
 	(() => {
 		const LS_MUTE_KEY = 'siteAudioMuted';
@@ -62,7 +120,7 @@
 			let data={}; try{ data = JSON.parse(document.getElementById('loop-data').textContent); }catch{}
 			const loops = Array.isArray(data.loops)?data.loops:[]; if(!loops.length) return;
 			const src = loops[(Math.random()*loops.length)|0].src;
-			audioEl = new Audio(src); audioEl.loop = true;
+			audioEl = new Audio(src); audioEl.loop = true; window.__siteAudioEl = audioEl;
 			const { muted, vol } = loadPrefs(); audioEl.volume=vol; audioEl.muted=muted; audioEl.play().catch(()=>{});
 
 			const controls=document.createElement('div'); controls.id='music-controls';
@@ -84,6 +142,57 @@
 			controls.appendChild(btn); controls.appendChild(slider); document.body.appendChild(controls);
 		});
 	})();
-	</script>
-</body>
+	</script>			<!-- Rock toggle image (page-bottom, right rail) + synced rock layer -->
+	<script>
+	(function(){
+	  const LS_MUTE_KEY = 'siteAudioMuted';
+	  const LS_VOL_KEY  = 'siteAudioVolume';
+	  const ROCK_SRC = 'assets/audio/loops/rock.ogg';
+	  const IMG_SRC  = 'assets/rock.png';
+	  let rock=null, active=false, fadeRAF=0, base=null;
+	  function targetVol(){ try{ const m=localStorage.getItem(LS_MUTE_KEY)==='1'; const v=parseFloat(localStorage.getItem(LS_VOL_KEY)||'0.5'); return m?0:Math.max(0,Math.min(1,v)); }catch{ return 0.5; } }
+	  function ensureRock(){ if(rock) return rock; rock=new Audio(ROCK_SRC); rock.loop=true; rock.volume=0; rock.muted=false; window.__rockAudioEl=rock; return rock; }
+	  function fadeTo(a,to,ms){ if(!a) return; if(fadeRAF) cancelAnimationFrame(fadeRAF); const from=a.volume; const t0=performance.now(); to=Math.max(0,Math.min(1,to)); function step(t){ const p=Math.min(1,(t-t0)/Math.max(1,ms||200)); a.volume = from + (to-from)*p; if(p<1) fadeRAF=requestAnimationFrame(step); else fadeRAF=0; } fadeRAF=requestAnimationFrame(step); }
+	  function syncRock(){ if(!base||!rock) return; try{ rock.playbackRate=base.playbackRate; }catch{} try{ const d=Math.abs((rock.currentTime||0)-(base.currentTime||0)); if(d>0.5) rock.currentTime=base.currentTime; }catch{} }
+	  function wireBase(){ base = window.__siteAudioEl || null; if(!base) return; const a=ensureRock(); a.currentTime = base.currentTime||0; a.play().catch(()=>{});
+	    base.addEventListener('play', ()=>{ a.currentTime=base.currentTime||0; a.play().catch(()=>{}); });
+	    base.addEventListener('pause', ()=>a.pause());
+	    base.addEventListener('seeking', syncRock);
+	    base.addEventListener('seeked', syncRock);
+	    base.addEventListener('ratechange', ()=>{ try{ a.playbackRate = base.playbackRate; }catch{} });
+	    base.addEventListener('ended', ()=>{ a.currentTime = 0; });
+	    base.addEventListener('timeupdate', ()=>{ if(!a.paused) syncRock(); });
+	    base.addEventListener('volumechange', ()=>{ a.volume = active ? base.volume : 0; });
+	    window.addEventListener('storage', (e)=>{ if(!e || e.key===LS_MUTE_KEY || e.key===LS_VOL_KEY){ a.volume = active ? targetVol() : 0; } });
+	  }
+	  function ensureAnchor(){ let an = document.getElementById('rock-anchor'); if(!an){ an = document.createElement('div'); an.id='rock-anchor'; an.style.position='relative'; an.style.height='0'; document.body.appendChild(an); } return an; }
+	  function ensureRockImage(){ if(document.getElementById('rock-toggle')) return; const img=document.createElement('img'); img.id='rock-toggle'; img.src=IMG_SRC; img.alt='Rock toggle'; Object.assign(img.style,{ position:'absolute', right:'calc(var(--rail-w) + var(--rock-rail-gap))', bottom:'-28px', width:'min(30vw, 260px)', zIndex:'6', userSelect:'none', cursor:'pointer', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.55))', transition:'opacity 160ms ease' });
+	    img.addEventListener('click', ()=>{ const a=ensureRock(); if(a.paused) a.play().catch(()=>{}); active = !active; window.__rockActive = active; const tv = active ? (base ? base.volume : targetVol()) : 0; fadeTo(a, tv, 220); img.style.opacity = active ? '1' : '0.9'; });
+	    ensureAnchor().appendChild(img);
+	  }
+	  document.addEventListener('DOMContentLoaded', ()=>{ wireBase(); ensureRockImage(); setTimeout(wireBase,0); });
+	})();
+	</script></body>
+
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
+
+
+
+
+
+

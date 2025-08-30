@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,9 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Background pattern layers -->
-  <div class="bg bg-circles" aria-hidden="true"></div>
-  <div class="bg bg-pluses" aria-hidden="true"></div>
 
   <header class="site-header">
     <h1>SlickestFox</h1>
@@ -42,7 +39,6 @@
         <p>This is a placeholder content box using the Luna window frame. When your hand‑drawn border images are added to <code>assets/ui/luna/</code>, this will automatically pick them up.</p>
       </div>
     </div>
-
 
     <!-- Preview: small, medium, wide, and tall windows -->
     <div class="luna-window" style="margin:20px 0; max-width: 320px;">
@@ -124,8 +120,7 @@
   <script id="loop-data" type="application/json">
   {
     "loops": [
-      { "src": "assets/audio/loops/index.ogg" },
-      { "src": "assets/audio/loops/art.ogg" }
+      { "src": "assets/audio/loops/average elevator.ogg" }
     ]
   }
   </script>
@@ -251,7 +246,7 @@
         try {
           const a = new Audio(src);
           a.preload = 'auto';
-          a.volume = 0.6; // base SFX level, will be scaled by global vol
+          a.volume = 0.6;
           cache.set(src, a);
         } catch { cache.set(src, null); }
       }
@@ -259,11 +254,10 @@
     }
     function playKey(key){
       const { muted, vol } = getGlobal();
-      if (muted || vol === 0) return; // respect global mute/volume
+      if (muted || vol === 0) return;
       const base = getAudio(key);
       if (!base) return;
       try {
-        // Clone to allow overlapping playback without cutting off previous ones
         const inst = base.cloneNode(true);
         inst.volume = base.volume * vol;
         inst.play().catch(()=>{});
@@ -293,7 +287,6 @@
       for (let i=0;i<text.length;i++){
         const ch = text[i];
         if (ch === ' '){
-          // Preserve spaces as text nodes so spacing remains intact
           el.appendChild(document.createTextNode(' '));
           continue;
         }
@@ -311,4 +304,3 @@
   </script>
 </body>
 </html>
-

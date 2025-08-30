@@ -65,6 +65,96 @@ html, body {
 	overflow-x: hidden;
 }
 
+/* ========== Global Side Background (applies to all pages) ========== */
+/* Two animated decorative rails pinned to the left and right edges. */
+/* Disable by adding class `no-bg` on <body> (not needed for admin which uses its own CSS). */
+
+:root {
+  --rail-w: clamp(120px, 16vw, 220px);
+  --rail-divider: rgba(255,255,255,0.12);
+  --rail-fade-w: 24px;
+  --rail-fade-color: rgba(0,0,0,0.55);
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: var(--rail-w);
+  z-index: 1; /* above #global-flash (z-index:0), below content (>=2) */
+  pointer-events: none;
+  /* Layer order (top → bottom):
+     1) 1px divider line at inner edge
+     2) 24px soft fade into rail (gives depth vs global layer)
+     3) circles A, 4) circles B, 5) plus sparkles
+  */
+  background-repeat: no-repeat, no-repeat, repeat, repeat, repeat;
+  background-size:
+    1px 100%,              /* divider line */
+    var(--rail-fade-w) 100%,  /* soft fade */
+    140px 140px, /* circles A */
+    140px 140px, /* circles B */
+    160px 160px; /* pluses */
+  opacity: 0.9;
+}
+
+/* Left rail */
+body::before {
+  left: 0;
+  background-image:
+    linear-gradient(to left, var(--rail-divider), var(--rail-divider)), /* divider */
+    linear-gradient(to left, var(--rail-fade-color), rgba(0,0,0,0)),    /* fade */
+    radial-gradient(circle at 25% 25%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px),
+    radial-gradient(circle at 75% 75%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M18 6h4v12h12v4H22v12h-4V22H6v-4h12z' fill='rgba(255,255,255,0.08)'/></svg>");
+  background-position:
+    right top,  /* divider line pinned to inner edge */
+    right top,  /* soft fade from inner edge */
+    0 0,
+    0 0,
+    0 0;
+  animation: rail-left-move 36s linear infinite;
+}
+
+/* Right rail */
+body::after {
+  right: 0;
+  background-image:
+    linear-gradient(to right, var(--rail-divider), var(--rail-divider)), /* divider */
+    linear-gradient(to right, var(--rail-fade-color), rgba(0,0,0,0)),    /* fade */
+    radial-gradient(circle at 25% 25%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px),
+    radial-gradient(circle at 75% 75%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M18 6h4v12h12v4H22v12h-4V22H6v-4h12z' fill='rgba(255,255,255,0.08)'/></svg>");
+  background-position:
+    left top,   /* divider line pinned to inner edge */
+    left top,   /* soft fade from inner edge */
+    0 0,
+    0 0,
+    0 0;
+  animation: rail-right-move 28s linear infinite;
+}
+
+/* Animate each layer by shifting background-position at different deltas
+   to mimic the separate speeds from index.html */
+@keyframes rail-left-move {
+  from { background-position: right top, right top, 0 0, 0 0, 0 0; }
+  to   { background-position: right top, right top, 140px 140px, -140px 140px, -160px 160px; }
+}
+@keyframes rail-right-move {
+  from { background-position: left top, left top, 0 0, 0 0, 0 0; }
+  to   { background-position: left top, left top, -140px 140px, 140px 140px, 160px 160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after { animation: none; }
+}
+
+/* Opt-out class (not applied anywhere except if you want to disable) */
+body.no-bg::before,
+body.no-bg::after { display: none; }
+
 .container {
 	width: min(1100px, 92vw);
 	margin: 0 auto;
@@ -182,47 +272,7 @@ nav a:hover {
 	margin-top: 0;
 }
 
-/* ========== Background Pattern (diagonal scroll) ========== */
-.bg {
-	position: fixed;
-	inset: -100px;
-	z-index: -1;
-	pointer-events: none;
-}
-
-/* Outlined circle rings (two offset fields) */
-.bg-circles {
-	background-image:
-		radial-gradient(circle at 25% 25%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px),
-		radial-gradient(circle at 75% 75%, transparent 18px, rgba(255,255,255,0.10) 19px, rgba(255,255,255,0.10) 21px, transparent 22px);
-	background-size: 140px 140px, 140px 140px;
-	background-repeat: repeat;
-	animation: diag-move-a 42s linear infinite;
-	opacity: 0.8;
-}
-
-/* Plus sparkles as a single merged glyph (no additive stacking) */
-.bg-pluses {
-	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M18 6h4v12h12v4H22v12h-4V22H6v-4h12z' fill='rgba(255,255,255,0.08)'/></svg>");
-	background-size: 160px 160px;
-	background-repeat: repeat;
-	animation: diag-move-b 28s linear infinite;
-	/* no mix-blend-mode to avoid brightness compounding */
-}
-
-@keyframes diag-move-a {
-	from { transform: translate3d(-120px, -120px, 0); }
-	to { transform: translate3d(120px, 120px, 0); }
-}
-
-@keyframes diag-move-b {
-	from { transform: translate3d(160px, -160px, 0) rotate(0.001deg); }
-	to { transform: translate3d(-160px, 160px, 0) rotate(0.001deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.bg-circles, .bg-pluses { animation: none; }
-}
+/* (Legacy index background classes kept removed; superseded by body::before/::after) */
 
 /* ========== Footer ========== */
 footer {
@@ -857,6 +907,56 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
   font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
+/* Post toolbar (optional): appears directly under titlebar inside post windows */
+.luna-window.post .luna-toolbar {
+  display: flex;
+  align-items: stretch; /* children fill full height */
+  gap: 0; /* no spacing between chips */
+  height: 36px; /* fixed toolbar height */
+  padding: 0; /* chips should touch the edges */
+  background: color-mix(in srgb, var(--bg-2), white 7%);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.28);
+  color: var(--text);
+}
+
+/* Toolbar chips (date and icons) */
+.luna-window.post .tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  height: 100%; /* span full toolbar */
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  border-radius: 0; /* square tabs */
+  margin: 0; /* remove spacing */
+}
+.luna-window.post .tool-chip + .tool-chip { margin-left: -1px; } /* collapse adjoining borders */
+.luna-window.post .tool-date {
+  font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  opacity: 0.78; /* a bit less opaque */
+}
+.luna-window.post .tool-icons, .luna-window.post .tool-tag {
+  display: inline-flex;
+}
+.luna-window.post .tool-icons img, .luna-window.post .tool-tag img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  display: block;
+}
+.luna-window.post .tool-tag .tag-text {
+  font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.luna-window.post .luna-toolbar .spacer { flex: 1; }
+
 /* Images inside windows */
 .luna-body img.luna-img { display:block; max-width:100%; height:auto; border-radius:8px; }
 .luna-body img.pixelated { image-rendering: pixelated; image-rendering: crisp-edges; }
@@ -921,3 +1021,27 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
 /* Inactive tint removed (unused) */
 
 
+
+/* ===== Videos page ===== */
+.videos-page .yt-latest { display:grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: start; }
+@media (max-width: 900px){ .videos-page .yt-latest { grid-template-columns: 1fr; } }
+.aspect-16x9 { position: relative; width: 100%; padding-top: 56.25%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+.aspect-16x9 > iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.videos-page .yt-description { white-space: pre-wrap; font-size: 0.95rem; line-height: 1.5; }
+.videos-page .yt-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.videos-page .yt-card .luna-body { padding: 0; }
+.videos-page .yt-card .aspect-16x9 { border: 0; background: transparent; }
+/* Videos title handling */
+.luna-titlebar .luna-title { white-space: nowrap; overflow: hidden; }
+.luna-titlebar .luna-title.wave { display: inline-block; }
+/* Shorts vertical aspect */
+.aspect-9x16 { position: relative; width: 100%; padding-top: 177.7778%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+.aspect-9x16 > iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+/* Ensure titles stay in one line and hide overflow (wave anim handled by JS/CSS) */
+.luna-titlebar .luna-title { white-space: nowrap; overflow: hidden; }
+/* Reserve space for titlebar controls so text clips sooner */
+.luna-titlebar .luna-title { padding-right: calc(40px * 3 + 16px); }
+/* Videos: adjustable space for rock toggle */
+:root { --rock-bottom-space: 240px; --rock-rail-gap: 0px; }
+.videos-page { padding-bottom: var(--rock-bottom-space); }
