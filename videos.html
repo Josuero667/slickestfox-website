@@ -6,14 +6,14 @@
 
 	<meta charset="UTF-8">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
 
-	<title>Videos - SlickestFox</title>
+	<title>Videos - slickestfox</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body style="--rock-bottom-space: 240px; --rock-rail-gap: 0px;">
+<body style="--rock-bottom-space: 0px; --rock-rail-gap: 0px;">
 
-	<header class="site-header">		<h1>SlickestFox</h1>
+	<header class="site-header">		<h1 class="brand">slickestfox</h1>
 
 		<nav>
 
@@ -27,6 +27,13 @@
 			<a href="comissions.html">Commissions</a>
 			<a href="dog-posting.html">Dog-Posting™</a>
 
+			<div class="dropdown">
+				<button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+				<div class="dropdown-content" role="menu">
+					<a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+				</div>
+			</div>
 		</nav>
 
 	</header>
@@ -35,6 +42,7 @@
 
 		<main class="container videos-page" style="padding-bottom: var(--rock-bottom-space);">
 		<section>
+			<h2>Most Recent Upload</h2>
 			<div class="luna-window" id="latest-window">
 				<div class="luna-titlebar">
 					<div class="luna-title" id="latest-title">Latest Upload</div>
@@ -62,6 +70,8 @@
 		</section>
 
 		<section style="margin-top:22px;">
+			<h2>Videos</h2>
+			<p>These are videos from my music channel where I publish some cool music I make! I plan to release longer way cooler content soon, so stay tuned!! I also have a second channel linked on my channel which I dont use much!</p>
 			<h3 style="margin: 0 0 10px 2px;">Recent Uploads</h3>
 			<div class="yt-grid" id="recent-grid"><!-- filled by videos.js --></div>
 		</section>
@@ -76,8 +86,16 @@
 
 	<footer>
 
-		<p>© 2025 SlickestFox</p>
+		<p>© 2025 slickestfox</p>
 
+		<nav class="social-links" aria-label="Social media">
+			<a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+			<a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+			<a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+			<a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+			<a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+			<a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+		</nav>
 	</footer>
 
 	<!-- Inline JSON (loop config) -->
@@ -120,8 +138,15 @@
 			let data={}; try{ data = JSON.parse(document.getElementById('loop-data').textContent); }catch{}
 			const loops = Array.isArray(data.loops)?data.loops:[]; if(!loops.length) return;
 			const src = loops[(Math.random()*loops.length)|0].src;
-			audioEl = new Audio(src); audioEl.loop = true; window.__siteAudioEl = audioEl;
-			const { muted, vol } = loadPrefs(); audioEl.volume=vol; audioEl.muted=muted; audioEl.play().catch(()=>{});
+		audioEl = new Audio(src); audioEl.loop = true; window.__siteAudioEl = audioEl;
+			const ROCK_SRC_INLINE = 'assets/audio/loops/rock.ogg';
+			let rockEl = new Audio(ROCK_SRC_INLINE); rockEl.loop = true; rockEl.muted = false; rockEl.volume = 0; window.__rockAudioEl = rockEl; window.__rockActive = false;
+			const { muted, vol } = loadPrefs(); audioEl.volume=vol; audioEl.muted=muted;
+			let baseReady=false, rockReady=false, started=false;
+			function tryStart(){ if(started) return; if(baseReady && rockReady){ started=true; try{ audioEl.currentTime=0; rockEl.currentTime=0; }catch{} audioEl.play().catch(()=>{}); rockEl.play().catch(()=>{}); } }
+			audioEl.addEventListener('canplay', ()=>{ baseReady=true; tryStart(); });
+			rockEl.addEventListener('canplay', ()=>{ rockReady=true; tryStart(); });
+			setTimeout(tryStart, 1500);
 
 			const controls=document.createElement('div'); controls.id='music-controls';
 			const btn=document.createElement('button'); btn.id='mute-btn'; btn.textContent=(muted||vol===0)?'🔇':'🔊';
@@ -151,28 +176,76 @@
 	  const IMG_SRC  = 'assets/rock.png';
 	  let rock=null, active=false, fadeRAF=0, base=null;
 	  function targetVol(){ try{ const m=localStorage.getItem(LS_MUTE_KEY)==='1'; const v=parseFloat(localStorage.getItem(LS_VOL_KEY)||'0.5'); return m?0:Math.max(0,Math.min(1,v)); }catch{ return 0.5; } }
-	  function ensureRock(){ if(rock) return rock; rock=new Audio(ROCK_SRC); rock.loop=true; rock.volume=0; rock.muted=false; window.__rockAudioEl=rock; return rock; }
-	  function fadeTo(a,to,ms){ if(!a) return; if(fadeRAF) cancelAnimationFrame(fadeRAF); const from=a.volume; const t0=performance.now(); to=Math.max(0,Math.min(1,to)); function step(t){ const p=Math.min(1,(t-t0)/Math.max(1,ms||200)); a.volume = from + (to-from)*p; if(p<1) fadeRAF=requestAnimationFrame(step); else fadeRAF=0; } fadeRAF=requestAnimationFrame(step); }
-	  function syncRock(){ if(!base||!rock) return; try{ rock.playbackRate=base.playbackRate; }catch{} try{ const d=Math.abs((rock.currentTime||0)-(base.currentTime||0)); if(d>0.5) rock.currentTime=base.currentTime; }catch{} }
-	  function wireBase(){ base = window.__siteAudioEl || null; if(!base) return; const a=ensureRock(); a.currentTime = base.currentTime||0; a.play().catch(()=>{});
-	    base.addEventListener('play', ()=>{ a.currentTime=base.currentTime||0; a.play().catch(()=>{}); });
+	  function ensureRock(){ if(rock) return rock; if (window.__rockAudioEl) { rock = window.__rockAudioEl; return rock; } rock=new Audio(ROCK_SRC); rock.loop=true; rock.volume=0; rock.muted=false; window.__rockAudioEl=rock; return rock; }
+  function fadeTo(a,to,ms){
+    if(!a) return;
+    if(fadeRAF) cancelAnimationFrame(fadeRAF);
+    let from = Number.isFinite(a.volume) ? a.volume : 0;
+    const t0 = performance.now();
+    to = Math.max(0, Math.min(1, Number.isFinite(to) ? to : 0));
+    function step(t){
+      const p = Math.min(1, (t - t0) / Math.max(1, ms || 200));
+      const v = from + (to - from) * p;
+      a.volume = Math.max(0, Math.min(1, v));
+      if (p < 1) fadeRAF = requestAnimationFrame(step); else fadeRAF = 0;
+    }
+    fadeRAF = requestAnimationFrame(step);
+  }
+	  function syncRock(){ if(!base||!rock) return; try{ rock.playbackRate=base.playbackRate; }catch{} }
+	  function wireBase(){ base = window.__siteAudioEl || null; if(!base) return; const a=ensureRock();
+	    a.play().catch(()=>{});
+	    base.addEventListener('play', ()=>{ a.play().catch(()=>{}); });
 	    base.addEventListener('pause', ()=>a.pause());
 	    base.addEventListener('seeking', syncRock);
 	    base.addEventListener('seeked', syncRock);
 	    base.addEventListener('ratechange', ()=>{ try{ a.playbackRate = base.playbackRate; }catch{} });
-	    base.addEventListener('ended', ()=>{ a.currentTime = 0; });
-	    base.addEventListener('timeupdate', ()=>{ if(!a.paused) syncRock(); });
-	    base.addEventListener('volumechange', ()=>{ a.volume = active ? base.volume : 0; });
-	    window.addEventListener('storage', (e)=>{ if(!e || e.key===LS_MUTE_KEY || e.key===LS_VOL_KEY){ a.volume = active ? targetVol() : 0; } });
+	    base.addEventListener('ended', ()=>{ /* keep positions; both should start together next load */ });
+	    base.addEventListener('timeupdate', ()=>{ /* no time stepping to keep lock */ });
+    base.addEventListener('volumechange', ()=>{
+      const bv = Number.isFinite(base.volume) ? base.volume : 0;
+      a.volume = active ? Math.max(0, Math.min(1, bv)) : 0;
+    });
+    window.addEventListener('storage', (e)=>{
+      if(!e || e.key===LS_MUTE_KEY || e.key===LS_VOL_KEY){
+        const tv = targetVol();
+        a.volume = active ? Math.max(0, Math.min(1, tv)) : 0;
+      }
+    });
 	  }
 	  function ensureAnchor(){ let an = document.getElementById('rock-anchor'); if(!an){ an = document.createElement('div'); an.id='rock-anchor'; an.style.position='relative'; an.style.height='0'; document.body.appendChild(an); } return an; }
-	  function ensureRockImage(){ if(document.getElementById('rock-toggle')) return; const img=document.createElement('img'); img.id='rock-toggle'; img.src=IMG_SRC; img.alt='Rock toggle'; Object.assign(img.style,{ position:'absolute', right:'calc(var(--rail-w) + var(--rock-rail-gap))', bottom:'-28px', width:'min(30vw, 260px)', zIndex:'6', userSelect:'none', cursor:'pointer', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.55))', transition:'opacity 160ms ease' });
+	  function ensureRockImage(){ if(document.getElementById('rock-toggle')) return; const img=document.createElement('img'); img.id='rock-toggle'; img.src=IMG_SRC; img.alt='Rock toggle'; Object.assign(img.style,{ position:'absolute', right:'calc(var(--rail-w) + var(--rock-rail-gap))', bottom:'0', width:'min(30vw, 260px)', zIndex:'6', userSelect:'none', cursor:'pointer', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.55))', transition:'opacity 160ms ease' });
 	    img.addEventListener('click', ()=>{ const a=ensureRock(); if(a.paused) a.play().catch(()=>{}); active = !active; window.__rockActive = active; const tv = active ? (base ? base.volume : targetVol()) : 0; fadeTo(a, tv, 220); img.style.opacity = active ? '1' : '0.9'; });
-	    ensureAnchor().appendChild(img);
+	    const anchor = ensureAnchor(); anchor.appendChild(img);
+	    img.addEventListener('load', ()=>{ try { const h = img.getBoundingClientRect().height; anchor.style.height = (h|0) + 'px'; } catch {} });
 	  }
 	  document.addEventListener('DOMContentLoaded', ()=>{ wireBase(); ensureRockImage(); setTimeout(wireBase,0); });
 	})();
-	</script></body>
+</script>
+
+<!-- Titlebar button SFX (same behavior as commissions page) -->
+<script>
+(function(){
+  const SOURCES = {
+    minimize: 'assets/ui/luna/minimize.mp3',
+    maximize: 'assets/ui/luna/maximize.mp3',
+    close:    'assets/ui/luna/close.mp3',
+    default:  'assets/ui/luna/click.mp3'
+  };
+  const cache = new Map();
+  const LS_MUTE_KEY = 'siteAudioMuted';
+  const LS_VOL_KEY  = 'siteAudioVolume';
+  function getGlobal(){
+    let muted=false, vol=1; try{ const m=localStorage.getItem(LS_MUTE_KEY); const v=localStorage.getItem(LS_VOL_KEY); if(m!==null) muted=(m==='1'); if(v!==null){ const nv=parseFloat(v); if(!Number.isNaN(nv)) vol=Math.max(0,Math.min(1,nv)); } }catch{} return {muted,vol};
+  }
+  function getAudio(key){ const src=SOURCES[key]||SOURCES.default; if(!cache.has(src)){ try{ const a=new Audio(src); a.preload='auto'; a.volume=0.6; cache.set(src,a);}catch{ cache.set(src,null);} } return cache.get(src); }
+  function playKey(key){ const {muted,vol}=getGlobal(); if(muted||vol===0) return; const base=getAudio(key); if(!base) return; try{ const inst=base.cloneNode(true); inst.volume=base.volume*vol; inst.play().catch(()=>{});}catch{} }
+  window.addEventListener('DOMContentLoaded',()=>{
+    document.body.addEventListener('pointerdown',(e)=>{ const btn=e.target.closest('.luna-btn'); if(!btn) return; if(btn.classList.contains('minimize')) return playKey('minimize'); if(btn.classList.contains('maximize')) return playKey('maximize'); if(btn.classList.contains('close')) return playKey('close'); playKey('default'); },{passive:true});
+  });
+})();
+</script>
+
+</body>
 
 </html>
 
@@ -190,6 +263,8 @@
 
 
 	  
+
+
 
 
 

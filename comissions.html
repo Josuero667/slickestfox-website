@@ -2,33 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Commissions - SlickestFox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9" />
+  <title>Commissions - slickestfox</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="comm-page">
 
   <header class="site-header">
-    <h1>SlickestFox</h1>
+    <h1 class="brand">slickestfox</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="art.html">Art</a>
       <a href="music.html">Music</a>
       <a href="videos.html">Videos</a>
       <a href="comissions.html">Commissions</a>
-      <a href="dog-posting.html">Dog-PostingT</a>
-    </nav>
+      <!-- Dog-Posting moved to Extras dropdown -->
+			<div class="dropdown">
+				<button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+				<div class="dropdown-content" role="menu">
+					<a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+				</div>
+			</div>
+		</nav>
   </header>
 
   <main class="container">
     <section class="intro">
-      <h3>Commissions</h3>
-      <p class="muted">Temporary UI testing area for the Luna-style decorative windows. These are not draggable — just styled frames to showcase content.</p>
+      <h3>Commission Pricing and Terms of Service</h3>
+      <!-- Set Comission STATUS-->
+      <div class="comm-status open">COMMISSIONS OPEN</div>
     </section>
 
-    <!-- Demo windows: active and inactive, with fallback styling if assets are missing -->
-    <div class="luna-window" style="margin: 20px 0;">
-      <div class="luna-titlebar"><span class="luna-title">Active Window</span>
+    <!-- Overview / How to order -->
+    <div class="luna-window compact">
+      <div class="luna-titlebar"><span class="luna-title">How it Works</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -36,13 +44,16 @@
         </div>
       </div>
       <div class="luna-body">
-        <p>This is a placeholder content box using the Luna window frame. When your hand‑drawn border images are added to <code>assets/ui/luna/</code>, this will automatically pick them up.</p>
+        <p>You can request art commissions through my Twitter DM’s if I have my commission status set to open!!</p>
+        <p>DM me on <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer">Twitter</a> to start your request.</p>
+        <p>Here’s a doc where the terms are more readable :3 <a href="https://docs.google.com/document/d/1zNpQGxoMZdQBrpU7XLlzCokvoXq4_9g-JSp3YZvnwjU/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Open the doc</a></p>
+        <img class="luna-img" src="assets/macchi doodling.png" alt="small doodle" style="max-width:180px; border-radius:10px; display:block; margin:10px auto 0;"/>
       </div>
     </div>
 
-    <!-- Preview: small, medium, wide, and tall windows -->
-    <div class="luna-window" style="margin:20px 0; max-width: 320px;">
-      <div class="luna-titlebar"><span class="luna-title">Small Preview</span>
+    <!-- Full-Body -->
+    <div class="luna-window wide">
+      <div class="luna-titlebar"><span class="luna-title">Full‑Body (FB) — $65</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -50,12 +61,18 @@
         </div>
       </div>
       <div class="luna-body">
-        <p>Short content. Width ~320px to test corners and side repeat.</p>
+        <div class="luna-gallery">
+          <img class="luna-img" src="assets/art/gayslop 2 RENDERED.png" alt="gayslop 2 RENDERED" />
+          <img class="luna-img" src="assets/art/Pizzaz Comission Final.png" alt="Pizzaz Commission Final" />
+          <img class="luna-img" src="assets/art/Macchi subway.png" alt="Macchi subway" />
+        </div>
+        <p style="margin-top:10px">A full‑body piece where the entire figure is visible. Great for dynamic poses and showing your character in full. Includes rendering.</p>
       </div>
     </div>
 
-    <div class="luna-window" style="margin:20px 0; max-width: 560px;">
-      <div class="luna-titlebar"><span class="luna-title">Medium Preview</span>
+    <!-- Half-Body -->
+    <div class="luna-window">
+      <div class="luna-titlebar"><span class="luna-title">Half‑Body (HB) — $45</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -63,12 +80,18 @@
         </div>
       </div>
       <div class="luna-body">
-        <p>Middle width to ensure the center strips tile nicely.</p>
+        <div class="luna-gallery">
+          <img class="luna-img" src="assets/art/webfishing guy rtx.png" alt="webfishing guy rtx" />
+          <img class="luna-img" src="assets/art/macchi guitar playing V2.png" alt="macchi guitar playing V2" />
+          <img class="luna-img" src="assets/art/gab Commission Final.png" alt="gab Commission Final" />
+        </div>
+        <p style="margin-top:10px">From the hips up (or any close‑up framing you like). Includes rendering.</p>
       </div>
     </div>
 
-    <div class="luna-window" style="margin:20px 0;">
-      <div class="luna-titlebar"><span class="luna-title">Wide Preview</span>
+    <!-- Headshot -->
+    <div class="luna-window compact">
+      <div class="luna-titlebar"><span class="luna-title">Headshot Icon — $35</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -76,13 +99,18 @@
         </div>
       </div>
       <div class="luna-body">
-        <img class="luna-img" src="assets/banner.jpg" alt="Banner preview" />
-        <p style="margin-top:10px">Full container width with an image banner. Long line of text to test wrapping beneath the image. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas porttitor felis non libero facilisis.</p>
+        <div class="luna-gallery">
+          <img class="luna-img" src="assets/art/Sylvius pfp remake.png" alt="Sylvius pfp remake" />
+          <img class="luna-img" src="assets/art/serp icon.png" alt="serp icon" />
+          <img class="luna-img" src="assets/art/devious icon.png" alt="devious icon" />
+        </div>
+        <p style="margin-top:10px">A portrait focused on your character’s face — perfect for avatars and profiles. Includes rendering.</p>
       </div>
     </div>
 
-    <div class="luna-window" style="margin:20px 0; max-width: 460px;">
-      <div class="luna-titlebar"><span class="luna-title">Tall Preview</span>
+    <!-- Add‑ons -->
+    <div class="luna-window narrow">
+      <div class="luna-titlebar"><span class="luna-title">Add‑ons</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -90,15 +118,16 @@
         </div>
       </div>
       <div class="luna-body">
-        <img class="luna-img pixelated" src="assets/ui/luna/titlebar-left.png" alt="Pixel sticker" style="width:96px; image-rendering: pixelated;" />
-        <p style="margin-top:10px">Multi-paragraph content to test the bottom frame repeat. Includes a small pixelated sticker image for decoration.</p>
-        <p style="margin-top:10px">Vivamus commodo, nunc vitae dapibus tincidunt, sem sem feugiat mi, a fringilla lectus lacus eu odio. Cras posuere risus nec nisl gravida, ut viverra augue tempor.</p>
-        <p style="margin-top:10px">Suspendisse bibendum massa vel elit molestie, vitae efficitur mauris vulputate.</p>
+        <ul>
+          <li><strong>Background</strong>: Fully rendered scene to elevate your piece — <em>+ $30–60</em> depending on complexity.</li>
+          <li><strong>Additional Character</strong>: FB or HB extra character — <em>+ $20</em>.</li>
+        </ul>
       </div>
     </div>
 
-    <div class="luna-window" style="margin:20px 0; max-width: 360px;">
-      <div class="luna-titlebar"><span class="luna-title">Image Post</span>
+    <!-- Payment -->
+    <div class="luna-window">
+      <div class="luna-titlebar"><span class="luna-title">Payment</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -106,23 +135,76 @@
         </div>
       </div>
       <div class="luna-body">
-        <img class="luna-img" src="assets/ui/luna/titlebar-right.png" alt="Decorative corner art" style="width:100%; max-width:320px;" />
-        <p style="margin-top:8px" class="muted">Caption: decorative preview using UI corner art as placeholder texture.</p>
+        <p>Payment via Ko‑fi donations or PayPal. A 50% deposit is required before I begin the sketch; the remaining 50% is due after you receive the sketch. All prices are in USD.</p>
+      </div>
+    </div>
+
+    <!-- Terms of Service -->
+    <div class="luna-window">
+      <div class="luna-titlebar"><span class="luna-title">Terms of Service</span>
+        <div class="luna-controls" aria-hidden="false">
+          <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
+          <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
+          <button class="luna-btn close" title="Close" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="luna-body">
+        <ul>
+          <li>50% deposit before sketch; remaining 50% after sketch delivery.</li>
+          <li>No refunds after sketch approval if lineart/color/rendering has started.</li>
+          <li>Progress updates upon request; revisions are welcome, but major changes at final rendering stage are discouraged.</li>
+          <li>I do NSFW [+$10] though no extreme fetishes or anything I'm uncomfortable with - feel free to ask.</li>
+          <li>First sketch typically within a week; you can check in anytime.</li>
+          <li>For more questions ask @slickestfox on Twitter.</li>
+        </ul>
+        <p class="muted">Example artwork: see the <a href="art.html">Art page</a>.</p>
       </div>
     </div>
   </main>
 
   <footer>
-    <p>c 2025 SlickestFox</p>
+    <nav class="social-links" aria-label="Social media">
+      <a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+      <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+      <a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+      <a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+      <a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+      <a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+    </nav>
+    <p>© 2025 slickestfox</p>
   </footer>
 
   <!-- Inline JSON (loop config) -->
   <script id="loop-data" type="application/json">
   {
     "loops": [
-      { "src": "assets/audio/loops/average elevator.ogg" }
+      { "src": "assets/audio/loops/comissions.ogg" }
     ]
   }
+  </script>
+
+  <!-- Normalize mute button icon text across browsers/pages -->
+  <script>
+  (function(){
+    function setMuteIcon(){
+      var btn = document.getElementById('mute-btn');
+      if (!btn) return;
+      try {
+        var m = localStorage.getItem('siteAudioMuted') === '1';
+        var v = parseFloat(localStorage.getItem('siteAudioVolume') || '0.5');
+        if (isNaN(v)) v = 0.5;
+        btn.textContent = (m || v === 0) ? '🔇' : '🔊';
+      } catch { btn.textContent = '🔊'; }
+    }
+    document.addEventListener('DOMContentLoaded', function(){
+      setMuteIcon();
+      var btn = document.getElementById('mute-btn');
+      if (!btn) return;
+      var obs = new MutationObserver(setMuteIcon);
+      obs.observe(btn, { childList: true, characterData: true, subtree: true });
+      window.addEventListener('storage', setMuteIcon);
+    });
+  })();
   </script>
 
   <!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->

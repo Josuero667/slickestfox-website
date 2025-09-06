@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>SylviumLighting - slickestfox</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light no-bg">
+    <header class="site-header">
+        <h1 class="brand">slickestfox</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="art.html">Art</a>
+            <a href="music.html">Music</a>
+            <a href="videos.html">Videos</a>
+            <a href="comissions.html">Commissions</a>
+            <!-- Dog-Posting moved to Extras dropdown -->
+            <div class="dropdown">
+                <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+                <div class="dropdown-content" role="menu">
+                    <a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+                </div>
+            </div>
+        </nav>
+</header>
+
+    <!-- HERO / BANNER -->
+    <section class="hero hero-white" aria-label="SylviumLighting banner">
+        <img class="hero-img" src="assets/sylviumlighting banner.jpg" alt="SylviumLighting banner">
+        <div class="hero-overlay">
+            <h2>SylviumLighting</h2>
+            <p class="tagline">Custom RGB lighting</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section>
+            <h2>What It Is?</h2>
+            <p>Hello!! SylviumLighting is an Etsy store I opened where I sell custom made ARGB Led Pucks, they work directly using data so you would need a separate microcontroller/LED controller for them. If you like RGB Lighting and are familiar on how to wire WS2812B Led strips I implore you to check them out! It directly supports me and what I do, thanks!! X3</p>
+        </section>
+
+        <!-- Product showcase (autoplay video + collage + price + Etsy link) -->
+        <section class="product">
+            <div class="product-meta">
+                <span class="product-price">$25.99+</span>
+                <a class="btn" href="https://www.etsy.com/listing/4337372820/" target="_blank" rel="noopener noreferrer">View on Etsy</a>
+            </div>
+            <div class="product-showcase">
+                <video class="product-video" src="assets/sylvium-lighting/rgb puck.mp4" autoplay loop muted playsinline preload="metadata"></video>
+                <div>
+                    <div class="img-grid">
+                        <img src="assets/sylvium-lighting/IMG_0050.jpg" alt="Product photo 1">
+                        <img src="assets/sylvium-lighting/IMG_0060.jpg" alt="Product photo 2">
+                        <img src="assets/sylvium-lighting/IMG_0064.jpg" alt="Product photo 3">
+                        <img src="assets/sylvium-lighting/IMG_0070.jpg" alt="Product photo 4">
+                        <img src="assets/sylvium-lighting/IMG_0075.jpg" alt="Product photo 5">
+                        <img src="assets/sylvium-lighting/black 10.png" alt="Product photo 6">
+                        <img src="assets/sylvium-lighting/white 8.png" alt="Product photo 7">
+                        <img src="assets/sylvium-lighting/white 11 v2.png" alt="Product photo 8">
+                    </div>
+                </div>
+            </div>
+        </section>
+</main>
+
+    <footer>
+        <nav class="social-links" aria-label="Social media">
+            <a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+            <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+            <a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+            <a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+            <a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+            <a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+        </nav>
+        <p>© 2025 slickestfox</p>
+    </footer>
+    
+    <!-- Inline JSON (loop config) -->
+    <script id="loop-data" type="application/json">
+    {
+        "loops": [
+            { "src": "assets/audio/loops/sylviumlighting.ogg" }
+        ]
+    }
+    </script>
+
+    <!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
+    <script>
+    (() => {
+        const LS_MUTE_KEY = 'siteAudioMuted';
+        const LS_VOL_KEY = 'siteAudioVolume';
+        let audioEl = null;
+
+        const ICON_MUTED = String.fromCodePoint(0x1F507);
+        const ICON_LOUD  = String.fromCodePoint(0x1F50A);
+        const loadPrefs = () => {
+            let muted = true; let vol = 0.5;
+            try { const m=localStorage.getItem(LS_MUTE_KEY); const v=localStorage.getItem(LS_VOL_KEY);
+                if (m !== null) muted = (m==='1');
+                if (v !== null) { const nv=Math.max(0,Math.min(1,parseFloat(v))); if(!Number.isNaN(nv)) vol=nv; }
+            } catch {}
+            return { muted, vol };
+        };
+        const saveMute=(m)=>{ try{ localStorage.setItem(LS_MUTE_KEY, m?'1':'0'); }catch{} };
+        const saveVol =(v)=>{ try{ localStorage.setItem(LS_VOL_KEY, String(v)); }catch{} };
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            let data={}; try{ data = JSON.parse(document.getElementById('loop-data').textContent); }catch{}
+            const loops = Array.isArray(data.loops)?data.loops:[]; if(!loops.length) return;
+            const src = loops[(Math.random()*loops.length)|0].src;
+            audioEl = new Audio(src); audioEl.loop = true;
+            const { muted, vol } = loadPrefs(); audioEl.volume=vol; audioEl.muted=muted; audioEl.play().catch(()=>{});
+
+            const controls=document.createElement('div'); controls.id='music-controls';
+            const btn=document.createElement('button'); btn.id='mute-btn'; btn.textContent = (audioEl.muted || audioEl.volume==0) ? ICON_MUTED : ICON_LOUD;
+            const slider=document.createElement('input'); slider.type='range'; slider.id='volume-slider'; slider.min='0'; slider.max='1'; slider.step='0.01'; slider.value=String(vol);
+
+            btn.addEventListener('click',()=>{ if(!audioEl) return; audioEl.muted=!audioEl.muted; saveMute(audioEl.muted); btn.textContent = (audioEl.muted||audioEl.volume==0) ? ICON_MUTED : ICON_LOUD; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } });
+            slider.addEventListener('input',()=>{ if(!audioEl) return; const v=Math.max(0,Math.min(1,parseFloat(slider.value))); audioEl.volume=v; saveVol(v); btn.textContent = (audioEl.muted||audioEl.volume==0) ? ICON_MUTED : ICON_LOUD; });
+
+            const onFirstGesture=()=>{ if(!audioEl) return; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } window.removeEventListener('pointerdown',onFirstGesture); window.removeEventListener('keydown',onFirstGesture); };
+            window.addEventListener('pointerdown',onFirstGesture,{passive:true}); window.addEventListener('keydown',onFirstGesture);
+
+            window.addEventListener('storage',(e)=>{
+                if(!audioEl) return;
+                if(e.key===LS_MUTE_KEY && e.newValue!=null){ audioEl.muted=(e.newValue==='1'); btn.textContent = (audioEl.muted||audioEl.volume==0) ? ICON_MUTED : ICON_LOUD; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } }
+                if(e.key===LS_VOL_KEY && e.newValue!=null){ const v=Math.max(0,Math.min(1,parseFloat(e.newValue))); if(!Number.isNaN(v)){ audioEl.volume=v; slider.value=String(v); } btn.textContent = (audioEl.muted||audioEl.volume==0) ? ICON_MUTED : ICON_LOUD; }
+            });
+
+            controls.appendChild(btn); controls.appendChild(slider); document.body.appendChild(controls);
+        });
+    })();
+    </script>
+</body>
+</html>
+

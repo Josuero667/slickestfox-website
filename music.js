@@ -2,6 +2,9 @@
 (function () {
 	'use strict';
 
+	// Basic env detection for mobile-style interaction (no hover)
+	var isMobile = (window.matchMedia && window.matchMedia('(hover: none)').matches) || false;
+
 	// ========= tiny DOM helpers =========
 	function $(sel, root) { return (root || document).querySelector(sel); }
 	function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -107,7 +110,7 @@
 	}
 	function setNowPlaying(trackTitle, releaseTitle, color, singleRelease){
 		ensureNowPlaying();
-		var text = singleRelease ? releaseTitle : (trackTitle ? (trackTitle + ' — ' + releaseTitle) : releaseTitle);
+		var text = singleRelease ? releaseTitle : (trackTitle ? (trackTitle + ' - ' + releaseTitle) : releaseTitle);
 		nowPlayingEl.textContent = '♩ Now Playing: ' + text;
 		nowPlayingEl.style.setProperty('--np-color', color || '#ffd166');
 		nowPlayingEl.classList.add('show');
@@ -188,6 +191,7 @@
 	var leaveTimers = new WeakMap(); // card -> timeout
 	// Guard against late timeouts from previous hovers cutting new audio
 	var pauseTimer = 0;     // setTimeout id for fadeOutAndPause
+	var startTimer = 0;     // setTimeout id for deferred start in playPreview
 	var sessionId = 0;      // increments on each new play to invalidate old timers
 
 	function normalize(url){ return encodeURI(String(url || '').trim()); }
@@ -251,7 +255,11 @@
 		if (currentCard && currentCard !== card) setPulsing(currentCard, false);
 		currentCard = card || currentCard;
 
-		if (!userInteracted){ showGate(); return; }
+			if (!userInteracted){
+				// On desktop, attempt autoplay; if it fails the play() promise will reject gracefully.
+				// On mobile, require explicit tap and show gate.
+				if (isMobile) { showGate(); return; }
+			}
 
 		var candidate = normalize(url);
 		if (!candidate) return;
@@ -268,6 +276,8 @@
 
 		// Cancel any pending pause from a previous card hover
 		if (pauseTimer){ clearTimeout(pauseTimer); pauseTimer = 0; }
+		// Cancel any pending start from a previous quick switch
+		if (startTimer){ clearTimeout(startTimer); startTimer = 0; }
 		cancelEndFade();
 		endFadeAllowed = !!autoEndFade;
 
@@ -279,20 +289,26 @@
 		isFadingOut = true;
 		fadeToVolume(0, 180);
 
-		setTimeout(function(){
+		var sid = sessionId;
+		startTimer = setTimeout(function(){
+			// if a newer play session started, abandon this start
+			if (sid !== sessionId) return;
 			isFadingOut = false;
 			currentUrl = candidate;
 			audio.src = currentUrl;
 			audio.currentTime = 0;
 			audio.onloadedmetadata = function(){
+				if (sid !== sessionId) return;
 				endFadeAllowed = autoEndFade && isFinite(audio.duration) && audio.duration >= MIN_DURATION_FOR_END_FADE;
 			};
 			audio.play().then(function(){
+				if (sid !== sessionId) return;
 				fadeToVolume(targetVolume(), FADE_IN_MS);
 				armEndFade();
 				startGlobalFlash(color, sec);
 				setNowPlaying(trackTitle, releaseTitle, color, singleRelease);
-			}).catch(function(){ /* wait for unlock */ });
+			}).catch(function(){ if (!userInteracted) showGate(); });
+			startTimer = 0;
 		}, 140);
 	}
 
@@ -322,13 +338,19 @@
 			.replace(/&/g,'&amp;').replace(/"/g,'&quot;')
 			.replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	}
-	function setOpen(card, open){
-		var btn = card.querySelector('.toggle-tracks');
-		var panel = card.querySelector('.tracklist');
-		if (!btn || !panel) return;
-		if (open){ card.classList.add('open'); panel.removeAttribute('hidden'); btn.setAttribute('aria-expanded','true'); }
-		else { card.classList.remove('open'); panel.setAttribute('hidden',''); btn.setAttribute('aria-expanded','false'); }
-	}
+function setOpen(card, open){
+    var btn = card.querySelector('.toggle-tracks');
+    var panel = card.querySelector('.tracklist');
+    if (!btn || !panel) return;
+    if (open){ card.classList.add('open'); panel.removeAttribute('hidden'); btn.setAttribute('aria-expanded','true'); }
+    else { card.classList.remove('open'); panel.setAttribute('hidden',''); btn.setAttribute('aria-expanded','false'); }
+}
+
+// Close all other open release tracklists except the provided card
+function closeOtherLists(exceptCard){
+    var openCards = $$('.release.open');
+    openCards.forEach(function(c){ if (c !== exceptCard) setOpen(c, false); });
+}
 
 	// ========= render grid =========
 	function renderGrid(data){
@@ -451,30 +473,107 @@
 				});
 
 				// NEW: click cover → open album on Spotify (if provided)
-				coverWrap.addEventListener('click', function(){
+				var coverTapStage = 0;
+				coverWrap.addEventListener('click', function(e){
+						if (isMobile){
+							e.preventDefault();
+							e.stopPropagation();
+							unlockAudio();
+							// Close any other open tracklists when tapping any release (single or multi)
+							closeOtherLists(card);
+							// If no tracks have previews, open link immediately
+							var hasAnyPreview = false;
+							if (single){ hasAnyPreview = !!(tracks[0] && (String(tracks[0].preview_url||'').trim() !== '')); }
+							else { for (var jj=0; jj<tracks.length; jj++){ if (String(tracks[jj].preview_url||'').trim() !== '') { hasAnyPreview = true; break; } } }
+							if (!hasAnyPreview){
+								if (rel && rel.spotify_album){ window.open(rel.spotify_album, '_blank', 'noopener'); }
+								else if (single && tracks[0] && tracks[0].spotify_url){ window.open(tracks[0].spotify_url, '_blank', 'noopener'); }
+								return;
+							}
+							// Only open link if this release is the one currently previewing
+							var isCurrentRelease = false;
+							if (single){
+								var _t0 = tracks[0] || {};
+								var _cand0 = normalize(_t0.preview_url || '');
+								isCurrentRelease = !!_cand0 && _cand0 === currentUrl && !audio.paused;
+							} else {
+								for (var ii=0; ii<tracks.length; ii++){
+									var _cand = normalize(tracks[ii].preview_url || '');
+									if (_cand && _cand === currentUrl && !audio.paused){ isCurrentRelease = true; break; }
+								}
+							}
+							if (!isCurrentRelease){
+								setRecolorForCard(card, flashColor || getComputedStyle(card).getPropertyValue('--pulse-color'));
+								if (single){
+								var t0 = tracks[0] || {};
+								var bpm0 = Number(t0.bpm) || 120;
+								playPreview(t0.preview_url || '', {
+									card: card,
+									bpm: bpm0,
+									autoEndFade: false,
+									trackTitle: '',
+									releaseTitle: rel.title || '',
+									singleRelease: true,
+									flashColor: flashColor
+								});
+							} else {
+								// On mobile, ensure only one tracklist is open at a time
+								if (isMobile) closeOtherLists(card);
+								setOpen(card, true);
+								var withPrevM = tracks.filter(function(t){ return (t.preview_url||'').trim() !== ''; });
+								var pickM = withPrevM.length ? withPrevM[Math.floor(Math.random()*withPrevM.length)] : null;
+								if (pickM){
+									var bpmM = Number(pickM.bpm) || 120;
+									playPreview(pickM.preview_url, {
+										card: card,
+										bpm: bpmM,
+										autoEndFade: true,
+										trackTitle: String(pickM.title||''),
+										releaseTitle: rel.title || '',
+										singleRelease: false,
+										flashColor: flashColor
+									});
+								}
+							}
+							coverTapStage = 1;
+							return;
+						}
+					}
 					if (rel && rel.spotify_album){
 						window.open(rel.spotify_album, '_blank', 'noopener');
+						coverTapStage = 0;
+					} else if (single && tracks[0] && tracks[0].spotify_url){
+						window.open(tracks[0].spotify_url, '_blank', 'noopener');
+						coverTapStage = 0;
 					}
 				});
 
 				// stop shortly after leaving the card + hide any open list
+				// On mobile, ignore mouseleave so a tap preview doesn't get cut immediately
 				card.addEventListener('mouseleave', function(e){
+					if (isMobile) return;
+					// reset mobile two-tap state on leave
+					try { coverTapStage = 0; } catch {}
 					var t = leaveTimers.get(card);
 					if (t) clearTimeout(t);
+					// Determine if we're moving directly into another release card
+					var to = e && e.relatedTarget ? (e.relatedTarget.closest ? e.relatedTarget.closest('.release') : null) : null;
 					leaveTimers.set(card, setTimeout(function(){
 						if (!single) setOpen(card, false);
-						fadeOutAndPause();
+						// If pointer is going to another release, let the next card's hover start handle transitions
+						if (!to) fadeOutAndPause();
 					}, LEAVE_GRACE_MS));
-					// Remove recolor unless moving directly into another release
-					var to = e && e.relatedTarget ? (e.relatedTarget.closest ? e.relatedTarget.closest('.release') : null) : null;
+					// Remove recolor only when fully leaving the releases area
 					if (!to) clearRecolorForCard(card);
 				});
-				card.addEventListener('mouseenter', function(){
-					var t = leaveTimers.get(card);
-					if (t){ clearTimeout(t); leaveTimers.delete(card); }
-					// Entering anywhere on the card ensures recolor stays on
-					setRecolorForCard(card, flashColor || getComputedStyle(card).getPropertyValue('--pulse-color'));
-				});
+					card.addEventListener('mouseenter', function(){
+						var t = leaveTimers.get(card);
+						if (t){ clearTimeout(t); leaveTimers.delete(card); }
+						// If a previous card scheduled a delayed pause, cancel it as soon as we enter a new card
+						if (pauseTimer){ clearTimeout(pauseTimer); pauseTimer = 0; }
+						// Entering anywhere on the card ensures recolor stays on
+						setRecolorForCard(card, flashColor || getComputedStyle(card).getPropertyValue('--pulse-color'));
+					});
 			}
 
 
@@ -482,10 +581,11 @@
 			if (!single){
 				var btn = card.querySelector('.toggle-tracks');
 				if (btn){
-					btn.addEventListener('click', function(){
-						unlockAudio();
-						var open = card.classList.contains('open');
-						setOpen(card, !open);
+						btn.addEventListener('click', function(){
+							unlockAudio();
+							var open = card.classList.contains('open');
+							if (!open && isMobile) closeOtherLists(card);
+							setOpen(card, !open);
 						if (!open){
 							var withPrev2 = tracks.filter(function(t){ return (t.preview_url||'').trim() !== ''; });
 							var pick2 = withPrev2.length ? withPrev2[Math.floor(Math.random()*withPrev2.length)] : null;
@@ -539,9 +639,47 @@
 					});
 				});
 
-				card.addEventListener('click', function(e){
-					var tBtn = e.target.closest ? e.target.closest('.track') : null;
-					if (!tBtn || !card.contains(tBtn)) return;
+				var tapStageByTrack = new WeakMap();
+					card.addEventListener('click', function(e){
+						var tBtn = e.target.closest ? e.target.closest('.track') : null;
+						if (!tBtn || !card.contains(tBtn)) return;
+						if (isMobile){
+							// Close others even when tapping a track inside this release
+							closeOtherLists(card);
+							e.preventDefault();
+							e.stopPropagation();
+							unlockAudio();
+							var url = tBtn.getAttribute('data-preview') || '';
+							var candidate = normalize(url);
+							if (!url){
+								var link0 = tBtn.getAttribute('data-spotify');
+								if (link0) window.open(link0, '_blank', 'noopener');
+								return;
+							}
+							var isCurrentTrack = !!candidate && candidate === currentUrl && !audio.paused;
+							if (!isCurrentTrack){
+							var bpm4 = Number(tBtn.getAttribute('data-bpm')) || 120;
+							var nameSpan = tBtn.querySelector('.name');
+							var titleTxt = nameSpan ? (nameSpan.textContent||'').trim() : '';
+							if (url){
+								playPreview(url, {
+									card: card,
+									bpm: bpm4,
+									autoEndFade: true,
+									trackTitle: titleTxt,
+									releaseTitle: rel.title || '',
+									singleRelease: false,
+									flashColor: flashColor
+								});
+							}
+							tapStageByTrack.set(tBtn, 1);
+							return;
+						}
+						var linkM = tBtn.getAttribute('data-spotify');
+						if (linkM) window.open(linkM, '_blank', 'noopener');
+						tapStageByTrack.delete(tBtn);
+						return;
+					}
 					var link = tBtn.getAttribute('data-spotify');
 					if (link) window.open(link, '_blank', 'noopener');
 				});
@@ -561,6 +699,11 @@
 		var card = e.target.closest ? e.target.closest('.release') : null;
 		if (!card){
 			any.forEach(function(c){ setOpen(c, false); });
+			// On mobile, also stop preview when tapping outside any release
+			if (isMobile){
+				fadeOutAndPause();
+				clearRecolorForCard(null);
+			}
 		}
 	});
 

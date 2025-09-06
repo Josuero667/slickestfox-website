@@ -1,37 +1,50 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
     <title>Dog Posting - slickestfox</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dogposting-page">
     
 
     <header class="site-header">
-        <h1>slickestfox</h1>
+        <h1 class="brand">slickestfox</h1>
         <nav>
             <a href="index.html">Home</a>
             <a href="art.html">Art</a>
             <a href="music.html">Music</a>
             <a href="videos.html">Videos</a>
             <a href="comissions.html">Commissions</a>
-            <a href="dog-posting.html">Dog-PostingT</a>
-        </nav>
+			<div class="dropdown">
+				<button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+				<div class="dropdown-content" role="menu">
+					<a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+				</div>
+			</div>
+		</nav>
     </header>
 
     <main class="container">
         <section>
-            <h2>Dog Posts</h2>
-            <p class="muted">A lightweight feed for dog thoughts, boops, zoomies, and pics. Edit the posts below in-page — no extra files needed.</p>
+            <h2>Dog-Posting™</h2>
             <div id="posts-list"></div>
         </section>
     </main>
 
     <footer>
-        <p>c 2025 slickestFox</p>
-    </footer>
+		<nav class="social-links" aria-label="Social media">
+			<a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+			<a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+			<a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+			<a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+			<a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+			<a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+		</nav>
+		<p>© 2025 slickestfox</p>
+  </footer>
 
     <!-- Inline JSON (loop config) -->
     <script id="loop-data" type="application/json">
@@ -42,31 +55,44 @@
     }
     </script>
 
+    <!-- Normalize mute button icon text across browsers/pages -->
+    <script>
+    (function(){
+      function setMuteIcon(){
+        var btn = document.getElementById('mute-btn');
+        if (!btn) return;
+        try {
+          var m = localStorage.getItem('siteAudioMuted') === '1';
+          var v = parseFloat(localStorage.getItem('siteAudioVolume') || '0.5');
+          if (isNaN(v)) v = 0.5;
+          btn.textContent = (m || v === 0) ? String.fromCodePoint(0x1F507) : String.fromCodePoint(0x1F50A);
+        } catch { btn.textContent = String.fromCodePoint(0x1F507); }
+      }
+      document.addEventListener('DOMContentLoaded', function(){
+        setMuteIcon();
+        var btn = document.getElementById('mute-btn');
+        if (!btn) return;
+        var obs = new MutationObserver(setMuteIcon);
+        obs.observe(btn, { childList: true, characterData: true, subtree: true });
+        window.addEventListener('storage', setMuteIcon);
+      });
+    })();
+    </script>
+
     <!-- Inline JSON (simple blog posts) -->
     <script id="posts-data" type="application/json">
     {
         "posts": [
             {
-                "id": "dp-003",
-                "title": "First Official Dog Post",
-                "date": "2025-08-27",
-                "content": "Launching the dog feed! Expect boops, bleps, and turbo zoomies.",
-                "image": "assets/art/dog doodles.png"
-            },
-            {
-                "id": "dp-002",
-                "title": "Snoot science",
-                "date": "2025-08-25",
-                "content": "Peer‑reviewed: boops increase happiness by 300%. Very serious study.",
-                "tags": ["boop", "science"]
-            },
-            {
-                "id": "dp-001",
-                "title": "Meet Macchi",
-                "date": "2025-08-20",
-                "content": "Macchi did a big zoom today. 12/10 would zoom again."
+                "id": "dp-007",
+                "title": "Test Post",
+                "date": "2025-09-05",
+                "size": "wide",
+                "content": "Lorem Ipsum or sum shi",
+                "image": "assets/banner.jpg",
+                "tags": ["wide", "banner", "showcase"]
             }
-        ]
+          ]
     }
     </script>
 
@@ -77,6 +103,8 @@
 		const LS_VOL_KEY = 'siteAudioVolume';
 		let audioEl = null;
 
+        const ICON_MUTED = String.fromCodePoint(0x1F507);
+        const ICON_LOUD  = String.fromCodePoint(0x1F50A);
 		// Inline JSON with loop sources
 		let data = {};
 		try { data = JSON.parse(document.getElementById("loop-data").textContent); } catch {}
@@ -123,7 +151,7 @@
 
 			const btn = document.createElement("button");
 			btn.id = "mute-btn";
-			btn.textContent = (muted || vol === 0) ? "🔇" : "🔊";
+                btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 
 			const slider = document.createElement("input");
 			slider.type = "range";
@@ -136,7 +164,7 @@
 				if (!audioEl) return;
 				audioEl.muted = !audioEl.muted;
 				saveMute(audioEl.muted);
-				btn.textContent = audioEl.muted || audioEl.volume == 0 ? "🔇" : "🔊";
+                btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 				if (!audioEl.muted && audioEl.paused){
 					audioEl.play().catch(()=>{});
 				}
@@ -148,7 +176,7 @@
 				const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
 				audioEl.volume = v;
 				saveVol(v);
-				btn.textContent = (audioEl.muted || v === 0) ? "🔇" : "🔊";
+                btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 			});
 
 			// listen for other tabs
@@ -156,13 +184,13 @@
 				if (!audioEl) return;
 				if (e.key === LS_MUTE_KEY && e.newValue != null) {
 					audioEl.muted = (e.newValue === '1');
-					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
+                btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 					if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
 				}
 				if (e.key === LS_VOL_KEY && e.newValue != null) {
 					const v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
 					if (!Number.isNaN(v)) { audioEl.volume = v; slider.value = String(v); }
-					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
+                btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 				}
 			});
 
@@ -178,11 +206,41 @@
     (() => {
         const el = document.getElementById('posts-list');
         if (!el) return;
-        let data = {};
-        try { data = JSON.parse(document.getElementById('posts-data').textContent); } catch {}
-        const posts = (data && Array.isArray(data.posts)) ? [...data.posts] : [];
-        // newest first
-        posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        // Local wave wrapper for dynamically-created titles
+        function wrapWave(el){
+          if (!el) return;
+          // If already processed, skip
+          if (el.classList.contains('wave') || el.querySelector('.char')) return;
+          const text = el.textContent;
+          el.textContent = '';
+          el.classList.add('wave');
+          let idx = 0;
+          for (let i=0; i<text.length; i++){
+            const ch = text[i];
+            if (ch === ' '){ el.appendChild(document.createTextNode(' ')); continue; }
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.style.setProperty('--i', idx++);
+            span.textContent = ch;
+            el.appendChild(span);
+          }
+        }
+        // Prefer external JSON; fallback to inline #posts-data
+        const loadPosts = async () => {
+          try {
+            const r = await fetch('assets/data/posts.json', { cache: 'no-store' });
+            if (r.ok) {
+              const j = await r.json();
+              if (j && Array.isArray(j.posts)) return j.posts;
+            }
+          } catch {}
+          try {
+            const txt = document.getElementById('posts-data')?.textContent || '';
+            const j = JSON.parse(txt);
+            if (j && Array.isArray(j.posts)) return j.posts;
+          } catch {}
+          return [];
+        };
 
         const fmtDate = (iso) => {
             if (!iso) return '';
@@ -190,12 +248,48 @@
             return isNaN(d) ? iso : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
         };
 
+        const escapeHTML = (str) => String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const linkify = (text) => {
+          const s = escapeHTML(text||'');
+          const re = /(https?:\/\/[^\s<>'\"]+)/g;
+          return s.replace(re, (m)=>'<a href="'+m+'" target="_blank" rel="noopener noreferrer">'+m+'</a>');
+        };
+        const formatRich = (text) => {
+          // Start escaped, then allow a tiny whitelist via bracket tags
+          let html = escapeHTML(text||'');
+          // [b]...[/b]
+          html = html.replace(/\[b\]([\s\S]*?)\[\/b\]/gi, '<strong>$1<\/strong>');
+          // [small]...[/small]
+          html = html.replace(/\[small\]([\s\S]*?)\[\/small\]/gi, '<small>$1<\/small>');
+          // [color=#hex]...[/color]
+          html = html.replace(/\[color=\s*(#[0-9a-fA-F]{3,6})\s*\]([\s\S]*?)\[\/color\]/gi, '<span style="color:$1">$2<\/span>');
+          // URLs to links
+          html = html.replace(/(https?:\/\/[^\s<>'\"]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1<\/a>');
+          // Preserve newlines
+          html = html.replace(/\n/g, '<br>');
+          return html;
+        };
+
+        const render = (posts) => {
+        // newest first
+        posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         const frag = document.createDocumentFragment();
         posts.forEach(p => {
             // Luna window container
             const win = document.createElement('div');
             win.className = 'luna-window post';
-            win.style.margin = '20px 0';
+            win.style.margin = '0';
+
+            // Optional size handling
+            if (p.size === 'small')      win.classList.add('size-small');
+            else if (p.size === 'medium')win.classList.add('size-medium');
+            else if (p.size === 'tall')  win.classList.add('size-tall');
+            else if (p.size === 'wide')  win.classList.add('wide');
+
+            if (p.maxWidth != null) {
+              const v = (typeof p.maxWidth === 'number') ? (p.maxWidth + 'px') : String(p.maxWidth);
+              win.style.maxWidth = v;
+            }
 
             // Titlebar with controls
             const titlebar = document.createElement('div');
@@ -203,6 +297,7 @@
             const title = document.createElement('span');
             title.className = 'luna-title';
             title.textContent = p.title || 'Untitled';
+            wrapWave(title);
             titlebar.appendChild(title);
 
             const controls = document.createElement('div');
@@ -267,19 +362,104 @@
             const body = document.createElement('div');
             body.className = 'luna-body';
 
-            if (p.image) {
-                const img = document.createElement('img');
-                img.className = 'luna-img';
-                img.src = p.image;
-                img.alt = p.title || 'post image';
-                img.style.margin = '10px 0';
-                body.appendChild(img);
+            // Media helpers
+            const isVideoFile = (u) => /\.(mp4|webm|ogg)(\?|#|$)/i.test(String(u||''));
+            const ytIdFrom = (url) => {
+              const s = String(url||'').trim();
+              // raw ID
+              if (/^[\w-]{11}$/.test(s)) return s;
+              try {
+                const u = new URL(s);
+                if (u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+                if (u.hostname.includes('youtube.com')){
+                  if (u.searchParams.get('v')) return u.searchParams.get('v');
+                  const m = u.pathname.match(/\/embed\/([\w-]{11})/); if (m) return m[1];
+                }
+              } catch {}
+              return '';
+            };
+            const addImage = (src, alt) => {
+              const img = document.createElement('img');
+              img.className = 'luna-img';
+              img.src = src;
+              img.alt = alt || 'image';
+              img.loading = 'lazy';
+              img.decoding = 'async';
+              img.style.margin = '10px 0';
+              body.appendChild(img);
+            };
+            const addVideo = (src, opts={}) => {
+              const id = ytIdFrom(src);
+              if (id){
+                const wrap = document.createElement('div');
+                wrap.className = 'aspect-16x9';
+                wrap.style.margin = '10px 0';
+                const iframe = document.createElement('iframe');
+                iframe.loading = 'lazy';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                iframe.src = `https://www.youtube.com/embed/${id}`;
+                wrap.appendChild(iframe);
+                body.appendChild(wrap);
+                return;
+              }
+              if (isVideoFile(src)){
+                const video = document.createElement('video');
+                video.controls = true;
+                video.playsInline = true;
+                if (opts.loop) video.loop = true;
+                if (opts.muted) video.muted = true;
+                if (opts.autoplay) { video.autoplay = true; video.muted = true; }
+                if (opts.poster) video.poster = opts.poster;
+                video.src = src;
+                video.style.width = '100%';
+                video.style.display = 'block';
+                video.style.margin = '10px 0';
+                body.appendChild(video);
+              }
+            };
+            const addAudio = (src) => {
+              if (!src) return;
+              const audio = document.createElement('audio');
+              audio.controls = true;
+              audio.preload = 'none';
+              audio.src = src;
+              audio.style.display = 'block';
+              audio.style.width = '100%';
+              audio.style.margin = '6px 0 10px 0';
+              body.appendChild(audio);
+            };
+
+            // Render media by preference: video > image(s) > gif (gif is just image)
+            if (p.video) {
+              addVideo(p.video, { loop: !!p.loop, muted: !!p.muted, autoplay: !!p.autoplay, poster: p.poster });
             }
+            // Multiple images array
+            if (Array.isArray(p.images)) {
+              p.images.forEach((u)=>{ if (u) addImage(String(u), p.title || 'post image'); });
+            }
+            // Single image fallback
+            if (p.image) { addImage(p.image, p.title || 'post image'); }
+            if (p.gif && !p.image) { // gif is an image; if both provided, image already handled
+              addImage(p.gif, p.title || 'gif');
+            }
+            // Optional audio
+            if (p.audio) { addAudio(p.audio); }
 
             if (p.content) {
                 const para = document.createElement('p');
-                para.textContent = p.content;
+                para.className = 'post-text';
+                para.style.whiteSpace = 'pre-wrap';
+                para.innerHTML = formatRich(p.content);
                 body.appendChild(para);
+            }
+            // Extra paragraphs to emphasize height for 'tall' demo
+            if (p.size === 'tall') {
+              const p2 = document.createElement('p');
+              p2.textContent = 'More details: plenty of room for multi-paragraph updates, notes, or image-and-text combos. The border tiles repeat cleanly as the post grows.';
+              const p3 = document.createElement('p');
+              p3.textContent = 'Tip: use tags to categorize posts. Icons will render if available; otherwise a letter placeholder appears.';
+              body.append(p2, p3);
             }
 
             win.appendChild(body);
@@ -289,11 +469,16 @@
         if (!posts.length) {
             const empty = document.createElement('p');
             empty.className = 'muted';
-            empty.textContent = 'No dog posts yet. Add some in the posts-data block below!';
+            empty.textContent = 'No dog posts yet.';
             frag.appendChild(empty);
         }
 
+        el.innerHTML = '';
         el.appendChild(frag);
+        };
+
+        // Kickoff
+        loadPosts().then(render).catch(() => render([]));
     })();
     </script>
 
@@ -359,6 +544,7 @@
     <script>
     (function(){
       function applyWave(el){
+        if (!el || el.classList.contains('wave') || el.querySelector('.char')) return;
         const text = el.textContent;
         el.textContent = '';
         el.classList.add('wave');
@@ -381,3 +567,4 @@
 
 </body>
 </html>
+

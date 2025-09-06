@@ -8,6 +8,44 @@
 	--accent-2: #a0e7e5;
 }
 
+/* Light theme (opt-in via <body class="light">) */
+html.light, body.light {
+  /* Surface & text (warm cream) */
+  --bg: #f8f3ea;   /* cream base */
+  --bg-2: #efe8dc; /* subtle contrast */
+  --text: #0e0e12;
+  --muted: #5e5e70;
+  /* Keep brand accents consistent */
+  --accent: #ffd166;
+  --accent-2: #a0e7e5;
+  /* Decorative rail tweaks for light backgrounds */
+  --rail-divider: rgba(0,0,0,0.08);
+  --rail-fade-color: rgba(255,255,255,0.6);
+}
+
+/* Header adjustments for light theme */
+body.light .site-header {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Light theme: Extras dropdown */
+body.light nav .dropdown-content {
+  background: rgba(255,255,255,0.98);
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+body.light nav .dropdown-content a:hover {
+  background: rgba(0,0,0,0.06);
+  color: #111;
+}
+
+/* Light theme: Footer */
+body.light footer {
+  background: rgba(255,255,255,0.6);
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
 /* UI fonts (assets/ui/fonts) */
 @font-face {
   font-family: 'Ari';
@@ -155,6 +193,12 @@ body::after {
 body.no-bg::before,
 body.no-bg::after { display: none; }
 
+/* Mobile: disable animated side rails to reduce distraction */
+@media (max-width: 900px) {
+  body::before,
+  body::after { display: none !important; }
+}
+
 .container {
 	width: min(1100px, 92vw);
 	margin: 0 auto;
@@ -177,9 +221,17 @@ body.no-bg::after { display: none; }
 
 .site-header h1 {
 	margin: 0;
-	font-size: 20px;
+	font-size: 22px;
 	letter-spacing: 0.4px;
 	color: var(--accent);
+}
+
+/* Site brand font: prefer Gill Sans Condensed if available, fall back to bundled condensed fonts */
+.site-header h1.brand,
+.brand {
+  font-family: "Gill Sans MT", "Gill Sans", "Gill Sans Nova", "Gill Sans Std", "Gill Sans Condensed", "Gill Sans MT Condensed", "Ari Display Condensed", "Ari Condensed", Arial, sans-serif;
+  font-stretch: condensed;
+  font-weight: 700;
 }
 
 nav a {
@@ -197,6 +249,85 @@ nav a:hover {
 	background: var(--accent);
 	transform: translateY(-1px);
 }
+
+/* Center nav links horizontally across header */
+.site-header { position: sticky; }
+.site-header nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+}
+nav > a:first-child { margin-left: 0; }
+nav > .dropdown:first-child { margin-left: 0; }
+
+/* Simple dropdown in header nav */
+nav .dropdown { display: inline-block; position: relative; margin-left: 14px; }
+
+/* ===== Responsive header: prevent overlap on mobile ===== */
+@media (max-width: 720px) {
+  .site-header {
+    display: block;            /* stack elements */
+    padding: 10px 12px;
+  }
+  .site-header h1 {            /* center brand, slightly smaller */
+    text-align: center;
+    font-size: 20px;
+  }
+  .site-header nav {
+    position: static;          /* stop overlapping brand */
+    transform: none;
+    left: auto; top: auto;
+    display: flex;
+    flex-wrap: wrap;           /* allow wrapping to new line */
+    justify-content: center;   /* center buttons under brand */
+    align-items: center;
+    gap: 6px 8px;              /* compact spacing */
+    margin-top: 8px;
+  }
+  nav > a,
+  nav > .dropdown { margin-left: 0; } /* gap handles spacing */
+  nav a { padding: 6px 8px; }         /* smaller touch target but still usable */
+}
+nav .dropbtn {
+  display: inline-block;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  color: var(--text);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+  cursor: pointer;
+}
+nav .dropdown:hover .dropbtn,
+nav .dropdown:focus-within .dropbtn { color:#111; background: var(--accent); transform: none; }
+nav .dropdown-content {
+  position: absolute;
+  top: calc(100% - 8px); /* stronger overlap to avoid hover gap */
+  right: 0; /* prevent clipping on the right edge */
+  left: auto;
+  min-width: 200px;
+  max-width: min(320px, 90vw);
+  background: rgba(10,10,16,0.96);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+  padding: 6px;
+  display: none;
+  z-index: 1000;
+}
+nav .dropdown:hover .dropdown-content,
+nav .dropdown:focus-within .dropdown-content,
+nav .dropdown-content:hover { display: block; }
+nav .dropdown-content a { display:block; margin:0; padding:8px 10px; border-radius: 8px; transform: none; transition: background-color 0.18s ease, color 0.18s ease; }
+nav .dropdown-content a:hover { background: rgba(255,255,255,0.08); color: var(--text); transform: none; }
+nav .dropdown-content { pointer-events: auto; }
+/* Add a caret via CSS to avoid charset issues */
+nav .dropbtn::after { content: ' ▾'; }
 
 /* ========== Hero / Banner ========== */
 .hero {
@@ -219,14 +350,44 @@ nav a:hover {
 }
 
 .hero-overlay {
-	position: relative;
-	z-index: 1;
-	text-align: center;
-	padding: 18px 22px;
-	background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
-	border-radius: 16px;
-	box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 18px 22px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
 }
+
+/* === Horizontal 3-up vertical video hero === */
+.video-hero{
+  position: relative;
+  height: clamp(160px, 34vh, 300px);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.video-hero .video-grid{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  will-change: transform;
+}
+.video-hero .video-grid .cell{ position: relative; overflow: hidden; }
+.video-hero video{
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  transform: translateY(-50%);   /* vertically center */
+  width: 100%; height: auto;     /* use full width of the column */
+  min-width: 100%; min-height: 0;
+  object-fit: contain;           /* avoid cropping; letterbox vertically if needed */
+  filter: blur(6px) saturate(1.05) brightness(0.9);
+  display: block; margin: 0 auto;
+}
+
+/* Page variant: force white text inside hero */
+.hero.hero-white .hero-overlay h2,
+.hero.hero-white .hero-overlay .tagline { color: #fff; }
 
 .hero-overlay h2 {
 	margin: 0 0 6px 0;
@@ -267,6 +428,30 @@ nav a:hover {
 
 .btn-ghost:hover { background: rgba(255,255,255,0.08); }
 
+/* Headings use the brand condensed font */
+h1, h2, h3 {
+  font-family: "Gill Sans MT", "Gill Sans", "Gill Sans Nova", "Gill Sans Std", "Gill Sans Condensed", "Gill Sans MT Condensed", "Ari Display Condensed", "Ari Condensed", Arial, sans-serif;
+  font-stretch: condensed;
+  font-weight: 700;
+}
+
+/* Slightly larger heading sizes in content */
+.container h1 { font-size: clamp(28px, 4.8vw, 38px); }
+.container h2 { font-size: clamp(24px, 3.8vw, 32px); }
+.container h3 { font-size: clamp(20px, 3.0vw, 26px); }
+
+/* Make body paragraph text a touch grayer for softer contrast */
+.container p {
+  color: var(--text); /* fallback */
+  color: color-mix(in srgb, var(--text), var(--muted) 22%);
+}
+
+/* Body links use brand accent color (exclude buttons) */
+main a:not(.btn),
+.container a:not(.btn) {
+  color: var(--accent);
+}
+
 /* ========== Content ========== */
 .intro h3 {
 	margin-top: 0;
@@ -281,6 +466,49 @@ footer {
 	text-align: center;
 	padding: 16px;
 	font-size: 0.95rem;
+}
+
+/* Footer social links */
+footer .social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 2px 0 10px 0;
+}
+footer .social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: var(--accent);
+  text-decoration: none;
+  transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  opacity: 0.9;
+}
+footer .social-links a:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-1px);
+  opacity: 1;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+footer .social-links img {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+/* Dark mode: tint monochrome SVG imgs to brand accent */
+body:not(.light) footer .social-links img {
+  /* Approximate #ffd166 via CSS filter */
+  filter: invert(84%) sepia(37%) saturate(769%) hue-rotate(340deg) brightness(104%) contrast(102%);
+}
+
+/* Optional: soften on hover */
+body:not(.light) footer .social-links a:hover img {
+  filter: invert(88%) sepia(45%) saturate(900%) hue-rotate(340deg) brightness(108%) contrast(104%);
 }
 
 /* =========================================================
@@ -398,7 +626,8 @@ footer {
 	.toggle-tracks { display: none; }
 }
 @media (hover: none) {
-	.toggle-tracks { display: inline-block; }
+	/* Hide tracklist button on mobile; cover tap handles it */
+	.toggle-tracks { display: none; }
 }
 
 .toggle-tracks:hover {
@@ -541,7 +770,10 @@ footer {
 }
 
 /* Keep your site above the flash */
-.site-header, .container, footer { position: relative; z-index: 2; }
+/* Keep content above global flashes, but let header sit on top of content */
+.container, footer { position: relative; z-index: 2; }
+/* Ensure header and its dropdown always sit above page content/windows */
+.site-header { z-index: 2000; }
 
 /* Tracklist clearly above flashes */
 .tracklist { position: relative; z-index: 3; background: rgba(10,10,14,0.90); }
@@ -886,6 +1118,7 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
 }
 
 /* Left/Right cap images — fixed size, not stretched */
+/* Free both pseudos for overlay use (caps are rendered via titlebar backgrounds) */
 .luna-titlebar::before,
 .luna-titlebar::after {
   content: "";
@@ -961,6 +1194,119 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
 .luna-body img.luna-img { display:block; max-width:100%; height:auto; border-radius:8px; }
 .luna-body img.pixelated { image-rendering: pixelated; image-rendering: crisp-edges; }
 
+/* ===== Commissions page layout helpers ===== */
+body.comm-page .luna-window {
+  width: 100%;
+  max-width: 780px; /* consistent, centered windows */
+  margin: 20px auto;
+}
+body.comm-page .luna-window.narrow { max-width: 620px; }
+body.comm-page .luna-window.compact { max-width: 520px; }
+body.comm-page .luna-window.wide { max-width: 980px; }
+
+/* Commissions page: center key headings */
+body.comm-page .intro h3 { text-align: center; }
+/* Keep window titles left-aligned (do not center) */
+body.comm-page .luna-window .luna-title { display: inline; margin: 0; text-align: left; }
+
+/* Commissions page: big status banner */
+.comm-status{
+  font-family: 'Ari Display', 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(42px, 8vw, 84px);
+  line-height: 1.05;
+  text-align: center;
+  margin: 10px 0 18px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+.comm-status.open{ color: #5cffb0; }
+.comm-status.closed{ color: #ff6b6b; }
+
+/* Simple 3-up gallery for examples */
+.luna-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.luna-gallery img { display:block; width:100%; height:auto; border-radius:8px; }
+@media (max-width: 800px){ .luna-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px){ .luna-gallery { grid-template-columns: 1fr; } }
+
+/* Titlebar tint variants (overlay gradient hue) */
+/* Strong, full override of titlebar background layers (no base gradient bleed) */
+.luna-window.tint-gold .luna-titlebar,
+.luna-window.tint-blue .luna-titlebar,
+.luna-window.tint-pink .luna-titlebar,
+.luna-window.tint-green .luna-titlebar {
+  /* Reset any previous background-layer settings in one go */
+  background: none;
+}
+.luna-window.tint-gold .luna-titlebar {
+  /* Strong recolor: overlay tint on top of strip */
+  background-image: linear-gradient(180deg, rgba(255,209,102,1), rgba(255,209,102,1)), url('assets/ui/luna/titlebar-center.png');
+  background-repeat: no-repeat, repeat-x;
+  background-size: 100% 100%, auto 100%;
+  background-position: 0 0, 0 0;
+  background-origin: content-box, content-box;
+  background-clip: content-box, content-box;
+  background-blend-mode: hue, normal;
+}
+.luna-window.tint-blue .luna-titlebar {
+  background-image: linear-gradient(180deg, rgba(110,170,255,1), rgba(110,170,255,1)), url('assets/ui/luna/titlebar-center.png');
+  background-repeat: no-repeat, repeat-x;
+  background-size: 100% 100%, auto 100%;
+  background-position: 0 0, 0 0;
+  background-origin: content-box, content-box;
+  background-clip: content-box, content-box;
+  background-blend-mode: hue, normal;
+}
+.luna-window.tint-pink .luna-titlebar {
+  background-image: linear-gradient(180deg, rgba(255,140,200,1), rgba(255,140,200,1)), url('assets/ui/luna/titlebar-center.png');
+  background-repeat: no-repeat, repeat-x;
+  background-size: 100% 100%, auto 100%;
+  background-position: 0 0, 0 0;
+  background-origin: content-box, content-box;
+  background-clip: content-box, content-box;
+  background-blend-mode: hue, normal;
+}
+.luna-window.tint-green .luna-titlebar {
+  background-image: linear-gradient(180deg, rgba(140,230,190,1), rgba(140,230,190,1)), url('assets/ui/luna/titlebar-center.png');
+  background-repeat: no-repeat, repeat-x;
+  background-size: 100% 100%, auto 100%;
+  background-position: 0 0, 0 0;
+  background-origin: content-box, content-box;
+  background-clip: content-box, content-box;
+  background-blend-mode: hue, normal;
+}
+
+/* Ensure the center strip uses the same base texture as default, then recolor via filter for a perfect match */
+/* Frame tint only; caps are handled by per-variant overlay below */
+.luna-window.tint-gold .luna-frame,
+.luna-window.tint-gold:not(:has(.luna-frame))::after { filter: hue-rotate(0deg) saturate(1.1) brightness(1.03); }
+.luna-window.tint-blue .luna-frame,
+.luna-window.tint-blue:not(:has(.luna-frame))::after { filter: hue-rotate(190deg) saturate(1.1) brightness(1.02); }
+.luna-window.tint-pink .luna-frame,
+.luna-window.tint-pink:not(:has(.luna-frame))::after { filter: hue-rotate(320deg) saturate(1.15) brightness(1.02); }
+.luna-window.tint-green .luna-frame,
+.luna-window.tint-green:not(:has(.luna-frame))::after { filter: hue-rotate(140deg) saturate(1.1) brightness(1.02); }
+
+
+
+/* Variant tint on caps via overlay blend (preserves button colors) */
+.luna-window.tint-gold .luna-titlebar::before { background: url('assets/ui/luna/titlebar-left.png') left top / 100% 100% no-repeat, linear-gradient(180deg, rgba(255,209,102,1), rgba(255,209,102,1)); background-blend-mode: normal, hue; }
+.luna-window.tint-gold .luna-titlebar::after  { background: url('assets/ui/luna/titlebar-right.png') right top / 100% 100% no-repeat, linear-gradient(180deg, rgba(255,209,102,1), rgba(255,209,102,1)); background-blend-mode: normal, hue; }
+
+.luna-window.tint-blue .luna-titlebar::before { background: url('assets/ui/luna/titlebar-left.png') left top / 100% 100% no-repeat, linear-gradient(180deg, rgba(110,170,255,1), rgba(110,170,255,1)); background-blend-mode: normal, hue; }
+.luna-window.tint-blue .luna-titlebar::after  { background: url('assets/ui/luna/titlebar-right.png') right top / 100% 100% no-repeat, linear-gradient(180deg, rgba(110,170,255,1), rgba(110,170,255,1)); background-blend-mode: normal, hue; }
+
+.luna-window.tint-pink .luna-titlebar::before { background: url('assets/ui/luna/titlebar-left.png') left top / 100% 100% no-repeat, linear-gradient(180deg, rgba(255,140,200,1), rgba(255,140,200,1)); background-blend-mode: normal, hue; }
+.luna-window.tint-pink .luna-titlebar::after  { background: url('assets/ui/luna/titlebar-right.png') right top / 100% 100% no-repeat, linear-gradient(180deg, rgba(255,140,200,1), rgba(255,140,200,1)); background-blend-mode: normal, hue; }
+
+.luna-window.tint-green .luna-titlebar::before { background: url('assets/ui/luna/titlebar-left.png') left top / 100% 100% no-repeat, linear-gradient(180deg, rgba(140,230,190,1), rgba(140,230,190,1)); background-blend-mode: normal, hue; }
+.luna-window.tint-green .luna-titlebar::after  { background: url('assets/ui/luna/titlebar-right.png') right top / 100% 100% no-repeat, linear-gradient(180deg, rgba(140,230,190,1), rgba(140,230,190,1)); background-blend-mode: normal, hue; }
+
+/* Tint titlebar buttons (min/max/close) within each variant */
+/* Buttons remain original colors */
+/* Close button stays original */
+.luna-window .luna-btn.close { filter: none !important; }
+
 /* CSS-only fallback look while assets are not present */
 .luna-window.fallback {
   border: none;
@@ -1028,12 +1374,19 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
 .aspect-16x9 { position: relative; width: 100%; padding-top: 56.25%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
 .aspect-16x9 > iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
 .videos-page .yt-description { white-space: pre-wrap; font-size: 0.95rem; line-height: 1.5; }
+.videos-page .yt-description a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent), transparent 60%); }
 .videos-page .yt-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 .videos-page .yt-card .luna-body { padding: 0; }
 .videos-page .yt-card .aspect-16x9 { border: 0; background: transparent; }
 /* Videos title handling */
 .luna-titlebar .luna-title { white-space: nowrap; overflow: hidden; }
 .luna-titlebar .luna-title.wave { display: inline-block; }
+/* Card titles are narrower: add side padding so text doesn't hit edges/buttons */
+/* Only add extra edge padding when a card title is scrolling */
+.yt-card .luna-titlebar .luna-title.marquee { padding-left: 16px; padding-right: calc(40px * 3 + 28px); }
+/* If JS marks a title as marquee, scroll it horizontally within the clipped area */
+.luna-titlebar .luna-title.marquee { display: inline-block; animation: title-marquee var(--marquee-t, 10s) linear infinite; will-change: transform; }
+@keyframes title-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-1 * var(--marquee-dx, 40px))); } }
 /* Shorts vertical aspect */
 .aspect-9x16 { position: relative; width: 100%; padding-top: 177.7778%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
 .aspect-9x16 > iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
@@ -1045,3 +1398,73 @@ body.recolor-active .release:hover { --recolor-angle: 0deg; --rec-strength: 0; }
 /* Videos: adjustable space for rock toggle */
 :root { --rock-bottom-space: 240px; --rock-rail-gap: 0px; }
 .videos-page { padding-bottom: var(--rock-bottom-space); }
+
+/* Rock toggle: constrain and prevent horizontal overflow */
+#rock-toggle {
+  position: absolute !important;
+  right: calc(var(--rail-w) + var(--rock-rail-gap));
+  bottom: 0;
+  width: min(30vw, 260px);
+  max-width: calc(100vw - (var(--rail-w) + var(--rock-rail-gap) + 12px));
+  height: auto;
+  pointer-events: auto;
+}
+
+/* ===== SylviumLighting: Product Showcase ===== */
+.product {
+  margin: 22px 0;
+}
+.product .product-title { margin: 0 0 10px 2px; }
+.product-showcase {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px){ .product-showcase { grid-template-columns: 1fr; } }
+.product-video {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  display: block;
+}
+.img-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.img-grid img{
+  display:block; width:100%; height:auto; border-radius:10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+}
+.product-meta{ margin: 12px 0 18px; display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.product-price{ font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent); text-shadow: 0 2px 6px rgba(0,0,0,0.55); }
+body.light .product-price{ color: #000; }
+.product-meta .btn{ font-size: 18px; padding: 12px 18px; }
+
+/* ===== Dog Posting page ===== */
+.dogposting-page #posts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* keep windows hugging the left edge */
+  gap: 14px;
+}
+.dogposting-page .luna-window.post {
+  /* Default: constrain but allow smaller variants */
+  max-width: 640px;
+  width: auto;
+  min-width: 280px;
+}
+/* Size variants (optional) */
+.dogposting-page .luna-window.post.size-small { max-width: 320px; }
+.dogposting-page .luna-window.post.size-medium{ max-width: 560px; }
+.dogposting-page .luna-window.post.size-tall  { max-width: 460px; }
+.dogposting-page .luna-window.post.wide       { max-width: none; width: 100%; }
+@media (max-width: 720px) {
+  .dogposting-page .luna-window.post { width: 100%; max-width: 100%; }
+}
+
+/* Hide stray top-level Dog-Posting link; dropdown has canonical entry */
+.site-header nav > a[href="dog-posting.html"] { display: none; }

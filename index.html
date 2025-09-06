@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
 	<title>slickestfox - Home</title>
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -10,14 +10,20 @@
 
 
 	<header class="site-header">
-		<h1>slickestfox</h1>
+		<h1 class="brand">slickestfox</h1>
 		<nav>
 			<a href="index.html">Home</a>
 			<a href="art.html">Art</a>
 			<a href="music.html">Music</a>
 			<a href="videos.html">Videos</a>
 			<a href="comissions.html">Commissions</a>
-			<a href="dog-posting.html">Dog-PostingT</a>
+			<div class="dropdown">
+				<button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+				<div class="dropdown-content" role="menu">
+					<a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+				</div>
+			</div>
 		</nav>
 	</header>
 
@@ -25,24 +31,90 @@
 	<section class="hero">
 		<img class="hero-img" src="assets/banner.jpg" alt="Banner artwork">
 		<div class="hero-overlay">
-			<h2>Haii helloo! Welcome!</h2>
-			<p class="tagline">In this site you can find all my Art, Music, Videos, Commission Information and more! I implore you too explore all it has to offer! </p>
+			<h2>Hello, Welcome!</h2>
+			<p class="tagline">In this site you can find all my Art, Music, Videos, Commission Information and more! </p>
 			<div class="cta-row">
-				<a class="btn" href="music.html">Listen</a>
+				<a class="btn btn-ghost" href="music.html">Listen</a>
 				<a class="btn btn-ghost" href="art.html">View Art</a>
+				<a class="btn btn-ghost" href="videos.html">Watch</a>
 			</div>
 		</div>
 	</section>
 
+	<!-- 3-up vertical videos hero (no audio, blurred, looped) -->
+	<section class="video-hero" aria-label="Highlights">
+		<div class="video-grid">
+			<div class="cell"><video src="assets/videos/Pyramid-Core Compressed.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+			<div class="cell"><video src="assets/videos/Mind Paperweights Compressed.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+			<div class="cell"><video src="assets/videos/Emotional Capillarity Short Compressed.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+		</div>
+	</section>
+
+	<script>
+	// Parallax + random start times for the 3-up video hero
+	(function(){
+	  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	  const sec = document.querySelector('.video-hero');
+	  const hero = document.querySelector('.video-hero .video-grid');
+	  if (!sec || !hero) return;
+
+	  // Randomize video start times when metadata is ready
+	  const vids = hero.querySelectorAll('video');
+	  vids.forEach(v => {
+	    const startRandom = () => {
+	      // pick a random point between 10% and 90% of the duration
+	      const d = v.duration || 0;
+	      if (d > 0) {
+	        const t = d * (0.1 + Math.random() * 0.8);
+	        try { v.currentTime = t; } catch {}
+	        // ensure playback (some browsers pause on seek)
+	        v.play().catch(()=>{});
+	      }
+	    };
+	    if (v.readyState >= 1) startRandom();
+	    else v.addEventListener('loadedmetadata', startRandom, { once:true });
+	  });
+
+	  if (prefersReduced) return; // Skip parallax if user prefers reduced motion
+	  let ticking = false;
+	  const onScroll = () => {
+	    if (ticking) return; ticking = true;
+	    requestAnimationFrame(() => {
+	      const r = sec.getBoundingClientRect();
+	      const offset = r.top * 0.15; // parallax strength
+	      hero.style.transform = `translateY(${offset.toFixed(2)}px)`;
+	      ticking = false;
+	    });
+	  };
+	  window.addEventListener('scroll', onScroll, { passive:true });
+	  window.addEventListener('resize', onScroll);
+	  onScroll();
+	})();
+	</script>
+
 	<main class="container">
 		<section class="intro">
-			<h3>What I Do</h3>
-			<p>I make visual art, produce music, and post videos. New projects drop regularly-stick around.</p>
+			<h3>Who am I?</h3>
+			<p>My name is Joshua and go by slickestfox on all platforms, I study mechanical engineering and make art and music on my free time! My dream is to be a music producer and musician. Id really love to compose soundtracks for videogames and my own songs for people to listen to and enjoy! :3</p>
+
+			<h3>What I do</h3>
+			<p>I publish my artworks mainly on my <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer">twitter</a> (I refuse to call it X). If you would like artwork of your character I accept commissions most of the time, you can check if they're open in the <a href="comissions.html">Comissions</a> tab! I also make music on FL Studio from time to time, I like making most type of genres, Electronic, Orchestral, Indie, Rock! You can preview them on the <a href="music.html">Music</a> tab or listen to them in most streaming platforms! I also dable in 3D Printing and was really into game development, recently have been getting into animation! I really love doing all sorts of things so I don't think ill ever run out of stuff to do! X3</p>
+
+			<h3>Contact Me</h3>
+			<p>You can contact me through <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer">twitter</a> DM's or discord through @slickestfox! For professional matters I also have <a href="mailto:slickestfoxcontact@gmail.com">slickestfoxcontact@gmail.com</a>, though I dont check it very often lol</p>
 		</section>
 	</main>
 
 	<footer>
-		<p>c 2025 slickestFox</p>
+		<nav class="social-links" aria-label="Social media">
+			<a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+			<a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+			<a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+			<a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+			<a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+			<a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+		</nav>
+		<p>© 2025 slickestfox</p>
 	</footer>
 
 	<!-- Inline JSON (loop config) -->
@@ -61,6 +133,8 @@
 		const LS_VOL_KEY = 'siteAudioVolume';
 		let audioEl = null;
 
+        const ICON_MUTED = String.fromCodePoint(0x1F507);
+        const ICON_LOUD  = String.fromCodePoint(0x1F50A);
 		const loadPrefs = () => {
 			let muted = true; // default
 			let vol = 0.5;    // default
@@ -115,7 +189,7 @@
 
 			const btn = document.createElement("button");
 			btn.id = "mute-btn";
-			btn.textContent = muted || vol === 0 ? "🔇" : "🔊";
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 
 			const slider = document.createElement("input");
 			slider.type = "range";
@@ -127,7 +201,7 @@
 				if (!audioEl) return;
 				audioEl.muted = !audioEl.muted;
 				saveMute(audioEl.muted);
-				btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 				if (!audioEl.muted && audioEl.paused){
 					audioEl.play().catch(()=>{});
 				}
@@ -138,7 +212,7 @@
 				const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
 				audioEl.volume = v;
 				saveVol(v);
-				btn.textContent = (audioEl.muted || v === 0) ? "🔇" : "🔊";
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 			});
 
 			// react to other tabs changing settings
@@ -146,7 +220,7 @@
 				if (!audioEl) return;
 				if (e.key === LS_MUTE_KEY && e.newValue != null) {
 					audioEl.muted = e.newValue === '1';
-					btn.textContent = (audioEl.muted || audioEl.volume == 0) ? "🔇" : "🔊";
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 					if (!audioEl.muted && audioEl.paused){ audioEl.play().catch(()=>{}); }
 				}
 				if (e.key === LS_VOL_KEY && e.newValue != null) {
@@ -154,7 +228,7 @@
 					if (!Number.isNaN(v)) {
 						audioEl.volume = v;
 						slider.value = String(v);
-						btn.textContent = (audioEl.muted || v === 0) ? "🔇" : "🔊";
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? ICON_MUTED : ICON_LOUD;
 					}
 				}
 			});
@@ -169,3 +243,5 @@
 
 </body>
 </html>
+
+

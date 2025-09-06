@@ -2,20 +2,27 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<title>Art - SlickestFox</title>
+	<meta name="viewport" content="width=device-width, initial-scale=0.9"/>
+	<title>Art - slickestfox</title>
 	<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 	<header class="site-header">
-		<h1>SlickestFox</h1>
+		<h1 class="brand">slickestfox</h1>
 		<nav>
 			<a href="index.html">Home</a>
 			<a href="art.html">Art</a>
 			<a href="music.html">Music</a>
 			<a href="videos.html">Videos</a>
 			<a href="comissions.html">Commissions</a>
-			<a href="dog-posting.html">Dog-Posting™</a>
+
+			<div class="dropdown">
+				<button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+				<div class="dropdown-content" role="menu">
+					<a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+				</div>
+			</div>
 		</nav>
 	</header>
 
@@ -25,7 +32,15 @@
 	</div>
 
 	<footer>
-		<p>© 2025 SlickestFox</p>
+		<nav class="social-links" aria-label="Social media">
+			<a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+			<a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+			<a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+			<a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+			<a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+			<a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+		</nav>
+		<p>© 2025 slickestfox</p>
 	</footer>
 
 	<!-- Lightbox -->
@@ -34,101 +49,10 @@
 		<div class="hint">click / tap to close • ← / → to navigate</div>
 	</div>
 
-	<!-- Inline JSON (edit this). Keep double quotes. -->
+	<!-- Inline JSON fallback (kept minimal; external manifest is preferred) -->
 	<script id="images-data" type="application/json">
-	{
-	"images": [
-		{
-			"src": "assets/art/cold.png",
-			"title": "cold",
-			"color": "#A7A7A7"
-		},
-		{
-			"src": "assets/art/Macchi doodles.png",
-			"title": "Macchi doodles",
-			"color": "#E5E3E3"
-		},
-		{
-			"src": "assets/art/gayslop 2.png",
-			"title": "gayslop 2",
-			"color": "#C1ABAA"
-		},
-		{
-			"src": "assets/art/fox curled up.png",
-			"title": "fox curled up",
-			"color": "#8F5549"
-		},
-		{
-			"src": "assets/art/macchi guitar playing V2.png",
-			"title": "macchi guitar playing V2",
-			"color": "#7F5A47"
-		},
-		{
-			"src": "assets/art/serpertine art.png",
-			"title": "serpertine art",
-			"color": "#A0816E"
-		},
-		{
-			"src": "assets/art/GLUNGUS.png",
-			"title": "GLUNGUS",
-			"color": "#7C5A43"
-		},
-		{
-			"src": "assets/art/Macchi subway.png",
-			"title": "Macchi subway",
-			"color": "#B08B5E"
-		},
-		{
-			"src": "assets/art/asriel x ralsei.png",
-			"title": "asriel x ralsei",
-			"color": "#87785F"
-		},
-		{
-			"src": "assets/art/dog doodles.png",
-			"title": "dog doodles",
-			"color": "#F0D899"
-		},
-		{
-			"src": "assets/art/Frizk fanart.png",
-			"title": "Frizk fanart",
-			"color": "#476A6A"
-		},
-		{
-			"src": "assets/art/lucario underwater.png",
-			"title": "lucario underwater",
-			"color": "#356084"
-		},
-		{
-			"src": "assets/art/deltarune roaring knight fight.png",
-			"title": "deltarune roaring knight fight",
-			"color": "#7D7BA9"
-		},
-		{
-			"src": "assets/art/sylvius beach FINAL.png",
-			"title": "sylvius beach FINAL",
-			"color": "#B29FD1"
-		},
-		{
-			"src": "assets/art/devious.png",
-			"title": "devious",
-			"color": "#CCB7E0"
-		},
-		{
-			"src": "assets/art/Sylvius pfp remake.png",
-			"title": "Sylvius pfp remake",
-			"color": "#7E6784"
-		},
-		{
-			"src": "assets/art/catnap & dogday actually kiss.png",
-			"title": "catnap & dogday actually kiss",
-			"color": "#7A2C53"
-		},
-		{
-			"src": "assets/art/macchi bed guitar.png",
-			"title": "macchi bed guitar",
-			"color": "#62474B"
-		}
-	]
+{
+  "images": []
 }
 </script>
 
@@ -214,8 +138,8 @@
 	  ];
 	  const SFX_URLS = ["assets/audio/sfx/a.mp3","assets/audio/sfx/b.mp3","assets/audio/sfx/c.mp3","assets/audio/sfx/d.mp3"];
 
-	  /* ---------- gate ---------- */
-	  let audioGate=false;
+  /* ---------- gate (disabled: no on-page prompt) ---------- */
+  let audioGate=true; // allow interactive sounds without showing a gate
 	  function showGate(){ let g=$("#sound-gate"); if(!g){ g=document.createElement("div"); g.id="sound-gate"; g.textContent="🔊 Click to enable sound"; document.body.appendChild(g);} g.classList.add("show"); }
 	  function hideGate(){ const g=$("#sound-gate"); if(g) g.classList.remove("show"); }
 	  function wireGate(){ showGate(); const enable=()=>{ audioGate=true; hideGate(); document.removeEventListener("click",enable); }; document.addEventListener("click",enable); $("#sound-gate").addEventListener("click",enable,{passive:true}); }
@@ -357,22 +281,58 @@
 	  const lb=$("#lightbox"), lbImg=$("#lightbox-img");
 	  function openLightbox(i){ if(i<0||i>=images.length) return; lbImg.src=images[i].src; lb.classList.add("show"); document.body.style.overflow="hidden"; }
 	  function closeLightbox(){ lb.classList.remove("show"); lbImg.src=""; document.body.style.overflow=""; }
-	  function next(){ if(images.length) openLightbox((currentIndex()+1)%images.length); }
-	  function prev(){ if(images.length) openLightbox((currentIndex()-1+images.length)%images.length); }
-	  function currentIndex(){ const s=lbImg.src; return Math.max(0, images.findIndex(x=>x.src===s)); }
+      function next(){ if(images.length) openLightbox((currentIndex()+1)%images.length); }
+      function prev(){ if(images.length) openLightbox((currentIndex()-1+images.length)%images.length); }
+      function currentIndex(){
+        // Compare against the attribute (relative path) first; lbImg.src is absolute
+        const s = lbImg.getAttribute('src') || '';
+        let i = images.findIndex(x => String(x.src||'') === s);
+        if (i >= 0) return i;
+        // Fallback: normalize to absolute URLs and compare
+        try {
+          const abs = new URL(lbImg.src, location.href).href;
+          i = images.findIndex(x => {
+            try { return new URL(String(x.src||''), location.href).href === abs; } catch { return false; }
+          });
+          return i >= 0 ? i : 0;
+        } catch { return 0; }
+      }
 	  lb.addEventListener("click", closeLightbox);
 	  document.addEventListener("keydown",(e)=>{ if(!lb.classList.contains("show"))return; if(e.key==="Escape")closeLightbox(); else if(e.key==="ArrowRight")next(); else if(e.key==="ArrowLeft")prev(); });
 
-	  /* ---------- boot ---------- */
-	  document.addEventListener("DOMContentLoaded", ()=>{
-		let data={images:[]};
-		try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
-		images = Array.isArray(data.images) ? data.images.map(it=>({ src:String(it.src||"").trim(), title:String(it.title||""), color:String(it.color||"") })) : [];
-		render(images);
-		wireGate();
+	  /* ---------- boot (prefer external JSON, fallback to inline) ---------- */
+	  document.addEventListener("DOMContentLoaded", async ()=>{
+		const JSON_PATH = 'assets/art/data/images.json';
+		let loaded = false;
+
+		// Prefer external file when served over http(s)
+		if (!IS_FILE){
+		  try{
+			const res = await fetch(JSON_PATH, { cache: 'no-store' });
+			if (res.ok){
+			  const data = await res.json();
+			  if (Array.isArray(data.images)){
+				images = data.images.map(it=>({ src:String(it.src||"").trim(), title:String(it.title||""), color:String(it.color||"") }));
+				loaded = true;
+			  }
+			}
+		  } catch {}
+		}
+
+		// Fallback: inline JSON block
+		if (!loaded){
+		  let data={images:[]};
+		  try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
+		  images = Array.isArray(data.images) ? data.images.map(it=>({ src:String(it.src||"").trim(), title:String(it.title||""), color:String(it.color||"") })) : [];
+		}
+
+    render(images);
+    // gate prompt removed (no unused "click to enable sound" text)
 	  });
 	})();
 	</script>
 
 </body>
 </html>
+
+

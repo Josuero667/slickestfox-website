@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=0.9"/>
 	<title>SlickestFox – Content Editor (Offline)</title>
+	<link rel="stylesheet" href="style.css"/>
 	<style>
 		:root{
 			--bg:#0e0e12;--bg2:#151521;--panel:#0b0b11;--panel2:#0f0f17;
@@ -82,6 +83,15 @@
 		.row td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
 		.row td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
 
+		/* DOG POSTS VIEW (scoped preview styles) */
+		#view-dogs .note{color:var(--muted);font-size:13px}
+		#dogs-list{margin:10px 0 0 0;padding:0;list-style:none;display:grid;gap:8px}
+		#dogs-list .item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:var(--panel2)}
+		#dogs-list .item.active{outline:2px solid color-mix(in srgb,var(--accent),transparent 65%)}
+
+		/* Preview uses site Luna styles (style.css) */
+		.dog-preview{padding:10px}
+
 		/* ART VIEW */
 		#view-art .note{color:var(--muted);font-size:13px}
 		#art-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}
@@ -128,14 +138,16 @@
 		[data-view="art"] #view-art{display:block}
 	</style>
 </head>
-<body data-view="music">
+<body data-view="music" class="no-bg">
 	<div class="app">
 		<div class="topbar">
-			<div class="tabs">
-				<span class="brand">SlickestFox Editor (Offline)</span>
-				<button class="tab" id="tab-music" aria-selected="true">Releases</button>
-				<button class="tab" id="tab-art" aria-selected="false">Art manifest</button>
-			</div>
+            <div class="tabs">
+                <span class="brand">SlickestFox Editor (Offline)</span>
+                <button class="tab" id="tab-music" aria-selected="true">Releases</button>
+                <button class="tab" id="tab-art" aria-selected="false">Art manifest</button>
+                <button class="tab" id="tab-videos" aria-selected="false">Videos JSON</button>
+                <button class="tab" id="tab-dogs" aria-selected="false">Dog Posts</button>
+            </div>
 
 			<div class="tools" id="toolbar-music">
 				<label class="btn" for="file">Open JSON…</label><input id="file" type="file" accept=".json,application/json"/>
@@ -145,7 +157,7 @@
 				<span id="status" class="badge">idle</span>
 			</div>
 
-			<div class="tools hidden" id="toolbar-art">
+            <div class="tools hidden" id="toolbar-art">
 				<label class="btn" for="art-folder">Pick folder…</label>
 				<input id="art-folder" type="file" webkitdirectory multiple accept="image/*"/>
 				<label class="btn" for="art-files">Add images…</label>
@@ -159,8 +171,29 @@
 				<button id="art-open-json">Open images.json</button>
 				<button id="art-clear">Clear</button>
 				<button id="art-download">Download images.json</button>
-				<span id="status-art" class="badge">idle</span>
-			</div>
+                <span id="status-art" class="badge">idle</span>
+            </div>
+            <div class="tools hidden" id="toolbar-videos">
+                <label class="btn" for="videos-file">Open videos.json…</label>
+                <input id="videos-file" type="file" accept=".json,application/json"/>
+                <input id="videos-api-key" type="text" placeholder="YouTube API key (saved locally)" style="min-width:260px" value="AIzaSyDjdY27g-IR4lq0pSwrBj6c-ACSJcFHgCs"/>
+                <button id="videos-fetch-all" title="Fetch titles/descriptions for all IDs that are missing them">Fetch titles</button>
+                <button id="videos-add-long">Add Long Video</button>
+                <button id="videos-add-short">Add Short</button>
+                <button id="videos-clear">Clear</button>
+                <button id="videos-download">Download videos.json</button>
+                <span id="status-videos" class="badge">idle</span>
+            </div>
+            <div class="tools hidden" id="toolbar-dogs">
+                <button id="dogs-new">New</button>
+                <button id="dogs-add">Add Post</button>
+                <button id="dogs-download">Download posts.json</button>
+                <button id="dogs-copy">Copy JSON</button>
+                <span id="status-dogs" class="badge">idle</span>
+                <label class="btn" for="dogs-file">Open posts.json</label>
+                <input id="dogs-file" type="file" accept=".json,application/json"/>
+
+            </div>
 		</div>
 
 		<!-- MUSIC VIEW -->
@@ -213,8 +246,8 @@
 			</main>
 		</div>
 
-		<!-- ART VIEW -->
-		<main class="editor" id="view-art" style="display:none">
+        <!-- ART VIEW -->
+        <main class="editor" id="view-art" style="display:none">
 			<h2 style="margin:0 0 8px 0">Art manifest</h2>
 			<p class="note">Build <code>assets/data/images.json</code> from images in <code>assets/art/</code>. For best paths, use <b>Pick folder…</b> (preserves relative paths). Drag-drop can’t detect folders, so it assumes <code>base + filename</code>.</p>
 
@@ -229,7 +262,119 @@
 			</div>
 
 			<div id="art-grid"></div>
-		</main>
+        </main>
+
+        <!-- DOG POSTS VIEW -->
+        <div class="main" id="view-dogs" style="display:none">
+            <aside class="sidebar">
+                <ul id="dogs-list" class="list"></ul>
+            </aside>
+            <main class="editor" id="dogs-editor">
+                <div class="section">
+                    <h2 style="margin:0 0 8px 0">Dog Post</h2>
+                    <div class="grid">
+                        <div class="kv">
+                            <label for="d-id">ID</label>
+                            <input id="d-id" type="text" placeholder="dp-001"/>
+                            <label for="d-title">Title</label>
+                            <input id="d-title" type="text" placeholder="Title"/>
+                            <label for="d-date">Date</label>
+                            <input id="d-date" type="date"/>
+                            <label for="d-size">Size</label>
+                            <select id="d-size">
+                                <option value="">Default</option>
+                                <option value="small">Small</option>
+                                <option value="medium">Medium</option>
+                                <option value="tall">Tall</option>
+                                <option value="wide">Wide</option>
+                            </select>
+                            <label for="d-maxw">Max Width</label>
+                            <input id="d-maxw" type="number" min="200" step="10" placeholder="e.g. 420"/>
+                            <label for="d-image">Image/GIF URL</label>
+                            <input id="d-image" type="text" placeholder="assets/art/example.png"/>
+                            <label for="d-images">Images (one URL per line)</label>
+                            <textarea id="d-images" rows="3" placeholder="assets/art/a.png&#10;assets/art/b.png"></textarea>
+                            <label for="d-video">Video URL/ID</label>
+                            <input id="d-video" type="text" placeholder="YouTube URL/ID or .mp4/.webm"/>
+                            <label for="d-audio">Audio URL</label>
+                            <input id="d-audio" type="text" placeholder="assets/audio/posts/example.mp3"/>
+                            <label for="d-tags">Tags</label>
+                            <input id="d-tags" type="text" placeholder="comma,separated,tags"/>
+                            <label for="d-content">Content</label>
+                            <div class="note">Formatting: [b]bold[/b], [small]small[/small], [color=#ffd166]colored[/color]. Links auto-detect.</div>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap; margin: 4px 0;">
+                                <button type="button" class="btn" id="fmt-bold">Bold</button>
+                                <button type="button" class="btn" id="fmt-small">Small</button>
+                                <button type="button" class="btn" id="fmt-color">Color</button>
+                            </div>
+                            <textarea id="d-content" rows="6" placeholder="Write your post. Use [b]..[/b], [small]..[/small], [color=#hex]..[/color]."></textarea>
+                        </div>
+                        <div class="preview">
+                            <div class="dog-preview">
+                                <div id="dog-preview-window" class="luna-window post" style="max-width:640px">
+                                    <div class="luna-titlebar"><span class="luna-title">Preview</span>
+                                        <div class="luna-controls">
+                                            <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
+                                            <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
+                                            <button class="luna-btn close" title="Close" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                    <div class="luna-toolbar">
+                                        <div class="tool-chip" id="pv-date">—</div>
+                                        <div class="tool-chip" id="pv-tags">tags</div>
+                                    </div>
+                                    <div class="luna-frame" aria-hidden="true"></div>
+                                    <div class="luna-body" id="pv-body">
+                                        <p class="muted" style="opacity:.7">Start typing to preview…</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 style="margin:0 0 6px 0">Export JSON</h3>
+                    <textarea id="dogs-json" rows="10" style="width:100%;border:1px solid rgba(255,255,255,.18);background:#0a0a10;color:var(--text);border-radius:10px;padding:8px"></textarea>
+                </div>
+            </main>
+        </div>
+
+        <!-- VIDEOS VIEW -->
+        <main class="editor" id="view-videos" style="display:none">
+            <h2 style="margin:0 0 8px 0">Videos JSON</h2>
+            <p class="note">Build <code>assets/data/videos.json</code> used by videos.html. Enter YouTube IDs or full URLs. Titles/descriptions are optional and only used for the page text.</p>
+
+            <div class="section">
+                <h3 style="margin:0 0 6px 0">Long-form Videos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:26%">YouTube ID or URL</th>
+                            <th style="width:28%">Title</th>
+                            <th style="width:36%">Description</th>
+                            <th style="width:10%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videos-body"></tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3 style="margin:0 0 6px 0">Shorts (optional)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:26%">YouTube ID or URL</th>
+                            <th style="width:28%">Title</th>
+                            <th style="width:36%">Description</th>
+                            <th style="width:10%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shorts-body"></tbody>
+                </table>
+            </div>
+        </main>
 
 		<footer>Offline editor • Music: edit & download <code>releases.json</code>. Art: build & download <code>images.json</code>.</footer>
 	</div>
@@ -237,20 +382,34 @@
 	<script>
 		/* ========= VIEW TABS ========= */
 		const bodyEl = document.body;
-		const tabMusic = document.getElementById('tab-music');
-		const tabArt = document.getElementById('tab-art');
-		const tlMusic = document.getElementById('toolbar-music');
-		const tlArt = document.getElementById('toolbar-art');
+        const tabMusic = document.getElementById('tab-music');
+        const tabArt = document.getElementById('tab-art');
+        const tabVideos = document.getElementById('tab-videos');
+        const tabDogs = document.getElementById('tab-dogs');
+        const tlMusic = document.getElementById('toolbar-music');
+        const tlArt = document.getElementById('toolbar-art');
+        const tlVideos = document.getElementById('toolbar-videos');
+        const tlDogs = document.getElementById('toolbar-dogs');
 
-		function setView(v){
-			bodyEl.setAttribute('data-view', v);
-			tabMusic.setAttribute('aria-selected', String(v==='music'));
-			tabArt.setAttribute('aria-selected', String(v==='art'));
-			tlMusic.classList.toggle('hidden', v!=='music');
-			tlArt.classList.toggle('hidden', v!=='art');
-		}
-		tabMusic.addEventListener('click', ()=>setView('music'));
-		tabArt.addEventListener('click', ()=>setView('art'));
+        function setView(v){
+            bodyEl.setAttribute('data-view', v);
+            tabMusic.setAttribute('aria-selected', String(v==='music'));
+            tabArt.setAttribute('aria-selected', String(v==='art'));
+            tabVideos.setAttribute('aria-selected', String(v==='videos'));
+            tabDogs.setAttribute('aria-selected', String(v==='dogs'));
+            tlMusic.classList.toggle('hidden', v!=='music');
+            tlArt.classList.toggle('hidden', v!=='art');
+            tlVideos.classList.toggle('hidden', v!=='videos');
+            tlDogs.classList.toggle('hidden', v!=='dogs');
+            document.getElementById('view-music').style.display = (v==='music')?'grid':'none';
+            document.getElementById('view-art').style.display = (v==='art')?'block':'none';
+            document.getElementById('view-videos').style.display = (v==='videos')?'block':'none';
+            document.getElementById('view-dogs').style.display = (v==='dogs')?'grid':'none';
+        }
+        tabMusic.addEventListener('click', ()=>setView('music'));
+        tabArt.addEventListener('click', ()=>setView('art'));
+        tabVideos.addEventListener('click', ()=>setView('videos'));
+        tabDogs.addEventListener('click', ()=>setView('dogs'));
 
 		/* ========= MUSIC (existing editor) ========= */
 		let data = { releases: [] };
@@ -286,9 +445,9 @@
 						'<div class="item-sub">'+metaSub+'</div>'+
 					'</div>'+
 					'<div class="item-actions">'+
-						'<button class="iconbtn" data-act="up">▲</button>'+
-						'<button class="iconbtn" data-act="down">▼</button>'+
-						'<button class="iconbtn" data-act="del">✕</button>'+
+						'<button class="iconbtn" data-act="up">?</button>'+
+						'<button class="iconbtn" data-act="down">?</button>'+
+						'<button class="iconbtn" data-act="del">?</button>'+
 					'</div>';
 
 				li.addEventListener('click',(e)=>{ if(e.target.closest('.item-actions'))return; selected=i; renderList(); renderEditor(); });
@@ -326,7 +485,7 @@
 					'<td><input data-k="spotify_url" placeholder="https://open.spotify.com/track/..." value="'+escapeAttr(t.spotify_url||'')+'"/></td>'+
 					'<td><input data-k="preview_url" placeholder="assets/music/previews/song.mp3" value="'+escapeAttr(t.preview_url||'')+'"/></td>'+
 					'<td><input data-k="bpm" type="number" step="0.01" placeholder="BPM" value="'+(t.bpm??'')+'"/></td>'+
-					'<td><button class="iconbtn" data-act="up">▲</button> <button class="iconbtn" data-act="down">▼</button> <button class="iconbtn" data-act="del">✕</button></td>';
+					'<td><button class="iconbtn" data-act="up">?</button> <button class="iconbtn" data-act="down">?</button> <button class="iconbtn" data-act="del">?</button></td>';
 
 				tr.addEventListener('input',(e)=>{
 					const inp=e.target; if(!(inp instanceof HTMLInputElement)) return;
@@ -415,8 +574,109 @@
 
 		document.getElementById('search').addEventListener('input',(e)=>{ filter=e.target.value; renderList(); });
 
-		function escapeHTML(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-		function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+        function escapeHTML(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+        function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+        /* ========= VIDEOS JSON VIEW ========= */
+        let videosData = { videos: [], shorts: [] };
+        function vMark(msg='unsaved'){ const b=document.getElementById('status-videos'); b.textContent=msg; b.className='badge warn'; }
+        function vClean(msg='saved'){ const b=document.getElementById('status-videos'); b.textContent=msg; b.className='badge ok'; setTimeout(()=>{ b.textContent='idle'; b.className='badge'; },1200); }
+        function parseVideoId(input){
+            let s=String(input||'').trim();
+            if(!s) return '';
+            // If full URL, extract id
+            try{
+                if(/^https?:/i.test(s)){
+                    const u=new URL(s);
+                    if(u.hostname.includes('youtu.be')) return u.pathname.replace('/','');
+                    const v=u.searchParams.get('v'); if(v) return v;
+                    // shorts URL e.g. /shorts/ID
+                    const m=u.pathname.match(/\/shorts\/([A-Za-z0-9_-]+)/); if(m) return m[1];
+                    const m2=u.pathname.match(/\/embed\/([A-Za-z0-9_-]+)/); if(m2) return m2[1];
+                }
+            }catch{}
+            return s; // assume already an ID
+        }
+        function ensureVidShape(o={}){ return { id: String(o.id||''), title: String(o.title||''), description: String(o.description||'') }; }
+        function renderVideoTables(){
+            const vb=document.getElementById('videos-body'); vb.innerHTML='';
+            const sb=document.getElementById('shorts-body'); sb.innerHTML='';
+            function rowFor(list, idx, it){
+                const tr=document.createElement('tr');
+                tr.className='row';
+                tr.innerHTML='<td><input data-k="id" placeholder="ID or URL" value="'+escapeAttr(it.id)+'"/></td>'+
+                             '<td><input data-k="title" placeholder="Title" value="'+escapeAttr(it.title)+'"/></td>'+
+                             '<td><input data-k="description" placeholder="Description" value="'+escapeAttr(it.description)+'"/></td>'+
+                             '<td><button data-act="meta" class="iconbtn" title="Fetch title/description via API">?</button> <button data-act="up" class="iconbtn">?</button> <button data-act="down" class="iconbtn">?</button> <button data-act="del" class="iconbtn">?</button></td>';
+                tr.addEventListener('input',(e)=>{ const inp=e.target; const k=inp.getAttribute('data-k'); if(!k) return; if(k==='id'){ it.id=parseVideoId(inp.value); } else { it[k]=inp.value; } vMark('edited'); });
+                tr.querySelector('[data-act="meta"]').addEventListener('click', async ()=>{
+                    const key = (document.getElementById('videos-api-key').value||'').trim();
+                    if(!key){ alert('Enter your YouTube API key first.'); return; }
+                    const id = parseVideoId(it.id);
+                    if(!id){ alert('Enter a valid YouTube ID or URL'); return; }
+                    try{
+                        const meta = await fetchVideoMeta([id], key);
+                        if(meta[id]){ it.title = meta[id].title || it.title; it.description = meta[id].description || it.description; renderVideoTables(); vMark('fetched'); }
+                        else { alert('No metadata returned for '+id); }
+                    }catch(err){ alert('Fetch failed: '+(err && err.message || String(err))); }
+                });
+                tr.querySelector('[data-act="up"]').addEventListener('click',()=>{ if(idx>0){ const tmp=list[idx-1]; list[idx-1]=list[idx]; list[idx]=tmp; renderVideoTables(); vMark('reordered'); }});
+                tr.querySelector('[data-act="down"]').addEventListener('click',()=>{ if(idx<list.length-1){ const tmp=list[idx+1]; list[idx+1]=list[idx]; list[idx]=tmp; renderVideoTables(); vMark('reordered'); }});
+                tr.querySelector('[data-act="del"]').addEventListener('click',()=>{ if(!confirm('Delete row?')) return; list.splice(idx,1); renderVideoTables(); vMark('deleted'); });
+                return tr;
+            }
+            videosData.videos.forEach((it,i)=>vb.appendChild(rowFor(videosData.videos,i,it)));
+            videosData.shorts.forEach((it,i)=>sb.appendChild(rowFor(videosData.shorts,i,it)));
+        }
+
+        document.getElementById('videos-add-long').addEventListener('click',()=>{ videosData.videos.push(ensureVidShape({})); renderVideoTables(); vMark('added'); });
+        document.getElementById('videos-add-short').addEventListener('click',()=>{ videosData.shorts.push(ensureVidShape({})); renderVideoTables(); vMark('added'); });
+        document.getElementById('videos-clear').addEventListener('click',()=>{ if(!confirm('Clear lists?')) return; videosData={videos:[],shorts:[]}; renderVideoTables(); vMark('cleared'); });
+        document.getElementById('videos-download').addEventListener('click',()=>{
+            // Clean IDs and drop empty rows
+            const clean = (arr)=>arr.map(ensureVidShape).filter(x=>x.id.trim()!=='');
+            const out = { videos: clean(videosData.videos), shorts: clean(videosData.shorts) };
+            const blob=new Blob([JSON.stringify(out,null,'\t')],{type:'application/json'});
+            const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='videos.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); },0); vClean('downloaded');
+        });
+        document.getElementById('videos-file').addEventListener('change',(ev)=>{
+            const f=ev.target.files&&ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(String(r.result)); videosData={ videos: Array.isArray(obj.videos)?obj.videos.map(ensureVidShape):[], shorts: Array.isArray(obj.shorts)?obj.shorts.map(ensureVidShape):[] }; renderVideoTables(); vClean('loaded'); }catch(e){ const b=document.getElementById('status-videos'); b.textContent='parse error'; b.className='badge err'; alert('JSON error:\n'+e.message); } }; r.readAsText(f); });
+
+        // Persist API key
+        const apiKeyInput = document.getElementById('videos-api-key');
+        const DEFAULT_API_KEY = 'AIzaSyDjdY27g-IR4lq0pSwrBj6c-ACSJcFHgCs';
+        try{ const saved = localStorage.getItem('ytApiKey'); apiKeyInput.value = (saved && saved.trim()) ? saved : DEFAULT_API_KEY; }catch{ apiKeyInput.value = DEFAULT_API_KEY; }
+        apiKeyInput.addEventListener('input',()=>{ try{ localStorage.setItem('ytApiKey', apiKeyInput.value.trim()); }catch{} });
+
+        // Fetch metadata for a batch of IDs
+        async function fetchVideoMeta(ids, key){
+            ids = Array.from(new Set(ids.filter(Boolean)));
+            const out = {};
+            for(let i=0;i<ids.length;i+=50){
+                const chunk = ids.slice(i, i+50);
+                const url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='+encodeURIComponent(chunk.join(','))+'&key='+encodeURIComponent(key);
+                const r = await fetch(url);
+                if(!r.ok){ const info = await r.text().catch(()=>'' ); throw new Error('HTTP '+r.status+' '+info); }
+                const j = await r.json();
+                (j.items||[]).forEach(it=>{ const sn=it && it.snippet || {}; if(it && it.id){ out[it.id] = { title: sn.title||'', description: sn.description||'' }; }});
+            }
+            return out;
+        }
+
+        // Fetch titles for all rows with missing title
+        document.getElementById('videos-fetch-all').addEventListener('click', async ()=>{
+            const key = (apiKeyInput.value||'').trim(); if(!key){ alert('Enter your YouTube API key first.'); return; }
+            const all = [...videosData.videos, ...videosData.shorts];
+            const ids = all.map(x=>parseVideoId(x.id)).filter(Boolean);
+            if(!ids.length){ alert('No IDs to fetch.'); return; }
+            try{
+                const meta = await fetchVideoMeta(ids, key);
+                let count=0;
+                videosData.videos.forEach(x=>{ const id=parseVideoId(x.id); if(id && meta[id]){ if(!x.title) x.title = meta[id].title; if(!x.description) x.description = meta[id].description; count++; } });
+                videosData.shorts.forEach(x=>{ const id=parseVideoId(x.id); if(id && meta[id]){ if(!x.title) x.title = meta[id].title; if(!x.description) x.description = meta[id].description; count++; } });
+                renderVideoTables(); vMark('fetched '+count);
+            }catch(err){ alert('Fetch failed: '+(err && err.message || String(err))); }
+        });
 
 		(function boot(){ renderList(); renderEditor(); })();
 
@@ -546,7 +806,7 @@
 				const meta = document.createElement('div');
 				meta.className = 'meta';
 				meta.innerHTML =
-					'<div class="small">src → <code>'+escapeHTML(joinSrc(base, it.rel||it.name))+'</code></div>'+
+					'<div class="small">src ? <code>'+escapeHTML(joinSrc(base, it.rel||it.name))+'</code></div>'+
 					'<input data-k="title" placeholder="Title" value="'+escapeAttr(it.title||'')+'"/>'+
 					'<div class="colorline"><span class="swatch" style="--c:'+escapeAttr(it.hex||'#888')+'"></span>'+
 						'<span>'+ (it.hex ? it.hex.toUpperCase() : 'no color') + (Number.isFinite(it.h) ? ` • H:${Math.round(it.h)}° L:${Math.round((it.l??0)*100)}%` : '') +'</span>'+
@@ -555,9 +815,9 @@
 				const controls = document.createElement('div');
 				controls.className = 'actions';
 				controls.innerHTML =
-					'<button class="iconbtn" data-act="up">▲</button>'+
-					'<button class="iconbtn" data-act="down">▼</button>'+
-					'<button class="iconbtn" data-act="del">✕</button>';
+					'<button class="iconbtn" data-act="up">?</button>'+
+					'<button class="iconbtn" data-act="down">?</button>'+
+					'<button class="iconbtn" data-act="del">?</button>';
 
 				card.appendChild(img);
 				card.appendChild(meta);
@@ -738,5 +998,243 @@
 		function extOf(name){ const i=name.lastIndexOf('.'); return i>=0 ? name.slice(i).toLowerCase() : ''; }
 		function toTitle(p){ return p.replace(/^.*\//,'').replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim(); }
 	</script>
+
+	<script>
+	// ========== DOG POSTS (new) ==========
+	let dogPosts = [];
+	let dogSel = -1;
+
+		function todayLocal(){
+			const d = new Date();
+			const y = d.getFullYear();
+			const m = String(d.getMonth()+1).padStart(2,'0');
+			const day = String(d.getDate()).padStart(2,'0');
+			return `${y}-${m}-${day}`;
+		}
+
+		function ensureDogShape(p={}){
+			const o = {
+				id: String(p.id||('dp-'+String(Date.now()).slice(-6))),
+				title: String(p.title||'Untitled'),
+				date: String(p.date||todayLocal()),
+				content: String(p.content||''),
+			};
+		if (p.image) o.image = String(p.image);
+		if (p.video) o.video = String(p.video);
+            if (p.audio) o.audio = String(p.audio);
+            if (p.images) o.images = Array.isArray(p.images) ? p.images.map(String).filter(Boolean) : String(p.images).split(/,|\\r?\\n/).map(s=>s.trim()).filter(Boolean);
+		if (p.size) o.size = String(p.size);
+		if (p.maxWidth!==undefined && p.maxWidth!==null && String(p.maxWidth).trim()!=='') o.maxWidth = Number.isFinite(+p.maxWidth)? +p.maxWidth : String(p.maxWidth);
+		if (p.tags) o.tags = Array.isArray(p.tags) ? p.tags.map(String) : String(p.tags).split(',').map(s=>s.trim()).filter(Boolean);
+            else {
+              const dsz = String(p.size||"");
+              const mw = dsz==="small"?320: dsz==="medium"?560: dsz==="tall"?460: dsz==="wide"? undefined : 500;
+              if (mw !== undefined) o.maxWidth = mw;
+            }
+		return o;
+	}
+
+	function renderDogsList(){
+		const ul = document.getElementById('dogs-list');
+		if(!ul) return; ul.innerHTML = '';
+		dogPosts.forEach((p,i)=>{
+			const li = document.createElement('li');
+			li.className = 'item'+(i===dogSel?' active':'');
+			const metaTitle = escapeHTML(p.title||'Untitled');
+			const metaSub = escapeHTML(p.id||'')+' • '+escapeHTML(p.date||'');
+			li.innerHTML = '<div>'+
+				'<div class="item-title">'+metaTitle+'</div>'+
+				'<div class="item-sub">'+metaSub+'</div>'+
+				'</div>'+
+				'<div class="item-actions">'+
+					'<button class="iconbtn" data-act="up">?</button>'+
+					'<button class="iconbtn" data-act="down">?</button>'+
+					'<button class="iconbtn" data-act="del">?</button>'+
+				'</div>';
+			li.addEventListener('click', (e)=>{ if(e.target.closest('.item-actions')) return; dogSel=i; loadDogIntoEditor(); renderDogsList(); });
+			li.querySelector('[data-act="up"]').addEventListener('click',()=>{ if(i>0){ const t=dogPosts[i-1]; dogPosts[i-1]=dogPosts[i]; dogPosts[i]=t; dogSel=i-1; renderDogsList(); syncDogsJSON(); }});
+			li.querySelector('[data-act="down"]').addEventListener('click',()=>{ if(i<dogPosts.length-1){ const t=dogPosts[i+1]; dogPosts[i+1]=dogPosts[i]; dogPosts[i]=t; dogSel=i+1; renderDogsList(); syncDogsJSON(); }});
+			li.querySelector('[data-act="del"]').addEventListener('click',()=>{ if(!confirm('Delete this post?'))return; dogPosts.splice(i,1); if(dogSel>=dogPosts.length) dogSel=dogPosts.length-1; renderDogsList(); loadDogIntoEditor(); syncDogsJSON(); setDogStatus('warn','deleted'); });
+			ul.appendChild(li);
+		});
+		if(!dogPosts.length){ ul.innerHTML = '<li class="item"><div class="item-title" style="opacity:.6">No posts yet</div></li>'; }
+	}
+
+	function loadDogIntoEditor(){
+		const p = dogPosts[dogSel] || null;
+		const id=document.getElementById('d-id'); if(!id) return;
+		id.value = p?.id || '';
+		document.getElementById('d-title').value = p?.title || '';
+		document.getElementById('d-date').value = p?.date || '';
+		document.getElementById('d-size').value = p?.size || '';
+		document.getElementById('d-maxw').value = (p && typeof p.maxWidth==='number') ? p.maxWidth : '';
+		document.getElementById('d-image').value = p?.image || '';
+		document.getElementById('d-video').value = p?.video || '';
+		document.getElementById('d-tags').value = (p?.tags||[]).join(', ');
+        document.getElementById('d-audio').value = p?.audio || '';
+        document.getElementById('d-images').value = Array.isArray(p?.images) ? p.images.join('\n') : '';
+		document.getElementById('d-content').value = p?.content || '';
+		updateDogPreview();
+	}
+
+	function getDogFromEditor(){
+		const p = ensureDogShape({
+			id: document.getElementById('d-id')?.value,
+			title: document.getElementById('d-title')?.value,
+			date: document.getElementById('d-date')?.value,
+			size: document.getElementById('d-size')?.value || undefined,
+			maxWidth: document.getElementById('d-maxw')?.value || undefined,
+			image: document.getElementById('d-image')?.value || undefined,
+			video: document.getElementById('d-video')?.value || undefined,
+			tags: document.getElementById('d-tags')?.value,
+            audio: document.getElementById('d-audio')?.value || undefined,
+            images: (function(v){ if(!v) return undefined; return v.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); })(document.getElementById('d-images')?.value),
+			content: document.getElementById('d-content')?.value,
+		});
+		return p;
+	}
+
+	function updateDogPreview(){
+		const win = document.getElementById('dog-preview-window'); if(!win) return;
+		const p = getDogFromEditor();
+		win.style.maxWidth = p.maxWidth ? (Number.isFinite(+p.maxWidth)? (p.maxWidth+'px') : String(p.maxWidth)) : (p.size==='small'?'320px':p.size==='medium'?'560px':p.size==='tall'?'460px':'640px');
+		win.querySelector('.luna-title').textContent = p.title || 'Preview';
+		const d = document.getElementById('pv-date'); if (d) d.textContent = p.date || '—';
+		const t = document.getElementById('pv-tags'); if (t) t.textContent = (p.tags||[]).join(', ') || 'tags';
+		const body = document.getElementById('pv-body'); if(!body) return; body.innerHTML='';
+		if (p.video){
+			const s = String(p.video);
+			const isFile = /\.(mp4|webm|ogg)(\?|#|$)/i.test(s);
+			const ytId = (function(s){ if(/^[\w-]{11}$/.test(s)) return s; try{ const u=new URL(s); if(u.hostname.includes('youtu.be')) return u.pathname.slice(1); if(u.hostname.includes('youtube.com')){ if(u.searchParams.get('v')) return u.searchParams.get('v'); const m=u.pathname.match(/\/embed\/([\w-]{11})/); if(m) return m[1]; } }catch{} return ''; })(s);
+			if(ytId){
+				const wrap=document.createElement('div'); wrap.style.cssText='position:relative;width:100%;padding-top:56.25%;margin:10px 0;background:rgba(255,255,255,.06)';
+				const ifr=document.createElement('iframe'); ifr.src='https://www.youtube.com/embed/'+ytId; ifr.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0'; body.appendChild(wrap); wrap.appendChild(ifr);
+			} else if(isFile){
+				const v=document.createElement('video'); v.controls=true; v.playsInline=true; v.src=s; v.style.cssText='width:100%;display:block;margin:10px 0'; body.appendChild(v);
+			}
+		}
+		if (p.image){ const img=document.createElement('img'); img.src=p.image; img.className='luna-img'; img.style.margin='10px 0'; body.appendChild(img); }
+        if (p.content){ const para=document.createElement("p"); para.style.whiteSpace="pre-wrap"; let h=String(p.content||""); h=h.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); h=h.replace(/\[b\]([\s\S]*?)\[\/b\]/gi,"<strong>$1</strong>").replace(/\[small\]([\s\S]*?)\[\/small\]/gi,"<small>$1</small>").replace(/\[color=\s*(#[0-9a-fA-F]{3,6})\s*\]([\s\S]*?)\[\/color\]/gi,"<span style=\"color:$1\">$2</span>").replace(/(https?:\/\/[^\s<>'\"]+)/g,"<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\">$1</a>"); para.innerHTML=h; body.appendChild(para); }
+        if (Array.isArray(p.images)) { p.images.forEach(u=>{ if(u){ const im=document.createElement('img'); im.src=String(u); im.className='luna-img'; im.style.margin='10px 0'; body.appendChild(im); } }); }
+        if (p.audio){ const a=document.createElement('audio'); a.controls=true; a.preload='none'; a.src=String(p.audio); a.style.cssText='display:block;width:100%;margin:6px 0 10px 0'; body.appendChild(a); }
+	}
+
+	function syncDogsJSON(){
+		const out = { posts: dogPosts.map(ensureDogShape) };
+		const ta = document.getElementById('dogs-json'); if(ta) ta.value = JSON.stringify(out, null, '\t');
+	}
+
+	function setDogStatus(kind,msg){ const st=document.getElementById('status-dogs'); if(!st) return; st.textContent=msg; st.className='badge '+(kind||''); }
+
+	// Wire toolbar
+	const btnNew=document.getElementById('dogs-new'); if(btnNew) btnNew.addEventListener('click',()=>{ dogPosts=[]; dogSel=-1; renderDogsList(); loadDogIntoEditor(); syncDogsJSON(); setDogStatus('ok','new'); });
+	const btnAdd=document.getElementById('dogs-add'); if(btnAdd) btnAdd.addEventListener('click',()=>{ const p=ensureDogShape({ title:'New Post' }); dogPosts.push(p); dogSel=dogPosts.length-1; renderDogsList(); loadDogIntoEditor(); syncDogsJSON(); setDogStatus('warn','added'); });
+        const btnDl=document.getElementById('dogs-download'); if(btnDl) btnDl.addEventListener('click',()=>{ const out={ posts: dogPosts.map(ensureDogShape) }; const blob=new Blob([JSON.stringify(out,null,'\t')],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='posts.json'; a.click(); setDogStatus('ok','downloaded'); });
+        const btnCopy=document.getElementById('dogs-copy'); if(btnCopy) btnCopy.addEventListener('click',()=>{ const out={ posts: dogPosts.map(ensureDogShape) }; navigator.clipboard.writeText(JSON.stringify(out,null,'\t')).then(()=>setDogStatus('ok','copied')).catch(()=>setDogStatus('err','copy failed')); });
+
+        // Auto-adjust max width when size changes (defaults)
+        (function(){
+          const sizeEl = document.getElementById('d-size');
+          const maxwEl = document.getElementById('d-maxw');
+          function inferMax(sz){ switch(String(sz||'')){ case 'small': return 320; case 'medium': return 560; case 'tall': return 460; case 'wide': return ''; default: return 500; } }
+          if(sizeEl && maxwEl){
+            // initialize if empty
+            if(!maxwEl.value){ const v = inferMax(sizeEl.value); if(v!=='') maxwEl.value = String(v); }
+            sizeEl.addEventListener('change', ()=>{
+              const v = inferMax(sizeEl.value);
+              if(v===''){ maxwEl.value=''; } else { if(!maxwEl.value || /^\d+$/.test(maxwEl.value)) { maxwEl.value = String(v); } }
+              try{ updateDogPreview(); syncDogsJSON(); setDogStatus('warn','sized'); }catch{}
+            });
+          }
+        })();
+        // Import posts.json via file picker
+        (function(){
+          const file = document.getElementById("dogs-file");
+          if(!file) return;
+          file.addEventListener("change", async (ev)=>{
+            try{
+              const f = ev.target.files && ev.target.files[0];
+              if(!f) return;
+              const txt = await f.text();
+              const obj = JSON.parse(txt);
+              if(obj && Array.isArray(obj.posts)){
+                dogPosts = obj.posts.map(ensureDogShape);
+                dogSel = dogPosts.length ? 0 : -1;
+                renderDogsList();
+                loadDogIntoEditor();
+                syncDogsJSON();
+                setDogStatus('ok','imported');
+              } else {
+                setDogStatus('err','invalid json');
+              }
+            } catch { setDogStatus('err','import failed'); }
+            finally { try{ ev.target.value=''; }catch{} }
+          });
+        })();
+	// Sync fields ? model + preview
+        ['d-id','d-title','d-date','d-size','d-maxw','d-image','d-images','d-video','d-audio','d-tags','d-content'].forEach(id=>{
+            const el=document.getElementById(id); if(!el) return;
+            el.addEventListener('input',()=>{
+                if(dogSel<0){
+                    // Auto-create a new post on first input so export isn't empty
+                    const p = getDogFromEditor();
+                    dogPosts.push(p);
+                    dogSel = dogPosts.length - 1;
+                    renderDogsList();
+                    updateDogPreview();
+                    syncDogsJSON();
+                    setDogStatus('warn','created');
+                    return;
+                }
+                dogPosts[dogSel] = getDogFromEditor();
+                renderDogsList();
+                updateDogPreview();
+                syncDogsJSON();
+                setDogStatus('warn','edited');
+            });
+        });
+
+        // Initial load: try to fetch existing posts from assets/data/posts.json
+        (async function initDogs(){
+            try{
+                const r = await fetch('assets/data/posts.json', { cache: 'no-store' });
+                if(r.ok){
+                    const j = await r.json();
+                    if(j && Array.isArray(j.posts)){
+                        dogPosts = j.posts.map(ensureDogShape);
+                        dogSel = dogPosts.length ? 0 : -1;
+                        renderDogsList();
+                        loadDogIntoEditor();
+                        syncDogsJSON();
+                        setDogStatus('ok','loaded');
+                        return;
+                    }
+                }
+            }catch{}
+            // Fallback: start empty
+            renderDogsList();
+            loadDogIntoEditor();
+            syncDogsJSON();
+        })();
+	</script>
+<script>
+        // Formatting toolbar for content (dog posts)
+        (function(){
+          function wrap(selStart, selEnd, openTag, closeTag){
+            const ta = document.getElementById("d-content"); if(!ta) return;
+            const v = ta.value; const a = Math.min(selStart, selEnd), b = Math.max(selStart, selEnd);
+            ta.value = v.slice(0,a) + openTag + v.slice(a,b) + closeTag + v.slice(b);
+            ta.selectionStart = a + openTag.length; ta.selectionEnd = b + openTag.length; ta.focus();
+            ta.dispatchEvent(new Event("input"));
+          }
+          function onClick(openTag, closeTag){
+            const ta = document.getElementById("d-content"); if(!ta) return;
+            const s = ta.selectionStart||0, e = ta.selectionEnd||0; wrap(s,e,openTag,closeTag);
+          }
+          const b = document.getElementById("fmt-bold"); if(b) b.addEventListener("click", ()=> onClick("[b]","[/b]"));
+          const sm = document.getElementById("fmt-small"); if(sm) sm.addEventListener("click", ()=> onClick("[small]","[/small]"));
+          const col = document.getElementById("fmt-color"); if(col) col.addEventListener("click", ()=> onClick("[color=#ffd166]","[/color]"));
+        })();
+    </script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+{
+	"posts": [
+		{
+			"id": "dp-1",
+			"title": "Welcome !!!",
+			"date": "2025-09-05",
+			"content": "[b]HELLO HAII!! >w<[/b]\n\nWelcome to my website, this section is called [color=#ffd166]Macchi-Posting™[/color]! It's where I post personal updates on what im working on or any other personal stuff! \n\nAnyways I've spent a while working on it so it looks very stylish, hopefully u guys enjoy it too ^w^\n",
+			"image": "assets/posts/dp-1.png",
+			"size": "medium",
+			"maxWidth": 560,
+			"tags": [
+				"#welcome",
+				"#macchi",
+				"#hello!!"
+			]
+		}
+	]
+}
