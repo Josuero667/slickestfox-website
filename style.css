@@ -90,6 +90,22 @@ body.light footer {
   font-display: swap;
 }
 
+/* Local Gill Sans Condensed (WOFF2) */
+@font-face {
+  font-family: 'Gill Sans Condensed Local';
+  src: url('assets/ui/fonts/GillSans Condensed.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gill Sans Condensed Local';
+  src: url('assets/ui/fonts/GillSans Condensed.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -226,10 +242,10 @@ body.no-bg::after { display: none; }
 	color: var(--accent);
 }
 
-/* Site brand font: prefer Gill Sans Condensed if available, fall back to bundled condensed fonts */
+/* Site brand font: use local Gill Sans Condensed WOFF2, then fall back */
 .site-header h1.brand,
 .brand {
-  font-family: "Gill Sans MT", "Gill Sans", "Gill Sans Nova", "Gill Sans Std", "Gill Sans Condensed", "Gill Sans MT Condensed", "Ari Display Condensed", "Ari Condensed", Arial, sans-serif;
+  font-family: "Gill Sans Condensed Local", "Gill Sans Condensed", "Gill Sans MT Condensed", "Gill Sans MT", "Gill Sans", "Gill Sans Nova", "Gill Sans Std", "Ari Display Condensed", "Ari Condensed", Arial, sans-serif;
   font-stretch: condensed;
   font-weight: 700;
 }
@@ -430,7 +446,7 @@ nav .dropbtn::after { content: ' ▾'; }
 
 /* Headings use the brand condensed font */
 h1, h2, h3 {
-  font-family: "Gill Sans MT", "Gill Sans", "Gill Sans Nova", "Gill Sans Std", "Gill Sans Condensed", "Gill Sans MT Condensed", "Ari Display Condensed", "Ari Condensed", Arial, sans-serif;
+  font-family: "Gill Sans Condensed Local", "Gill Sans Condensed", "Gill Sans MT Condensed", "Gill Sans MT", "Gill Sans", "Gill Sans Nova", "Gill Sans Std", "Ari Display Condensed", "Ari Condensed", Arial, sans-serif;
   font-stretch: condensed;
   font-weight: 700;
 }
@@ -510,6 +526,8 @@ body:not(.light) footer .social-links img {
 body:not(.light) footer .social-links a:hover img {
   filter: invert(88%) sepia(45%) saturate(900%) hue-rotate(340deg) brightness(108%) contrast(104%);
 }
+
+/* (removed Ko-fi exception; using default tint rules) */
 
 /* =========================================================
 	=               MUSIC PAGE: GRID & CARDS               =
@@ -1200,6 +1218,11 @@ body.comm-page .luna-window {
   max-width: 780px; /* consistent, centered windows */
   margin: 20px auto;
 }
+/* Commissions: windows with no fill (transparent body area) */
+body.comm-page .luna-window { background-color: transparent; }
+/* Remove center fill from border-image for both real frame and fallback pseudo */
+body.comm-page .luna-frame { border-image-slice: var(--luna-slice); }
+body.comm-page .luna-window:not(:has(.luna-frame))::after { border-image-slice: var(--luna-slice); }
 body.comm-page .luna-window.narrow { max-width: 620px; }
 body.comm-page .luna-window.compact { max-width: 520px; }
 body.comm-page .luna-window.wide { max-width: 980px; }

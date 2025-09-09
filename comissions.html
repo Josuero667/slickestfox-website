@@ -4,7 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.9" />
   <title>Commissions - slickestfox</title>
+  <!-- Social preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="slickestfox" />
+  <meta property="og:url" content="https://slickestfox.com/comissions.html" />
+  <meta property="og:title" content="Commissions - slickestfox" />
+  <meta property="og:image" content="https://slickestfox.com/assets/url-preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://slickestfox.com/assets/url-preview.png" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/favicon/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="assets/favicon/site.webmanifest" />
 </head>
 <body class="comm-page">
 
@@ -45,7 +58,7 @@
       </div>
       <div class="luna-body">
         <p>You can request art commissions through my Twitter DM’s if I have my commission status set to open!!</p>
-        <p>DM me on <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer">Twitter</a> to start your request.</p>
+        
         <p>Here’s a doc where the terms are more readable :3 <a href="https://docs.google.com/document/d/1zNpQGxoMZdQBrpU7XLlzCokvoXq4_9g-JSp3YZvnwjU/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Open the doc</a></p>
         <img class="luna-img" src="assets/macchi doodling.png" alt="small doodle" style="max-width:180px; border-radius:10px; display:block; margin:10px auto 0;"/>
       </div>
@@ -135,7 +148,7 @@
         </div>
       </div>
       <div class="luna-body">
-        <p>Payment via Ko‑fi donations or PayPal. A 50% deposit is required before I begin the sketch; the remaining 50% is due after you receive the sketch. All prices are in USD.</p>
+        <p>Payment via <a href="https://ko-fi.com/slickestfox" target="_blank" rel="noopener noreferrer">Ko‑fi</a> donations or PayPal. A 50% deposit is required before I begin the sketch; the remaining 50% is due after you receive the sketch. All prices are in USD.</p>
       </div>
     </div>
 
@@ -158,6 +171,7 @@
           <li>For more questions ask @slickestfox on Twitter.</li>
         </ul>
         <p class="muted">Example artwork: see the <a href="art.html">Art page</a>.</p>
+        <p>DM me on <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer">Twitter</a> to start your request.</p>
       </div>
     </div>
   </main>
@@ -170,6 +184,7 @@
       <a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
       <a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
       <a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+      <a href="https://ko-fi.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Ko-fi"><img src="assets/ui/icons/kofi.svg" alt="Ko-fi"></a>
     </nav>
     <p>© 2025 slickestfox</p>
   </footer>
@@ -181,6 +196,32 @@
       { "src": "assets/audio/loops/comissions.ogg" }
     ]
   }
+  </script>
+
+  <!-- Commission page theming: match viewport bg to status color (slightly darker) -->
+  <script>
+    (function(){
+      function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+      function rgbMul(rgb, f){ return `rgb(${clamp(Math.round(rgb.r*f),0,255)}, ${clamp(Math.round(rgb.g*f),0,255)}, ${clamp(Math.round(rgb.b*f),0,255)})`; }
+      function parseRGB(s){
+        const m = String(s||'').match(/rgba?\(([^)]+)\)/i);
+        if (!m) return { r: 93, g: 255, b: 176 }; // default to open green
+        const parts = m[1].split(',').map(x=>parseFloat(x.trim()));
+        return { r: parts[0]|0, g: parts[1]|0, b: parts[2]|0 };
+      }
+      function apply(){
+        const el = document.querySelector('.comm-status');
+        if (!el) return;
+        const colorStr = getComputedStyle(el).color; // rgb(...)
+        const base = parseRGB(colorStr);
+        // Much darker gradient shades for the page background
+        const top = rgbMul(base, 0.25);   // strong darkening
+        const bot = rgbMul(base, 0.12);   // even darker at bottom
+        document.body.style.background = `linear-gradient(180deg, ${top} 0%, ${bot} 100%)`;
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+      else apply();
+    })();
   </script>
 
   <!-- Normalize mute button icon text across browsers/pages -->
