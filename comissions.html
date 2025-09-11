@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="luna-body">
-        <p>You can request art commissions through my Twitter DM’s if I have my commission status set to open!!</p>
+        <p>If I have my commission status set to open!! You can request art commissions through my Twitter DM’s </p>
         
         <p>Here’s a doc where the terms are more readable :3 <a href="https://docs.google.com/document/d/1zNpQGxoMZdQBrpU7XLlzCokvoXq4_9g-JSp3YZvnwjU/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Open the doc</a></p>
         <img class="luna-img" src="assets/macchi doodling.png" alt="small doodle" style="max-width:180px; border-radius:10px; display:block; margin:10px auto 0;"/>
@@ -215,8 +215,8 @@
         const colorStr = getComputedStyle(el).color; // rgb(...)
         const base = parseRGB(colorStr);
         // Much darker gradient shades for the page background
-        const top = rgbMul(base, 0.25);   // strong darkening
-        const bot = rgbMul(base, 0.12);   // even darker at bottom
+        const top = rgbMul(base, 0.1);   // strong darkening
+        const bot = rgbMul(base, 0.04);   // even darker at bottom
         document.body.style.background = `linear-gradient(180deg, ${top} 0%, ${bot} 100%)`;
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
