@@ -1,4 +1,4 @@
-﻿/* ========== Theme / Base ========== */
+/* ========== Theme / Base ========== */
 :root {
 	--bg: #0e0e12;
 	--bg-2: #151521;
@@ -1491,3 +1491,37 @@ body.light .product-price{ color: #000; }
 
 /* Hide stray top-level Dog-Posting link; dropdown has canonical entry */
 .site-header nav > a[href="dog-posting.html"] { display: none; }
+
+/* Pricing Table */
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.pricing-table th, .pricing-table td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 15px;
+  text-align: left;
+}
+.pricing-table th {
+  background-color: rgba(255, 255, 255, 0.05);
+  font-weight: bold;
+}
+.pricing-table td:first-child {
+  font-weight: bold;
+}
+.pricing-table .luna-img {
+  max-width: 150px;
+  border-radius: 5px;
+}
+.pricing-table .price {
+  font-size: 1.5em;
+  font-weight: bold;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+.pricing-table tr:nth-child(3n+3) td {
+  padding-top: 0;
+  padding-bottom: 1.5em;
+  color: var(--muted);
+}

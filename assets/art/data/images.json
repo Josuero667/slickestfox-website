@@ -21,6 +21,11 @@
 			"color": "#7A2C53"
 		},
 		{
+			"src": "assets/art/Cayl Comission.png",
+			"title": "Cayl Comission",
+			"color": "#989675"
+		},
+		{
 			"src": "assets/art/chriss_1337 Commission Final.png",
 			"title": "chriss 1337 Commission Final",
 			"color": "#B382A7"
@@ -46,9 +51,19 @@
 			"color": "#7D7BA9"
 		},
 		{
+			"src": "assets/art/devious icon.png",
+			"title": "devious icon",
+			"color": "#B1A4D4"
+		},
+		{
 			"src": "assets/art/devious.png",
 			"title": "devious",
 			"color": "#CCB7E0"
+		},
+		{
+			"src": "assets/art/Digitigrade study.png",
+			"title": "Digitigrade study",
+			"color": "#FBFBFB"
 		},
 		{
 			"src": "assets/art/dog doodles.png",
@@ -86,9 +101,24 @@
 			"color": "#C1ABAA"
 		},
 		{
+			"src": "assets/art/gayslop 4.png",
+			"title": "gayslop 4",
+			"color": "#BA8885"
+		},
+		{
 			"src": "assets/art/GLUNGUS.png",
 			"title": "GLUNGUS",
 			"color": "#7C5A43"
+		},
+		{
+			"src": "assets/art/Komet Comission Final.png",
+			"title": "Komet Comission Final",
+			"color": "#43383C"
+		},
+		{
+			"src": "assets/art/LiteKitsune Comission.png",
+			"title": "LiteKitsune Comission",
+			"color": "#5E5765"
 		},
 		{
 			"src": "assets/art/lucario underwater.png",
@@ -111,14 +141,29 @@
 			"color": "#7F5A47"
 		},
 		{
+			"src": "assets/art/macchi harness.png",
+			"title": "macchi harness",
+			"color": "#E5B796"
+		},
+		{
 			"src": "assets/art/macchi paw.png",
 			"title": "macchi paw",
 			"color": "#CCB2A8"
 		},
 		{
+			"src": "assets/art/macchi ref.png",
+			"title": "macchi ref",
+			"color": "#B0856E"
+		},
+		{
 			"src": "assets/art/Macchi subway.png",
 			"title": "Macchi subway",
 			"color": "#B08B5E"
+		},
+		{
+			"src": "assets/art/macchi underwater.png",
+			"title": "macchi underwater",
+			"color": "#655A57"
 		},
 		{
 			"src": "assets/art/macchi.png",
@@ -131,6 +176,16 @@
 			"color": "#A8665D"
 		},
 		{
+			"src": "assets/art/monhuntqq Comission.png",
+			"title": "monhuntqq Comission",
+			"color": "#633527"
+		},
+		{
+			"src": "assets/art/Nacc Comission.png",
+			"title": "Nacc Comission",
+			"color": "#967BB9"
+		},
+		{
 			"src": "assets/art/new art style.png",
 			"title": "new art style",
 			"color": "#6B582A"
@@ -141,9 +196,24 @@
 			"color": "#C7C7C7"
 		},
 		{
+			"src": "assets/art/newer oc.png",
+			"title": "newer oc",
+			"color": "#9D7D57"
+		},
+		{
 			"src": "assets/art/Pizzaz Comission Final.png",
 			"title": "Pizzaz Comission Final",
 			"color": "#6D2B8A"
+		},
+		{
+			"src": "assets/art/PrototypeFox Comission Final.png",
+			"title": "PrototypeFox Comission Final",
+			"color": "#7D4C32"
+		},
+		{
+			"src": "assets/art/Rev Ref Sheet.png",
+			"title": "Rev Ref Sheet",
+			"color": "#9A8366"
 		},
 		{
 			"src": "assets/art/sebastian solace.png",
@@ -154,6 +224,11 @@
 			"src": "assets/art/sebastian tail.png",
 			"title": "sebastian tail",
 			"color": "#2E3135"
+		},
+		{
+			"src": "assets/art/serp icon.png",
+			"title": "serp icon",
+			"color": "#CC8E78"
 		},
 		{
 			"src": "assets/art/serp truesona.png",
@@ -169,6 +244,11 @@
 			"src": "assets/art/Shae the Fox Comission Final.png",
 			"title": "Shae the Fox Comission Final",
 			"color": "#724129"
+		},
+		{
+			"src": "assets/art/Shiba Comission Final.png",
+			"title": "Shiba Comission Final",
+			"color": "#947D7C"
 		},
 		{
 			"src": "assets/art/slix closeup.png",
@@ -231,6 +311,16 @@
 			"color": "#C2A7F1"
 		},
 		{
+			"src": "assets/art/Ulv1s Commission Final.png",
+			"title": "Ulv1s Commission Final",
+			"color": "#393052"
+		},
+		{
+			"src": "assets/art/Vincent Commission.png",
+			"title": "Vincent Commission",
+			"color": "#A4B6B3"
+		},
+		{
 			"src": "assets/art/webfishing guy rtx.png",
 			"title": "webfishing guy rtx",
 			"color": "#793D21"
@@ -244,6 +334,46 @@
 			"src": "assets/art/Zomdox Halloween Comission Final.png",
 			"title": "Zomdox Halloween Comission Final",
 			"color": "#605662"
+		},
+		{
+			"src": "assets/art/Zomdox Wallpaper Commission Final - Contrast.png",
+			"title": "Zomdox Wallpaper Commission Final   Contrast",
+			"color": "#603883"
+		},
+		{
+			"src": "assets/art/additional/fullbody_flatcolor.png",
+			"title": "fullbody flatcolor",
+			"color": "#B17C77"
+		},
+		{
+			"src": "assets/art/additional/fullbody_rendered.png",
+			"title": "fullbody rendered",
+			"color": "#AB716D"
+		},
+		{
+			"src": "assets/art/additional/halfbody_flatcolor.png",
+			"title": "halfbody flatcolor",
+			"color": "#CB8969"
+		},
+		{
+			"src": "assets/art/additional/halfbody_rendered.png",
+			"title": "halfbody rendered",
+			"color": "#CE8564"
+		},
+		{
+			"src": "assets/art/additional/headshot_flatcolor.png",
+			"title": "headshot flatcolor",
+			"color": "#B67E65"
+		},
+		{
+			"src": "assets/art/additional/headshot_rendered.png",
+			"title": "headshot rendered",
+			"color": "#B77961"
+		},
+		{
+			"src": "assets/art/additional/macchi_ref_flatcolor.png",
+			"title": "macchi ref flatcolor",
+			"color": "#B08872"
 		}
 	]
 }
