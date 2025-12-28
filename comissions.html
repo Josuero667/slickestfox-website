@@ -18,6 +18,34 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
   <link rel="manifest" href="assets/favicon/site.webmanifest" />
+  <style>
+    /* Fix for pricing table visibility and styling */
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      margin-top: 10px;
+    }
+    .pricing-table th, 
+    .pricing-table td {
+      border: 1px solid rgba(255, 255, 255, 0.4); /* Visible dividers */
+      padding: 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .pricing-table th, 
+    .pricing-table td:first-child, 
+    .pricing-table .price {
+      font-weight: bold; /* Bold text */
+    }
+    .pricing-table tr td[colspan="3"] {
+      text-align: center;
+      font-size: 0.9rem;
+      font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: normal;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  </style>
 </head>
 <body class="comm-page">
 
@@ -142,7 +170,7 @@
 
     <!-- Full-Body -->
     <div class="luna-window wide">
-      <div class="luna-titlebar"><span class="luna-title">Full‑Body (FB) — $65</span>
+      <div class="luna-titlebar"><span class="luna-title">Full‑Body (FB) — Examples</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -160,7 +188,7 @@
 
     <!-- Half-Body -->
     <div class="luna-window">
-      <div class="luna-titlebar"><span class="luna-title">Half‑Body (HB) — $45</span>
+      <div class="luna-titlebar"><span class="luna-title">Half‑Body (HB) — Examples</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
@@ -178,7 +206,7 @@
 
     <!-- Headshot -->
     <div class="luna-window compact">
-      <div class="luna-titlebar"><span class="luna-title">Headshot Icon — $35</span>
+      <div class="luna-titlebar"><span class="luna-title">Headshot Icon — Examples</span>
         <div class="luna-controls" aria-hidden="false">
           <button class="luna-btn minimize" title="Minimize" aria-label="Minimize"></button>
           <button class="luna-btn maximize" title="Maximize" aria-label="Maximize"></button>
