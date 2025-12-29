@@ -23,7 +23,7 @@
     .pricing-table {
       width: 100%;
       border-collapse: collapse;
-      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
       margin-top: 10px;
     }
     .pricing-table th, 
@@ -44,6 +44,20 @@
       font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       font-weight: normal;
       background: rgba(255, 255, 255, 0.05);
+    }
+    .pricing-table .luna-img {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      border-radius: 5px;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 600px) {
+      .pricing-table th, 
+      .pricing-table td {
+        padding: 8px 4px;
+      }
     }
   </style>
 </head>

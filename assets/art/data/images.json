@@ -61,11 +61,6 @@
 			"color": "#CCB7E0"
 		},
 		{
-			"src": "assets/art/Digitigrade study.png",
-			"title": "Digitigrade study",
-			"color": "#FBFBFB"
-		},
-		{
 			"src": "assets/art/dog doodles.png",
 			"title": "dog doodles",
 			"color": "#F0D899"
@@ -339,41 +334,6 @@
 			"src": "assets/art/Zomdox Wallpaper Commission Final - Contrast.png",
 			"title": "Zomdox Wallpaper Commission Final   Contrast",
 			"color": "#603883"
-		},
-		{
-			"src": "assets/art/additional/fullbody_flatcolor.png",
-			"title": "fullbody flatcolor",
-			"color": "#B17C77"
-		},
-		{
-			"src": "assets/art/additional/fullbody_rendered.png",
-			"title": "fullbody rendered",
-			"color": "#AB716D"
-		},
-		{
-			"src": "assets/art/additional/halfbody_flatcolor.png",
-			"title": "halfbody flatcolor",
-			"color": "#CB8969"
-		},
-		{
-			"src": "assets/art/additional/halfbody_rendered.png",
-			"title": "halfbody rendered",
-			"color": "#CE8564"
-		},
-		{
-			"src": "assets/art/additional/headshot_flatcolor.png",
-			"title": "headshot flatcolor",
-			"color": "#B67E65"
-		},
-		{
-			"src": "assets/art/additional/headshot_rendered.png",
-			"title": "headshot rendered",
-			"color": "#B77961"
-		},
-		{
-			"src": "assets/art/additional/macchi_ref_flatcolor.png",
-			"title": "macchi ref flatcolor",
-			"color": "#B08872"
 		}
 	]
 }
