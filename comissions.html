@@ -32,15 +32,19 @@
       padding: 12px;
       text-align: center;
       vertical-align: middle;
+      font-size: 1.15rem;
     }
     .pricing-table th, 
     .pricing-table td:first-child, 
     .pricing-table .price {
       font-weight: bold; /* Bold text */
     }
-    .pricing-table tr td[colspan="3"] {
+    .pricing-table .price {
+      font-size: 1.8rem; /* Make price significantly bigger */
+    }
+    .pricing-table tr td[colspan="2"] {
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-family: 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       font-weight: normal;
       background: rgba(255, 255, 255, 0.05);
@@ -86,7 +90,7 @@
     <section class="intro">
       <h3>Commission Pricing and Terms of Service</h3>
       <!-- Set Comission STATUS-->
-      <div class="comm-status closed">COMMISSIONS CLOSED</div>
+      <div class="comm-status open">COMMISSIONS OPEN</div>
     </section>
     
      <!-- Overview / How to order -->
@@ -119,63 +123,97 @@
         <table class="pricing-table">
           <thead>
             <tr>
-              <th></th>
               <th>FLATCOLOR</th>
               <th>RENDERED</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>HEADSHOTS</td>
+              <th colspan="2">HEADSHOTS</th>
+            </tr>
+            <tr>
               <td class="price">$30</td>
               <td class="price">$40</td>
             </tr>
             <tr>
-              <td></td>
               <td><img class="luna-img" src="assets/art/additional/headshot_flatcolor.png" alt="Headshot flatcolor example" /></td>
-              <td><img class="luna-img" src="assets/art/additional/headshot_rendered.png" alt="Headshot rendered example" /></td>
+              <td><img class="luna-img" src="assets/art/additional/headshot.png" alt="Headshot rendered example" /></td>
             </tr>
             <tr>
-              <td colspan="3">A portrait focused on your character’s face — perfect for avatars and profiles.</td>
+              <td colspan="2">A portrait focused on your character’s face — perfect for avatars and profiles.</td>
             </tr>
             <tr>
-              <td>HALFBODY</td>
+              <th colspan="2">HALFBODY</th>
+            </tr>
+            <tr>
               <td class="price">$40</td>
               <td class="price">$50</td>
             </tr>
             <tr>
-              <td></td>
               <td><img class="luna-img" src="assets/art/additional/halfbody_flatcolor.png" alt="Halfbody flatcolor example" /></td>
-              <td><img class="luna-img" src="assets/art/additional/halfbody_rendered.png" alt="Halfbody rendered example" /></td>
+              <td><img class="luna-img" src="assets/art/additional/halfbody.png" alt="Halfbody rendered example" /></td>
             </tr>
             <tr>
-              <td colspan="3">From the hips up (or any close‑up framing you like).</td>
+              <td colspan="2">From the hips up (or any close‑up framing you like).</td>
             </tr>
             <tr>
-              <td>FULLBODY</td>
+              <th colspan="2">FULLBODY</th>
+            </tr>
+            <tr>
               <td class="price">$60</td>
               <td class="price">$70</td>
             </tr>
             <tr>
-              <td></td>
-              <td><img class="luna-img" src="assets/art/additional/fullbody_flatcolor.png" alt="Fullbody flatcolor example" /></td>
-              <td><img class="luna-img" src="assets/art/additional/fullbody_rendered.png" alt="Fullbody rendered example" /></td>
+              <td><img class="luna-img" src="assets/art/additional/fullbody_flatcolor.png" alt="Fullbody flatcolor example 1" /></td>
+              <td><img class="luna-img" src="assets/art/additional/fullbody.png" alt="Fullbody rendered example 1" /></td>
             </tr>
             <tr>
-              <td colspan="3">A full‑body piece where the entire figure is visible. Great for dynamic poses and showing your character in full.</td>
+              <td><img class="luna-img" src="assets/art/additional/fullbody_flatcolor2.png" alt="Fullbody flatcolor example 2" /></td>
+              <td><img class="luna-img" src="assets/art/additional/fullbody2.png" alt="Fullbody rendered example 2" /></td>
             </tr>
             <tr>
-              <td>REF SHEET</td>
-              <td class="price">$150</td>
-              <td class="price">$180</td>
+              <td><img class="luna-img" src="assets/art/additional/fullbody_flatcolor3.png" alt="Fullbody flatcolor example 3" /></td>
+              <td><img class="luna-img" src="assets/art/additional/fullbody3.png" alt="Fullbody rendered example 3" /></td>
             </tr>
             <tr>
-              <td></td>
-              <td><img class="luna-img" src="assets/art/additional/macchi_ref_flatcolor.png" alt="Ref sheet flatcolor example" /></td>
-              <td><img class="luna-img" src="assets/art/macchi ref.png" alt="Ref sheet rendered example" /></td>
+              <td colspan="2">A full‑body piece where the entire figure is visible. Great for dynamic poses and showing your character in full.</td>
             </tr>
             <tr>
-              <td colspan="3">Contains two half body drawings and one full body drawing, or two full body drawings. One eyeshot, two accessories of your choice. and choosing two additional: headshot, tailshot, buttshot, pawshot. &#40;Example above is an Exception&#41;</td>
+              <th colspan="2">MAGAZINE COVER</th>
+            </tr>
+            <tr>
+              <td colspan="2" class="price">$80</td>
+            </tr>
+            <tr>
+              <td colspan="2"><img class="luna-img" src="assets/art/additional/magazine.png" alt="Magazine cover example 1" style="max-width: 400px; width: 100%;" /></td>
+            </tr>
+            <tr>
+              <td colspan="2"><img class="luna-img" src="assets/art/additional/magazine2.png" alt="Magazine cover example 2" style="max-width: 400px; width: 100%;" /></td>
+            </tr>
+            <tr>
+              <td colspan="2"><img class="luna-img" src="assets/art/additional/magazine3.png" alt="Magazine cover example 3" style="max-width: 400px; width: 100%;" /></td>
+            </tr>
+            <tr>
+              <td colspan="2">A stylish magazine cover featuring your character, complete with custom text, headlines, and graphic design elements.</td>
+            </tr>
+            <tr>
+              <th colspan="2">BACKGROUNDS</th>
+            </tr>
+            <tr>
+              <td colspan="2" class="price">+$40 - $80</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: flex-start;">
+                  <img src="assets/art/additional/background.png" alt="Background Example 1" style="width: 100%; max-width: 600px; height: auto; border-radius: 5px; object-fit: contain;" />
+                  <img src="assets/art/additional/background2.png" alt="Background Example 2" style="width: 100%; max-width: 600px; height: auto; border-radius: 5px; object-fit: contain;" />
+                  <img src="assets/art/additional/background3.png" alt="Background Example 3" style="width: 100%; max-width: 600px; height: auto; border-radius: 5px; object-fit: contain;" />
+                  <img src="assets/art/additional/background4.png" alt="Background Example 3" style="width: 100%; max-width: 600px; height: auto; border-radius: 5px; object-fit: contain;" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">Fully rendered scene to elevate your piece. Price depends on complexity. (<strong>This is an add-on price applied to the base art</strong>)</td>
             </tr>
           </tbody>
         </table>
@@ -193,9 +231,9 @@
       </div>
       <div class="luna-body">
         <div class="luna-gallery">
-          <img class="luna-img" src="assets/art/newer oc.png" alt="gayslop 2 RENDERED" />
-          <img class="luna-img" src="assets/art/macchi underwater.png" alt="Pizzaz Commission Final" />
-          <img class="luna-img" src="assets/art/Macchi subway.png" alt="Macchi subway" />
+          <img class="luna-img" src="assets/art/newer oc.png" alt="Fullbody Example 1" />
+          <img class="luna-img" src="assets/art/macchi underwater.png" alt="Fullbody Example 2" />
+          <img class="luna-img" src="assets/art/Macchi subway.png" alt="Fullbody Example 3" />
         </div>
       </div>
     </div>
@@ -247,7 +285,7 @@
       </div>
       <div class="luna-body">
         <ul>
-          <li><strong>Background</strong>: Fully rendered scene to elevate your piece — <em>+ $35–70</em> depending on complexity.</li>
+          <li><strong>Background</strong>: Fully rendered scene to elevate your piece — <em>+ $40–80</em> depending on complexity.</li>
           <li><strong>Additional Character</strong>: FB or HB extra character — <em>35%+ of Base Price</em>.</li>
         </ul>
       </div>
@@ -283,6 +321,7 @@
           <li>I’ll update you on the artwork's progress when necessary, or anytime if you ask. You can request revisions as needed, but please note that changes during the final rendering stage are difficult and not encouraged.</li>
           <li>I draw NSFW [+$10], but I won’t draw extreme fetishes or anything I’m uncomfortable with — feel free to ask if you have questions.</li>
           <li>I aim to deliver the first sketch in less than two weeks, and will probably start focusedly working on it after the sketch is delivered. You’re welcome to check in on the progress anytime!</li>
+          <li>I assume the right to post any artwork I do unless I am told otherwise.</li>
           <li>I strictly prohibit the use of my work for any form of generative AI processing, including but not limited to machine learning training, dataset inclusion, or algorithmic modification. This work is licensed for personal use only; I expressly forbid any commercial exploitation, unauthorized monetization, or the creation of derivative works for profit.</li>
         </ul>
         <p class="muted">Example artwork: see the <a href="art.html">Art page</a>.</p>

@@ -11,6 +11,11 @@
 			"color": "#87785F"
 		},
 		{
+			"src": "assets/art/Beaunne commission.png",
+			"title": "Beaunne commission",
+			"color": "#845743"
+		},
+		{
 			"src": "assets/art/cand draw shit V2.png",
 			"title": "cand draw shit V2",
 			"color": "#7C7779"
@@ -24,6 +29,11 @@
 			"src": "assets/art/Cayl Comission.png",
 			"title": "Cayl Comission",
 			"color": "#989675"
+		},
+		{
+			"src": "assets/art/Celerity Commission [Watermark].png",
+			"title": "Celerity Commission [Watermark]",
+			"color": "#7A779A"
 		},
 		{
 			"src": "assets/art/chriss_1337 Commission Final.png",
@@ -41,6 +51,11 @@
 			"color": "#6D68AA"
 		},
 		{
+			"src": "assets/art/crtrlndn commission.png",
+			"title": "crtrlndn commission",
+			"color": "#6B6861"
+		},
+		{
 			"src": "assets/art/DeimosTheWolf Commission FINAL.png",
 			"title": "DeimosTheWolf Commission FINAL",
 			"color": "#D1A9E8"
@@ -49,11 +64,6 @@
 			"src": "assets/art/deltarune roaring knight fight.png",
 			"title": "deltarune roaring knight fight",
 			"color": "#7D7BA9"
-		},
-		{
-			"src": "assets/art/devious icon.png",
-			"title": "devious icon",
-			"color": "#B1A4D4"
 		},
 		{
 			"src": "assets/art/devious.png",
@@ -101,9 +111,19 @@
 			"color": "#BA8885"
 		},
 		{
+			"src": "assets/art/gayslop 6.png",
+			"title": "gayslop 6",
+			"color": "#A96F4B"
+		},
+		{
 			"src": "assets/art/GLUNGUS.png",
 			"title": "GLUNGUS",
 			"color": "#7C5A43"
+		},
+		{
+			"src": "assets/art/IKA YEAH RIGHT.png",
+			"title": "IKA YEAH RIGHT",
+			"color": "#9B897E"
 		},
 		{
 			"src": "assets/art/Komet Comission Final.png",
@@ -131,6 +151,11 @@
 			"color": "#E5E3E3"
 		},
 		{
+			"src": "assets/art/macchi fashion magazine.png",
+			"title": "macchi fashion magazine",
+			"color": "#7B5742"
+		},
+		{
 			"src": "assets/art/macchi guitar playing V2.png",
 			"title": "macchi guitar playing V2",
 			"color": "#7F5A47"
@@ -154,6 +179,11 @@
 			"src": "assets/art/Macchi subway.png",
 			"title": "Macchi subway",
 			"color": "#B08B5E"
+		},
+		{
+			"src": "assets/art/macchi tuff dark mode.png",
+			"title": "macchi tuff dark mode",
+			"color": "#706D6B"
 		},
 		{
 			"src": "assets/art/macchi underwater.png",
@@ -221,6 +251,11 @@
 			"color": "#2E3135"
 		},
 		{
+			"src": "assets/art/sequoia commission.png",
+			"title": "sequoia commission",
+			"color": "#83847E"
+		},
+		{
 			"src": "assets/art/serp icon.png",
 			"title": "serp icon",
 			"color": "#CC8E78"
@@ -271,6 +306,11 @@
 			"color": "#9693A5"
 		},
 		{
+			"src": "assets/art/Smell fanart.png",
+			"title": "Smell fanart",
+			"color": "#CAAE9F"
+		},
+		{
 			"src": "assets/art/susie.png",
 			"title": "susie",
 			"color": "#744035"
@@ -301,6 +341,11 @@
 			"color": "#AE9083"
 		},
 		{
+			"src": "assets/art/toastiethefox Commission.png",
+			"title": "toastiethefox Commission",
+			"color": "#72AAC9"
+		},
+		{
 			"src": "assets/art/Tsumi Icon.png",
 			"title": "Tsumi Icon",
 			"color": "#C2A7F1"
@@ -309,6 +354,11 @@
 			"src": "assets/art/Ulv1s Commission Final.png",
 			"title": "Ulv1s Commission Final",
 			"color": "#393052"
+		},
+		{
+			"src": "assets/art/Valde Commission.png",
+			"title": "Valde Commission",
+			"color": "#727281"
 		},
 		{
 			"src": "assets/art/Vincent Commission.png",
@@ -334,6 +384,11 @@
 			"src": "assets/art/Zomdox Wallpaper Commission Final - Contrast.png",
 			"title": "Zomdox Wallpaper Commission Final   Contrast",
 			"color": "#603883"
+		},
+		{
+			"src": "assets/art/additional/magazine2.png",
+			"title": "magazine2",
+			"color": "#554248"
 		}
 	]
 }
