@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.9">
     <title>SylviumLighting - slickestfox</title>
-    <!-- Social preview -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="slickestfox">
     <meta property="og:url" content="https://slickestfox.com/sylviumlighting.html">
@@ -18,6 +18,65 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
     <link rel="manifest" href="assets/favicon/site.webmanifest">
+    
+    <style>
+        @font-face {
+            font-family: 'MarioKartDS';
+            src: url('assets/ui/fonts/Mario-Kart-DS.ttf') format('truetype');
+        }
+
+        .mario-font {
+            font-family: 'MarioKartDS', sans-serif;
+            letter-spacing: 1px;
+            text-transform: lowercase;
+            color: #000000;
+        }
+
+        .product-showcase {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center;
+            width: 100%;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .product-video {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            width: 100%;
+        }
+
+        .img-grid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .img-grid img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Invert logo to white */
+        .white-logo {
+            filter: brightness(0) invert(1);
+            max-width: 100px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body class="light no-bg">
     <header class="site-header">
@@ -28,55 +87,82 @@
             <a href="music.html">Music</a>
             <a href="videos.html">Videos</a>
             <a href="comissions.html">Commissions</a>
-            <!-- Dog-Posting moved to Extras dropdown -->
             <div class="dropdown">
                 <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
                 <div class="dropdown-content" role="menu">
                     <a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
-					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+                    <a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
                 </div>
             </div>
         </nav>
-</header>
+    </header>
 
-    <!-- HERO / BANNER -->
     <section class="hero hero-white" aria-label="SylviumLighting banner">
         <img class="hero-img" src="assets/sylviumlighting banner.jpg" alt="SylviumLighting banner">
         <div class="hero-overlay">
             <h2>SylviumLighting</h2>
-            <p class="tagline">Custom RGB lighting</p>
+            <p class="tagline">Custom RGB Lighting</p>
+            <img src="assets/sylvium-lighting/Logo.png" alt="Logo" class="white-logo">
         </div>
     </section>
 
     <main class="container">
         <section>
-            <h2>What It Is?</h2>
-            <p>Hello!! SylviumLighting is an Etsy store I opened where I sell custom made ARGB Led Pucks, they work directly using data so you would need a separate microcontroller/LED controller for them. If you like RGB Lighting and are familiar on how to wire WS2812B Led strips I implore you to check them out! It directly supports me and what I do, thanks!! X3</p>
+            <h2>What is SylviumLighting?</h2>
+            <p>Hello!! SylviumLighting is my personal Etsy store where I handcraft and sell custom ARGB LED Infinity Pucks! These pucks are designed to give your room, PC case, or display shelves a vibrant, mesmerizing infinity-mirror glow.</p>
+            <p>The <strong>Single Pucks</strong> use standard WS2812B data protocols, meaning you will need a separate microcontroller (like an Arduino or ESP32) or a compatible 5V ARGB motherboard header to control them. However, if you are looking for a complete, hassle-free setup, the <strong>3-Pack Bundle</strong> comes with a dedicated controller, a power supply, and everything you need for a plug-and-play experience right out of the box!</p>
+            <p>If you love customizing your own RGB lighting setups and DIY electronics, I highly encourage you to check them out. Every purchase directly supports my art, music, and engineering projects. Thank you so much! X3</p>
         </section>
 
-        <!-- Product showcase (autoplay video + collage + price + Etsy link) -->
         <section class="product">
-            <div class="product-meta">
-                <span class="product-price">$25.99+</span>
-                <a class="btn" href="https://www.etsy.com/listing/4337372820/" target="_blank" rel="noopener noreferrer">View on Etsy</a>
-            </div>
-            <div class="product-showcase">
-                <video class="product-video" src="assets/sylvium-lighting/rgb puck.mp4" autoplay loop muted playsinline preload="metadata"></video>
-                <div>
-                    <div class="img-grid">
-                        <img src="assets/sylvium-lighting/IMG_0050.jpg" alt="Product photo 1">
-                        <img src="assets/sylvium-lighting/IMG_0060.jpg" alt="Product photo 2">
-                        <img src="assets/sylvium-lighting/IMG_0064.jpg" alt="Product photo 3">
-                        <img src="assets/sylvium-lighting/IMG_0070.jpg" alt="Product photo 4">
-                        <img src="assets/sylvium-lighting/IMG_0075.jpg" alt="Product photo 5">
-                        <img src="assets/sylvium-lighting/black 10.png" alt="Product photo 6">
-                        <img src="assets/sylvium-lighting/white 8.png" alt="Product photo 7">
-                        <img src="assets/sylvium-lighting/white 11 v2.png" alt="Product photo 8">
+            <div class="product-meta" style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 20px;">
+                <h3 style="margin: 0; text-align: center; font-size: 1.5rem;">Available on Etsy</h3>
+                
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; width: 100%;">
+                    
+                    <div style="text-align: center; background: rgba(255,209,102,0.05); padding: 20px 30px; border-radius: 16px; border: 2px solid #ffd166; flex: 1 1 0; min-width: 200px; max-width: 300px; box-shadow: 0 4px 20px rgba(255,209,102,0.15);">
+                        <h4 class="mario-font" style="margin: 0 0 5px 0; font-size: 1.4rem;">3-pack bundle</h4>
+                        <span class="product-price mario-font" style="display: block; margin-bottom: 15px; font-size: 1.3rem;">$120.00</span>
+                        <a class="btn" href="https://www.etsy.com/listing/4514430886/" target="_blank" rel="noopener noreferrer" style="width: 100%; display: block; box-sizing: border-box;">View on Etsy</a>
+                    </div>
+
+                    <div style="text-align: center; background: rgba(255,255,255,0.05); padding: 20px 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); flex: 1 1 0; min-width: 200px; max-width: 300px;">
+                        <h4 class="mario-font" style="margin: 0 0 5px 0; font-size: 1.2rem;">single puck <br><span style="font-size: 0.8rem; font-weight: normal; opacity: 0.7;">(no controller)</span></h4>
+                        <span class="product-price mario-font" style="display: block; margin-bottom: 15px; font-size: 1.3rem;">$27.99</span>
+                        <a class="btn" href="https://www.etsy.com/listing/4337372820/" target="_blank" rel="noopener noreferrer" style="width: 100%; display: block; box-sizing: border-box;">View on Etsy</a>
                     </div>
                 </div>
             </div>
+
+            <div class="product-showcase">
+                <video class="product-video" src="assets/sylvium-lighting/rgb puck.mp4" autoplay loop muted playsinline preload="metadata"></video>
+                <div class="img-grid">
+                    <img src="assets/sylvium-lighting/3 clorophyte.png" alt="Product photo 1">
+                    <img src="assets/sylvium-lighting/3 green.png" alt="Product photo 2">
+                    <img src="assets/sylvium-lighting/3 war white.png" alt="Product photo 3">
+                    <img src="assets/sylvium-lighting/3 wide under.png" alt="Product photo 4">
+                    <img src="assets/sylvium-lighting/black 10.png" alt="Product photo 5">
+                    <img src="assets/sylvium-lighting/fire.png" alt="Product photo 6">
+                    <img src="assets/sylvium-lighting/Front view.png" alt="Product photo 7">
+                    <img src="assets/sylvium-lighting/IMG_0050.jpg" alt="Product photo 8">
+                    <img src="assets/sylvium-lighting/IMG_0060.jpg" alt="Product photo 9">
+                    <img src="assets/sylvium-lighting/IMG_0064.jpg" alt="Product photo 10">
+                    <img src="assets/sylvium-lighting/IMG_0070.jpg" alt="Product photo 11">
+                    <img src="assets/sylvium-lighting/IMG_0075.jpg" alt="Product photo 12">
+                    <img src="assets/sylvium-lighting/IMG_6539.jpeg" alt="Product photo 13">
+                    <img src="assets/sylvium-lighting/IMG_6540.jpeg" alt="Product photo 14">
+                    <img src="assets/sylvium-lighting/IMG_6543.jpeg" alt="Product photo 15">
+                    <img src="assets/sylvium-lighting/IMG_6545.jpeg" alt="Product photo 16">
+                    <img src="assets/sylvium-lighting/IMG_6551.jpeg" alt="Product photo 17">
+                    <img src="assets/sylvium-lighting/main.png" alt="Product photo 18">
+                    <img src="assets/sylvium-lighting/over 200 colors.png" alt="Product photo 19">
+                    <img src="assets/sylvium-lighting/Package final.png" alt="Product photo 20">
+                    <img src="assets/sylvium-lighting/pink portrait.png" alt="Product photo 21">
+                    <img src="assets/sylvium-lighting/white 8.png" alt="Product photo 22">
+                </div>
+            </div>
         </section>
-</main>
+    </main>
 
     <footer>
         <nav class="social-links" aria-label="Social media">
@@ -91,7 +177,6 @@
         <p>© 2025 slickestfox</p>
     </footer>
     
-    <!-- Inline JSON (loop config) -->
     <script id="loop-data" type="application/json">
     {
         "loops": [
@@ -100,7 +185,6 @@
     }
     </script>
 
-    <!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
     <script>
     (() => {
         const LS_MUTE_KEY = 'siteAudioMuted';
@@ -150,3 +234,4 @@
 </body>
 </html>
 
+```

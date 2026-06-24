@@ -6,7 +6,12 @@
 	const JSON_PATH = "assets/data/images.json";
 
 	// ---------- DOM ----------
-	const grid = document.getElementById("art-grid");
+	const grid = document.getElementById("art-grid") || document.getElementById("gallery");
+
+	// Add these listeners to trigger the desaturation
+	grid.addEventListener("pointerenter", () => grid.classList.add("gallery-active"));
+	grid.addEventListener("pointerleave", () => grid.classList.remove("gallery-active"));
+    
 	const IS_FILE = location.protocol === "file:";
 
 	// ---------- Audio gate ----------

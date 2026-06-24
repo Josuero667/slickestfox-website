@@ -1,10 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=0.9"/>
-	<title>Art - slickestfox</title>
-    <!-- Social preview -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.9"/>
+    <title>Art - slickestfox</title>
     <meta property="og:type" content="website"/>
     <meta property="og:site_name" content="slickestfox"/>
     <meta property="og:url" content="https://slickestfox.com/art.html"/>
@@ -12,341 +11,454 @@
     <meta property="og:image" content="https://slickestfox.com/assets/url-preview.png"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:image" content="https://slickestfox.com/assets/url-preview.png"/>
-	<link rel="stylesheet" href="style.css"/>
-	<link rel="icon" href="assets/favicon/favicon.ico" sizes="any"/>
-	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png"/>
-	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png"/>
-	<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png"/>
-	<link rel="manifest" href="assets/favicon/site.webmanifest"/>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="icon" href="assets/favicon/favicon.ico" sizes="any"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png"/>
+    <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png"/>
+    <link rel="manifest" href="assets/favicon/site.webmanifest"/>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
+ <style>
+        @font-face {
+            font-family: 'MarioKartDS';
+            src: url('assets/ui/fonts/Mario-Kart-DS.ttf') format('truetype');
+        }
+
+        .year-tabs-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto 10px auto;
+            padding: 0 20px;
+            gap: 15px; 
+            box-sizing: border-box;
+        }
+
+        .wii-tab-button {
+            flex: 1; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            white-space: nowrap;
+
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-top: 1px solid rgba(255,255,255,0.5);
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 2px 5px rgba(255,255,255,0.1);
+            color: #94a3b8;
+            padding: 12px 10px;
+            font-family: 'MarioKartDS', 'Varela Round', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* THIS is the section that was updated to stretch the reflection */
+        .wii-tab-button::after {
+            content: '';
+            position: absolute;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 45%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 9999px 9999px 0 0; /* Curves the top to match the button, keeps the bottom flat to fade out */
+            pointer-events: none;
+        }
+
+        .wii-tab-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 209, 102, 0.4), inset 0 2px 5px rgba(255,255,255,0.3);
+            border-color: rgba(255, 209, 102, 0.6);
+            color: #ffd166;
+        }
+
+        .wii-tab-button.active {
+            background: linear-gradient(180deg, rgba(255, 209, 102, 0.2) 0%, rgba(255, 209, 102, 0.05) 100%);
+            border-color: #ffd166;
+            color: #ffd166;
+            box-shadow: 0 0 20px rgba(255, 209, 102, 0.4), inset 0 2px 5px rgba(255,255,255,0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+		#gallery.gallery-active .art-item {
+			filter: grayscale(100%);
+			opacity: 0.4;
+			transition: filter 0.3s ease, opacity 0.3s ease;
+		}
+		#gallery.gallery-active .art-item:hover {
+			filter: grayscale(0%);
+			opacity: 1;
+		}
+		.art-item {
+			transition: filter 0.3s ease, opacity 0.3s ease;
+		}
+    </style>
 </head>
 <body>
-	<header class="site-header">
-		<h1 class="brand">slickestfox</h1>
-		<nav>
-			<a href="index.html">Home</a>
-			<a href="art.html">Art</a>
-			<a href="music.html">Music</a>
-			<a href="videos.html">Videos</a>
-			<a href="comissions.html">Commissions</a>
+    <header class="site-header">
+        <h1 class="brand">slickestfox</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="art.html">Art</a>
+            <a href="music.html">Music</a>
+            <a href="videos.html">Videos</a>
+            <a href="comissions.html">Commissions</a>
 
-			<div class="dropdown">
-				<button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
-				<div class="dropdown-content" role="menu">
-					<a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
-					<a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
-				</div>
-			</div>
-		</nav>
-	</header>
+            <div class="dropdown">
+                <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Extras</button>
+                <div class="dropdown-content" role="menu">
+                    <a href="dog-posting.html" role="menuitem">Dog-Posting™</a>
+                    <a href="sylviumlighting.html" role="menuitem">SylviumLighting</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-	<!-- Full-bleed collage -->
-	<div class="bleed">
-		<div id="gallery" class="art-collage" aria-live="polite"></div>
-	</div>
+    <div id="year-tabs" class="year-tabs-container" aria-label="Year Selection"></div>
 
-	<footer>
-		<nav class="social-links" aria-label="Social media">
-			<a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
-			<a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
-			<a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
-			<a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
-			<a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
-			<a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
-			<a href="https://ko-fi.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Ko-fi"><img src="assets/ui/icons/kofi.svg" alt="Ko-fi"></a>
-		</nav>
-		<p>© 2025 slickestfox</p>
-	</footer>
+    <div class="bleed">
+        <div id="gallery" class="art-collage" aria-live="polite"></div>
+    </div>
 
-	<!-- Lightbox -->
-	<div id="lightbox" aria-modal="true" role="dialog">
-		<img id="lightbox-img" alt="Artwork"/>
-		<div class="hint">click / tap to close • ← / → to navigate</div>
-	</div>
+    <footer>
+        <nav class="social-links" aria-label="Social media">
+            <a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+            <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+            <a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+            <a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+            <a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+            <a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+            <a href="https://ko-fi.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Ko-fi"><img src="assets/ui/icons/kofi.svg" alt="Ko-fi"></a>
+        </nav>
+        <p>© 2025 slickestfox</p>
+    </footer>
 
-	<!-- Inline JSON fallback (kept minimal; external manifest is preferred) -->
-	<script id="images-data" type="application/json">
-{
-  "images": []
-}
-</script>
+    <div id="lightbox" aria-modal="true" role="dialog">
+        <img id="lightbox-img" alt="Artwork"/>
+        <div class="hint">click / tap to close • ← / → to navigate</div>
+    </div>
 
-	<!-- Inline JSON (loop config) -->
-	<script id="loop-data" type="application/json">
-	{
-		"loops": [
-			{ "src": "assets/audio/loops/art.ogg" }
-		]
-	}
-	</script>
+    <script id="images-data" type="application/json">
+    {
+      "images": []
+    }
+    </script>
 
-	<!-- Background Audio Script (with saved prefs + first-gesture autoplay) -->
-	<script>
-	(() => {
-		const LS_MUTE_KEY = 'siteAudioMuted';
-		const LS_VOL_KEY = 'siteAudioVolume';
-		let audioEl = null;
+    <script id="loop-data" type="application/json">
+    {
+        "loops": [
+            { "src": "assets/audio/loops/art.ogg" }
+        ]
+    }
+    </script>
 
-		const loadPrefs = () => {
-			let muted = true; let vol = 0.5;
-			try { const m=localStorage.getItem(LS_MUTE_KEY); const v=localStorage.getItem(LS_VOL_KEY);
-				if (m !== null) muted = (m==='1');
-				if (v !== null) { const nv=Math.max(0,Math.min(1,parseFloat(v))); if(!Number.isNaN(nv)) vol=nv; }
-			} catch {}
-			return { muted, vol };
-		};
-		const saveMute=(m)=>{ try{ localStorage.setItem(LS_MUTE_KEY, m?'1':'0'); }catch{} };
-		const saveVol =(v)=>{ try{ localStorage.setItem(LS_VOL_KEY, String(v)); }catch{} };
+    <script>
+    (() => {
+        const LS_MUTE_KEY = 'siteAudioMuted';
+        const LS_VOL_KEY = 'siteAudioVolume';
+        let audioEl = null;
 
-		document.addEventListener('DOMContentLoaded', ()=>{
-			let data={}; try{ data = JSON.parse(document.getElementById('loop-data').textContent); }catch{}
-			const loops = Array.isArray(data.loops)?data.loops:[]; if(!loops.length) return;
-			const src = loops[(Math.random()*loops.length)|0].src;
-			audioEl = new Audio(src); audioEl.loop = true;
-			const { muted, vol } = loadPrefs(); audioEl.volume=vol; audioEl.muted=muted; audioEl.play().catch(()=>{});
+        const loadPrefs = () => {
+            let muted = true; let vol = 0.5;
+            try { const m=localStorage.getItem(LS_MUTE_KEY); const v=localStorage.getItem(LS_VOL_KEY);
+                if (m !== null) muted = (m==='1');
+                if (v !== null) { const nv=Math.max(0,Math.min(1,parseFloat(v))); if(!Number.isNaN(nv)) vol=nv; }
+            } catch {}
+            return { muted, vol };
+        };
+        const saveMute=(m)=>{ try{ localStorage.setItem(LS_MUTE_KEY, m?'1':'0'); }catch{} };
+        const saveVol =(v)=>{ try{ localStorage.setItem(LS_VOL_KEY, String(v)); }catch{} };
 
-			const controls=document.createElement('div'); controls.id='music-controls';
-			const btn=document.createElement('button'); btn.id='mute-btn'; btn.textContent=(muted||vol===0)?'🔇':'🔊';
-			const slider=document.createElement('input'); slider.type='range'; slider.id='volume-slider'; slider.min='0'; slider.max='1'; slider.step='0.01'; slider.value=String(vol);
+        document.addEventListener('DOMContentLoaded', ()=>{
+            let data={}; try{ data = JSON.parse(document.getElementById('loop-data').textContent); }catch{}
+            const loops = Array.isArray(data.loops)?data.loops:[]; if(!loops.length) return;
+            const src = loops[(Math.random()*loops.length)|0].src;
+            audioEl = new Audio(src); audioEl.loop = true;
+            const { muted, vol } = loadPrefs(); audioEl.volume=vol; audioEl.muted=muted; audioEl.play().catch(()=>{});
 
-			btn.addEventListener('click',()=>{ if(!audioEl) return; audioEl.muted=!audioEl.muted; saveMute(audioEl.muted); btn.textContent=(audioEl.muted||audioEl.volume==0)?'🔇':'🔊'; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } });
-			slider.addEventListener('input',()=>{ if(!audioEl) return; const v=Math.max(0,Math.min(1,parseFloat(slider.value))); audioEl.volume=v; saveVol(v); btn.textContent=(audioEl.muted||v===0)?'🔇':'🔊'; });
+            const controls=document.createElement('div'); controls.id='music-controls';
+            const btn=document.createElement('button'); btn.id='mute-btn'; btn.textContent=(muted||vol===0)?'🔇':'🔊';
+            const slider=document.createElement('input'); slider.type='range'; slider.id='volume-slider'; slider.min='0'; slider.max='1'; slider.step='0.01'; slider.value=String(vol);
 
-			const onFirstGesture=()=>{ if(!audioEl) return; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } window.removeEventListener('pointerdown',onFirstGesture); window.removeEventListener('keydown',onFirstGesture); };
-			window.addEventListener('pointerdown',onFirstGesture,{passive:true}); window.addEventListener('keydown',onFirstGesture);
+            btn.addEventListener('click',()=>{ if(!audioEl) return; audioEl.muted=!audioEl.muted; saveMute(audioEl.muted); btn.textContent=(audioEl.muted||audioEl.volume==0)?'🔇':'🔊'; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } });
+            slider.addEventListener('input',()=>{ if(!audioEl) return; const v=Math.max(0,Math.min(1,parseFloat(slider.value))); audioEl.volume=v; saveVol(v); btn.textContent=(audioEl.muted||v===0)?'🔇':'🔊'; });
 
-			window.addEventListener('storage',(e)=>{
-				if(!audioEl) return;
-				if(e.key===LS_MUTE_KEY && e.newValue!=null){ audioEl.muted=(e.newValue==='1'); btn.textContent=(audioEl.muted||audioEl.volume==0)?'🔇':'🔊'; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } }
-				if(e.key===LS_VOL_KEY && e.newValue!=null){ const v=Math.max(0,Math.min(1,parseFloat(e.newValue))); if(!Number.isNaN(v)){ audioEl.volume=v; slider.value=String(v); } btn.textContent=(audioEl.muted||audioEl.volume==0)?'🔇':'🔊'; }
-			});
+            const onFirstGesture=()=>{ if(!audioEl) return; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } window.removeEventListener('pointerdown',onFirstGesture); window.removeEventListener('keydown',onFirstGesture); };
+            window.addEventListener('pointerdown',onFirstGesture,{passive:true}); window.addEventListener('keydown',onFirstGesture);
 
-			controls.appendChild(btn); controls.appendChild(slider); document.body.appendChild(controls);
-		});
-	})();
-	</script>
+            window.addEventListener('storage',(e)=>{
+                if(!audioEl) return;
+                if(e.key===LS_MUTE_KEY && e.newValue!=null){ audioEl.muted=(e.newValue==='1'); btn.textContent=(audioEl.muted||audioEl.volume==0)?'🔇':'🔊'; if(!audioEl.muted&&audioEl.paused){ audioEl.play().catch(()=>{}); } }
+                if(e.key===LS_VOL_KEY && e.newValue!=null){ const v=Math.max(0,Math.min(1,parseFloat(e.newValue))); if(!Number.isNaN(v)){ audioEl.volume=v; slider.value=String(v); } btn.textContent=(audioEl.muted||audioEl.volume==0)?'🔇':'🔊'; }
+            });
 
-</body>
-</html>
+            controls.appendChild(btn); controls.appendChild(slider); document.body.appendChild(controls);
+        });
+    })();
+    </script>
 
-	<script>
-	(()=>{"use strict";
-	  const $ = (s,r=document)=>r.querySelector(s);
-	  const IS_FILE = location.protocol === "file:";
-	  const rgbaFromHex = (hex,a=0.9)=>{
-		let h=String(hex||"").trim(); if(!h) return "";
-		if(h[0]==="#") h=h.slice(1);
-		if(h.length===3) h=h.split("").map(c=>c+c).join("");
-		if(h.length!==6) return "";
-		const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
-		return `rgba(${r}, ${g}, ${b}, ${a})`;
-	  };
+    <script>
+    (()=>{"use strict";
+      const $ = (s,r=document)=>r.querySelector(s);
+      const IS_FILE = location.protocol === "file:";
+      const rgbaFromHex = (hex,a=0.9)=>{
+        let h=String(hex||"").trim(); if(!h) return "";
+        if(h[0]==="#") h=h.slice(1);
+        if(h.length===3) h=h.split("").map(c=>c+c).join("");
+        if(h.length!==6) return "";
+        const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
+        return `rgba(${r}, ${g}, ${b}, ${a})`;
+      };
 
-	  /* ---------- audio files ---------- */
-	  const NOTE_URLS = [
-		"assets/audio/notes/n1.mp3","assets/audio/notes/n2.mp3","assets/audio/notes/n3.mp3",
-		"assets/audio/notes/n4.mp3","assets/audio/notes/n5.mp3","assets/audio/notes/n6.mp3","assets/audio/notes/n7.mp3"
-	  ];
-	  const CHORD_URLS = [
-		"assets/audio/chords/c1.mp3","assets/audio/chords/c2.mp3","assets/audio/chords/c3.mp3",
-		"assets/audio/chords/c4.mp3","assets/audio/chords/c5.mp3","assets/audio/chords/c6.mp3","assets/audio/chords/c7.mp3"
-	  ];
-	  const SFX_URLS = ["assets/audio/sfx/a.mp3","assets/audio/sfx/b.mp3","assets/audio/sfx/c.mp3","assets/audio/sfx/d.mp3"];
+      /* ---------- audio files ---------- */
+      const NOTE_URLS = [
+        "assets/audio/notes/n1.mp3","assets/audio/notes/n2.mp3","assets/audio/notes/n3.mp3",
+        "assets/audio/notes/n4.mp3","assets/audio/notes/n5.mp3","assets/audio/notes/n6.mp3","assets/audio/notes/n7.mp3"
+      ];
+      const CHORD_URLS = [
+        "assets/audio/chords/c1.mp3","assets/audio/chords/c2.mp3","assets/audio/chords/c3.mp3",
+        "assets/audio/chords/c4.mp3","assets/audio/chords/c5.mp3","assets/audio/chords/c6.mp3","assets/audio/chords/c7.mp3"
+      ];
+      const SFX_URLS = ["assets/audio/sfx/a.mp3","assets/audio/sfx/b.mp3","assets/audio/sfx/c.mp3","assets/audio/sfx/d.mp3"];
 
-  /* ---------- gate (disabled: no on-page prompt) ---------- */
-  let audioGate=true; // allow interactive sounds without showing a gate
-	  function showGate(){ let g=$("#sound-gate"); if(!g){ g=document.createElement("div"); g.id="sound-gate"; g.textContent="🔊 Click to enable sound"; document.body.appendChild(g);} g.classList.add("show"); }
-	  function hideGate(){ const g=$("#sound-gate"); if(g) g.classList.remove("show"); }
-	  function wireGate(){ showGate(); const enable=()=>{ audioGate=true; hideGate(); document.removeEventListener("click",enable); }; document.addEventListener("click",enable); $("#sound-gate").addEventListener("click",enable,{passive:true}); }
+      let audioGate=true; 
+      
+      const MAX_POLY = 6;
+      const playingNotes = [];
+      let currentNote = Math.floor(Math.random()*7);
+      const PROB_NEXT = 0.70;
 
-	  /* ---------- polyphonic notes (no cut-off) ---------- */
-	  const MAX_POLY = 6;
-	  const playingNotes = [];
-	  let currentNote = Math.floor(Math.random()*7);
-	  const PROB_NEXT = 0.70;
+      const LS_MUTE_KEY = 'siteAudioMuted';
+      const LS_VOL_KEY = 'siteAudioVolume';
+      function sitePrefs(){
+        let muted=false, vol=0.5;
+        try{
+            const m=localStorage.getItem(LS_MUTE_KEY);
+            const v=localStorage.getItem(LS_VOL_KEY);
+            if(m!==null) muted = (m==='1');
+            if(v!==null){ const nv=Math.max(0,Math.min(1,parseFloat(v))); if(!Number.isNaN(nv)) vol=nv; }
+        }catch{}
+        return { muted, vol };
+      }
+      function effectiveVolume(){ const p=sitePrefs(); return p.muted ? 0 : p.vol; }
 
-	  // Respect site-wide volume/mute from localStorage
-	  const LS_MUTE_KEY = 'siteAudioMuted';
-	  const LS_VOL_KEY = 'siteAudioVolume';
-	  function sitePrefs(){
-		let muted=false, vol=0.5;
-		try{
-			const m=localStorage.getItem(LS_MUTE_KEY);
-			const v=localStorage.getItem(LS_VOL_KEY);
-			if(m!==null) muted = (m==='1');
-			if(v!==null){ const nv=Math.max(0,Math.min(1,parseFloat(v))); if(!Number.isNaN(nv)) vol=nv; }
-		}catch{}
-		return { muted, vol };
-	  }
-	  function effectiveVolume(){ const p=sitePrefs(); return p.muted ? 0 : p.vol; }
+      function playNoteIndex(i, hostEl){
+        if (!audioGate || !NOTE_URLS.length) return;
+        while (playingNotes.length >= MAX_POLY){ const a = playingNotes.shift(); try{ a.pause(); }catch{} }
+        const a = new Audio();
+        if (!IS_FILE) a.crossOrigin = "anonymous";
+        a.src = NOTE_URLS[i];
+        a.volume = effectiveVolume();
+        a.play().catch(()=>{});
+        a.addEventListener("ended", ()=>{ const k=playingNotes.indexOf(a); if(k>=0) playingNotes.splice(k,1); });
+        playingNotes.push(a);
 
-	  function playNoteIndex(i, hostEl){
-		if (!audioGate || !NOTE_URLS.length) return;
-		while (playingNotes.length >= MAX_POLY){ const a = playingNotes.shift(); try{ a.pause(); }catch{} }
-		const a = new Audio();
-		if (!IS_FILE) a.crossOrigin = "anonymous";
-		a.src = NOTE_URLS[i];
-		a.volume = effectiveVolume();
-		a.play().catch(()=>{});
-		a.addEventListener("ended", ()=>{ const k=playingNotes.indexOf(a); if(k>=0) playingNotes.splice(k,1); });
-		playingNotes.push(a);
+        hostEl.classList.add("playing","focused");
+        setTimeout(()=>hostEl.classList.remove("playing"),220);
+      }
 
-		hostEl.classList.add("playing","focused");
-		setTimeout(()=>hostEl.classList.remove("playing"),220);
-	  }
-	  function stopAllNotes(){ while(playingNotes.length){ const a=playingNotes.pop(); try{ a.pause(); }catch{} } }
+      const CHORD_WEIGHTS = [0.28,0.10,0.08,0.22,0.22,0.09,0.01];
+      function weightedPick(ws){ const r=Math.random(); let a=0; for(let i=0;i<ws.length;i++){ a+=ws[i]; if(r<=a) return i; } return ws.length-1; }
+      function playChord(){
+        if (!audioGate || !CHORD_URLS.length) return;
+        const a = new Audio(); if(!IS_FILE) a.crossOrigin="anonymous";
+        a.src = CHORD_URLS[weightedPick(CHORD_WEIGHTS)]; a.volume=effectiveVolume(); a.play().catch(()=>{});
+      }
 
-	  /* ---------- chords (I/IV/V favored) ---------- */
-	  const CHORD_WEIGHTS = [0.28,0.10,0.08,0.22,0.22,0.09,0.01];
-	  function weightedPick(ws){ const r=Math.random(); let a=0; for(let i=0;i<ws.length;i++){ a+=ws[i]; if(r<=a) return i; } return ws.length-1; }
-	  function playChord(){
-		if (!audioGate || !CHORD_URLS.length) return;
-		const a = new Audio(); if(!IS_FILE) a.crossOrigin="anonymous";
-		a.src = CHORD_URLS[weightedPick(CHORD_WEIGHTS)]; a.volume=effectiveVolume(); a.play().catch(()=>{});
-	  }
+      const NOTE_BURST_WINDOW_MS   = 500;  
+      const NOTE_BURST_THRESHOLD   = 9;     
+      const NOTE_BURST_DISTINCT_MIN= 7;    
+      const SFX_COOLDOWN_MS        = 2500;  
 
-	  /* ---------- burst SFX (harder to trigger) ---------- */
-	  // These are the ones to tweak:
-	  // friendlier burst sensitivity
-		const NOTE_BURST_WINDOW_MS   = 500;  // look over ~1.2s
-		const NOTE_BURST_THRESHOLD   = 9;     // total notes needed
-		const NOTE_BURST_DISTINCT_MIN= 7;    // from at least 5 different images
-		const SFX_COOLDOWN_MS        = 2500;  // cooldown after triggering
+      let noteEvents=[];                     
+      let lastSfxAt = 0;
 
+      function registerNoteAndMaybeSfx(el){
+        const now = performance.now();
+        const id = el.dataset._id;
+        noteEvents.push({ t: now, id });
+        noteEvents = noteEvents.filter(e => now - e.t <= NOTE_BURST_WINDOW_MS);
+        const total = noteEvents.length;
+        const distinct = new Set(noteEvents.map(e=>e.id)).size;
 
-	  let noteEvents=[];                     // {t, id}
-	  let lastSfxAt = 0;
+        if (total >= NOTE_BURST_THRESHOLD && distinct >= NOTE_BURST_DISTINCT_MIN && (now - lastSfxAt) > SFX_COOLDOWN_MS){
+          lastSfxAt = now;
+          const s = new Audio(); if(!IS_FILE) s.crossOrigin="anonymous";
+          s.src = SFX_URLS[(Math.random()*SFX_URLS.length)|0];
+          s.volume = effectiveVolume(); s.play().catch(()=>{});
+          noteEvents.length = 0;
+        }
+      }
 
-	  function registerNoteAndMaybeSfx(el){
-		const now = performance.now();
-		const id = el.dataset._id;
-		noteEvents.push({ t: now, id });
+      /* ---------- ADDED: Tab Logic & State ---------- */
+      let allImages = [];
+      let currentRenderedImages = [];
+      let currentYear = null;
+      let availableYears = [];
+      let imagesByYear = {};
 
-		// keep only recent
-		noteEvents = noteEvents.filter(e => now - e.t <= NOTE_BURST_WINDOW_MS);
+      function initTabs() {
+          imagesByYear = {};
+          
+          // Group by year
+          allImages.forEach(img => {
+              const y = img.year || "Unknown";
+              if (!imagesByYear[y]) imagesByYear[y] = [];
+              imagesByYear[y].push(img);
+          });
 
-		const total = noteEvents.length;
-		const distinct = new Set(noteEvents.map(e=>e.id)).size;
+          // Sort years descending (newest first)
+          availableYears = Object.keys(imagesByYear).sort((a, b) => {
+              if (a === "Unknown") return 1;
+              if (b === "Unknown") return -1;
+              return b - a; 
+          });
 
-		if (total >= NOTE_BURST_THRESHOLD &&
-			distinct >= NOTE_BURST_DISTINCT_MIN &&
-			(now - lastSfxAt) > SFX_COOLDOWN_MS){
-		  lastSfxAt = now;
-		  const s = new Audio(); if(!IS_FILE) s.crossOrigin="anonymous";
-		  s.src = SFX_URLS[(Math.random()*SFX_URLS.length)|0];
-		  s.volume = effectiveVolume(); s.play().catch(()=>{});
-		  noteEvents.length = 0;
-		}
-	  }
+          if (availableYears.length > 0) {
+              currentYear = availableYears[0]; // Set to newest year
+          }
 
-	  /* ---------- render ---------- */
-	  let images=[];
-	  function render(list){
-		const box = $("#gallery"); const frag=document.createDocumentFragment();
-		list.forEach((it, idx)=>{
-		  const fig = document.createElement("figure");
-		  fig.className = "art-item";
-		  fig.dataset._id = String(idx);         // for burst distinct counting
-		  fig.style.setProperty("--gox","50%");  fig.style.setProperty("--goy","85%");
-		  if (it.color){ const tint=rgbaFromHex(it.color,0.90); if(tint) fig.style.setProperty("--glow",tint); }
+          renderTabs();
+          filterAndRenderGallery(currentYear);
+      }
 
-		  const img = document.createElement("img");
-		  img.loading="lazy"; img.decoding="async";
-		  if(!IS_FILE) img.crossOrigin="anonymous";
-		  img.src = it.src; img.alt = it.title || "Artwork"; img.tabIndex = 0;
+      function renderTabs() {
+          const container = $("#year-tabs");
+          if (!container) return;
+          container.innerHTML = "";
+          
+          availableYears.forEach(year => {
+              const btn = document.createElement("button");
+              btn.className = "wii-tab-button" + (year === currentYear ? " active" : "");
+              btn.textContent = year;
+              btn.addEventListener("click", () => {
+                  currentYear = year;
+                  renderTabs(); 
+                  filterAndRenderGallery(currentYear);
+              });
+              container.appendChild(btn);
+          });
+      }
 
-		  // pointer tracks glow origin
-		  fig.addEventListener("pointermove",(e)=>{
-			const r=fig.getBoundingClientRect();
-			const x=((e.clientX-r.left)/r.width*100).toFixed(2)+"%";
-			const y=((e.clientY-r.top )/r.height*100).toFixed(2)+"%";
-			fig.style.setProperty("--gox",x); fig.style.setProperty("--goy",y);
-		  });
+      function filterAndRenderGallery(year) {
+          currentRenderedImages = imagesByYear[year] || [];
+          render(currentRenderedImages);
+      }
 
-		  // focus/hover state (for CSS glow)
-		  fig.addEventListener("pointerenter",()=>fig.classList.add("focused"));
-		  fig.addEventListener("pointerleave",()=>fig.classList.remove("focused"));
-		  img.addEventListener("focus",()=>fig.classList.add("focused"));
-		  img.addEventListener("blur",()=>fig.classList.remove("focused"));
+      /* ---------- render ---------- */
+      function render(list){
+        const box = $("#gallery"); const frag=document.createDocumentFragment();
+        list.forEach((it, idx)=>{
+          const fig = document.createElement("figure");
+          fig.className = "art-item";
+          fig.dataset._id = String(idx);         
+          fig.style.setProperty("--gox","50%");  fig.style.setProperty("--goy","85%");
+          if (it.color){ const tint=rgbaFromHex(it.color,0.90); if(tint) fig.style.setProperty("--glow",tint); }
 
-		  // sound on hover/focus
-		  fig.addEventListener("pointerenter", ()=>{
-			const r=Math.random();
-			if (r < PROB_NEXT) currentNote = (currentNote + 1) % NOTE_URLS.length;
-			else if (r >= 0.85) currentNote = (currentNote - 1 + NOTE_URLS.length) % NOTE_URLS.length;
-			playNoteIndex(currentNote, fig);
-			registerNoteAndMaybeSfx(fig);
-		  }, {passive:true});
-		  img.addEventListener("focus", ()=>{
-			playNoteIndex(currentNote, fig);
-			registerNoteAndMaybeSfx(fig);
-		  }, {passive:true});
+          const img = document.createElement("img");
+          img.loading="lazy"; img.decoding="async";
+          if(!IS_FILE) img.crossOrigin="anonymous";
+          img.src = it.src; img.alt = it.title || "Artwork"; img.tabIndex = 0;
 
-		  // click → chord + lightbox
-		  img.addEventListener("click", ()=>{ playChord(); openLightbox(idx); });
-		  img.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); playChord(); openLightbox(idx);} });
+          fig.addEventListener("pointermove",(e)=>{
+            const r=fig.getBoundingClientRect();
+            const x=((e.clientX-r.left)/r.width*100).toFixed(2)+"%";
+            const y=((e.clientY-r.top )/r.height*100).toFixed(2)+"%";
+            fig.style.setProperty("--gox",x); fig.style.setProperty("--goy",y);
+          });
 
-		  fig.appendChild(img);
-		  frag.appendChild(fig);
-		});
-		box.innerHTML=""; box.appendChild(frag);
-	  }
+          fig.addEventListener("pointerenter",()=>fig.classList.add("focused"));
+          fig.addEventListener("pointerleave",()=>fig.classList.remove("focused"));
+          img.addEventListener("focus",()=>fig.classList.add("focused"));
+          img.addEventListener("blur",()=>fig.classList.remove("focused"));
 
-	  /* ---------- lightbox ---------- */
-	  const lb=$("#lightbox"), lbImg=$("#lightbox-img");
-	  function openLightbox(i){ if(i<0||i>=images.length) return; lbImg.src=images[i].src; lb.classList.add("show"); document.body.style.overflow="hidden"; }
-	  function closeLightbox(){ lb.classList.remove("show"); lbImg.src=""; document.body.style.overflow=""; }
-      function next(){ if(images.length) openLightbox((currentIndex()+1)%images.length); }
-      function prev(){ if(images.length) openLightbox((currentIndex()-1+images.length)%images.length); }
+          fig.addEventListener("pointerenter", ()=>{
+            const r=Math.random();
+            if (r < PROB_NEXT) currentNote = (currentNote + 1) % NOTE_URLS.length;
+            else if (r >= 0.85) currentNote = (currentNote - 1 + NOTE_URLS.length) % NOTE_URLS.length;
+            playNoteIndex(currentNote, fig);
+            registerNoteAndMaybeSfx(fig);
+          }, {passive:true});
+          img.addEventListener("focus", ()=>{
+            playNoteIndex(currentNote, fig);
+            registerNoteAndMaybeSfx(fig);
+          }, {passive:true});
+
+          img.addEventListener("click", ()=>{ playChord(); openLightbox(idx); });
+          img.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); playChord(); openLightbox(idx);} });
+
+          fig.appendChild(img);
+          frag.appendChild(fig);
+        });
+        box.innerHTML=""; box.appendChild(frag);
+      }
+
+      /* ---------- lightbox (UPDATED to cycle current tab) ---------- */
+      const lb=$("#lightbox"), lbImg=$("#lightbox-img");
+      function openLightbox(i){ if(i<0||i>=currentRenderedImages.length) return; lbImg.src=currentRenderedImages[i].src; lb.classList.add("show"); document.body.style.overflow="hidden"; }
+      function closeLightbox(){ lb.classList.remove("show"); lbImg.src=""; document.body.style.overflow=""; }
+      function next(){ if(currentRenderedImages.length) openLightbox((currentIndex()+1)%currentRenderedImages.length); }
+      function prev(){ if(currentRenderedImages.length) openLightbox((currentIndex()-1+currentRenderedImages.length)%currentRenderedImages.length); }
       function currentIndex(){
-        // Compare against the attribute (relative path) first; lbImg.src is absolute
         const s = lbImg.getAttribute('src') || '';
-        let i = images.findIndex(x => String(x.src||'') === s);
+        let i = currentRenderedImages.findIndex(x => String(x.src||'') === s);
         if (i >= 0) return i;
-        // Fallback: normalize to absolute URLs and compare
         try {
           const abs = new URL(lbImg.src, location.href).href;
-          i = images.findIndex(x => {
+          i = currentRenderedImages.findIndex(x => {
             try { return new URL(String(x.src||''), location.href).href === abs; } catch { return false; }
           });
           return i >= 0 ? i : 0;
         } catch { return 0; }
       }
-	  lb.addEventListener("click", closeLightbox);
-	  document.addEventListener("keydown",(e)=>{ if(!lb.classList.contains("show"))return; if(e.key==="Escape")closeLightbox(); else if(e.key==="ArrowRight")next(); else if(e.key==="ArrowLeft")prev(); });
+      lb.addEventListener("click", closeLightbox);
+      document.addEventListener("keydown",(e)=>{ if(!lb.classList.contains("show"))return; if(e.key==="Escape")closeLightbox(); else if(e.key==="ArrowRight")next(); else if(e.key==="ArrowLeft")prev(); });
 
-	  /* ---------- boot (prefer external JSON, fallback to inline) ---------- */
-	  document.addEventListener("DOMContentLoaded", async ()=>{
-		const JSON_PATH = 'assets/art/data/images.json';
-		let loaded = false;
+      /* ---------- boot (prefer external JSON, fallback to inline) ---------- */
+      document.addEventListener("DOMContentLoaded", async ()=>{
+        const JSON_PATH = 'assets/art/data/images.json';
+        let loaded = false;
 
-		// Prefer external file when served over http(s)
-		if (!IS_FILE){
-		  try{
-			const res = await fetch(JSON_PATH, { cache: 'no-store' });
-			if (res.ok){
-			  const data = await res.json();
-			  if (Array.isArray(data.images)){
-				images = data.images.map(it=>({ src:String(it.src||"").trim(), title:String(it.title||""), color:String(it.color||"") }));
-				loaded = true;
-			  }
-			}
-		  } catch {}
-		}
+        if (!IS_FILE){
+          try{
+            const res = await fetch(JSON_PATH, { cache: 'no-store' });
+            if (res.ok){
+              const data = await res.json();
+              if (Array.isArray(data.images)){
+                // ADDED: Extract the 'year' property here
+                allImages = data.images.map(it=>({ 
+                    src: String(it.src||"").trim(), 
+                    title: String(it.title||""), 
+                    color: String(it.color||""),
+                    year: String(it.year || "2024") // Fallback to 2024 if empty
+                }));
+                loaded = true;
+              }
+            }
+          } catch {}
+        }
 
-		// Fallback: inline JSON block
-		if (!loaded){
-		  let data={images:[]};
-		  try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
-		  images = Array.isArray(data.images) ? data.images.map(it=>({ src:String(it.src||"").trim(), title:String(it.title||""), color:String(it.color||"") })) : [];
-		}
+        if (!loaded){
+          let data={images:[]};
+          try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
+          allImages = Array.isArray(data.images) ? data.images.map(it=>({ 
+              src: String(it.src||"").trim(), 
+              title: String(it.title||""), 
+              color: String(it.color||""),
+              year: String(it.year || "2024") // Fallback to 2024 if empty
+          })) : [];
+        }
 
-    render(images);
-    // gate prompt removed (no unused "click to enable sound" text)
-	  });
-	})();
-	</script>
-
+        initTabs(); 
+      });
+    })();
+    </script>
 </body>
 </html>
-
-
