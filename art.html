@@ -87,18 +87,25 @@
             box-shadow: 0 0 20px rgba(255, 209, 102, 0.4), inset 0 2px 5px rgba(255,255,255,0.3);
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-		#gallery.gallery-active .art-item {
-			filter: grayscale(100%);
-			opacity: 0.4;
-			transition: filter 0.3s ease, opacity 0.3s ease;
-		}
-		#gallery.gallery-active .art-item:hover {
-			filter: grayscale(0%);
-			opacity: 1;
-		}
-		.art-item {
-			transition: filter 0.3s ease, opacity 0.3s ease;
-		}
+                /* Base state: When your mouse leaves the gallery entirely, how fast they all return to normal */
+        .art-item {
+            transition: filter 0.5s ease, opacity 0.5s ease;
+        }
+
+        /* Dimmed state: When the cursor leaves an image, it slowly fades to gray (The Trail Effect) */
+        #gallery:has(.art-item:hover) .art-item {
+            filter: grayscale(100%);
+            opacity: 0.8; 
+            transition: filter 0.8s ease, opacity 0.8s ease; /* 0.8s makes the fade long and smooth */
+        }
+
+        /* Hovered state: When the cursor hits an image, it snaps back to color instantly */
+        #gallery:has(.art-item:hover) .art-item:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transition: filter 0.15s ease, opacity 0.15s ease; /* 0.15s makes it super snappy */
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -154,7 +161,7 @@
     <script id="loop-data" type="application/json">
     {
         "loops": [
-            { "src": "assets/audio/loops/art.ogg" }
+            { "src": "assets/audio/loops/dogposting w piano.ogg" }
         ]
     }
     </script>
