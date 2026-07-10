@@ -1,4 +1,4 @@
-/* ========== Theme / Base ========== */
+﻿/* ========== Theme / Base ========== */
 :root {
 	--bg: #0e0e12;
 	--bg-2: #151521;
@@ -1232,19 +1232,20 @@ body.comm-page .intro h3 { text-align: center; }
 /* Keep window titles left-aligned (do not center) */
 body.comm-page .luna-window .luna-title { display: inline; margin: 0; text-align: left; }
 
-/* Commissions page: big status banner */
-.comm-status{
-  font-family: 'Ari Display', 'Ari', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-weight: 700;
+/* =========================================
+   COMMISSION STATUS HEADER
+   ========================================= */
+.comm-status {
+  font-family: "Mario-Kart-DS", sans-serif !important;
   font-size: clamp(42px, 8vw, 84px);
-  line-height: 1.05;
   text-align: center;
   margin: 10px 0 18px;
-  letter-spacing: 0.5px;
-  text-shadow: 0 6px 24px rgba(0,0,0,0.35);
+  letter-spacing: 2px;
+  text-shadow: 4px 4px 0px rgba(0,0,0,0.8) !important; /* Chunky pixel shadow */
+  text-transform: uppercase;
 }
-.comm-status.open{ color: #5cffb0; }
-.comm-status.closed{ color: #ff6b6b; }
+.comm-status.open { color: #0dff8a; }
+.comm-status.closed { color: #ff2727; }
 
 /* Simple 3-up gallery for examples */
 .luna-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -1524,4 +1525,774 @@ body.light .product-price{ color: #000; }
   padding-top: 0;
   padding-bottom: 1.5em;
   color: var(--muted);
+}
+
+/* =========================================
+   GLOBAL OVERRIDES & FONTS
+   ========================================= */
+@font-face {
+  font-family: 'Mario-Kart-DS';
+  src: url('assets/ui/fonts/Mario-Kart-DS.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body.comm-page {
+  background: transparent !important; 
+}
+
+/* =========================================
+   LAYER 0: SCROLLING ANGLED CHECKERBOARD 
+   ========================================= */
+:root {
+  --bg-base: #0f111a; 
+  --bg-check: #171a26; 
+}
+
+.layer-0-checkerboard {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-color: var(--bg-base); 
+  background-image:
+    linear-gradient(45deg, var(--bg-check) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg-check) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg-check) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg-check) 75%);
+  background-size: 32px 32px; 
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
+  transform: rotate(-10deg); 
+  z-index: -10;
+  animation: panCheckerboard 20s linear infinite;
+  pointer-events: none; 
+}
+
+@keyframes panCheckerboard {
+  0% { background-position: 0 0, 0 16px, 16px -16px, -16px 0px; }
+  100% { background-position: 32px 32px, 32px 48px, 48px 16px, 16px 32px; }
+}
+
+/* =========================================
+   LAYER 0.5: THE CENTER MASK
+   ========================================= */
+.layer-0-5-center-mask {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;          /* Increased from 70% */
+  max-width: 1200px;   /* Increased from 900px to fit the spanning buttons */
+  height: 100vh;
+  background-color: var(--bg-base); 
+  z-index: -9; 
+  /* Slightly stronger shadow for the wider edge */
+  box-shadow: 0 0 60px rgba(0,0,0,0.9); 
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+}
+
+/* =========================================
+   PIXEL 3-SLICE NAVIGATION BUTTONS
+   ========================================= */
+.pixel-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap; /* Forces them to stay on one line */
+  width: 100%;       /* Spans the full width of the container */
+  gap: 12px;
+  margin: 30px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.pixel-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 18px; 
+  text-decoration: none;
+  cursor: pointer;
+  image-rendering: pixelated; 
+  image-rendering: crisp-edges;
+  
+  flex: 1 1 0; /* Forces every button to take exactly equal width */
+  white-space: nowrap; /* Prevents text from breaking */
+  box-sizing: border-box;
+  
+  /* FORCE OVERRIDE GLOBAL CSS BLEEDING */
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  
+  /* Creates a strict layer system inside the button */
+  isolation: isolate; 
+  
+  --btn-hue: 0deg;
+  --btn-glow-aura: rgba(255, 165, 0, 0); 
+  
+  transition: filter 0.2s ease-out;
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5)) drop-shadow(0 0 0px var(--btn-glow-aura));
+}
+
+.pixel-btn:hover {
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5)) drop-shadow(0 0 10px var(--btn-glow-aura));
+}
+
+/* Color Classes */
+.btn-orange { --btn-hue: 0deg; --btn-glow-aura: rgba(255, 170, 0, 0.8); }
+.btn-red    { --btn-hue: -35deg; --btn-glow-aura: rgba(255, 50, 50, 0.8); }
+.btn-blue   { --btn-hue: 190deg; --btn-glow-aura: rgba(50, 150, 255, 0.8); }
+.btn-purple { --btn-hue: 260deg; --btn-glow-aura: rgba(180, 50, 255, 0.8); }
+.btn-green  { --btn-hue: 90deg; --btn-glow-aura: rgba(50, 255, 50, 0.8); }
+.btn-cyan   { --btn-hue: 150deg; --btn-glow-aura: rgba(50, 255, 255, 0.8); }
+.btn-pink   { --btn-hue: 310deg; --btn-glow-aura: rgba(255, 100, 200, 0.8); }
+
+/* --- 1. THE BASE LAYER (Bottom) --- */
+.pixel-btn-bg {
+  position: absolute;
+  top: 0; left: 18px; right: 18px; bottom: 0;
+  background: url('assets/ui/Luna/Buttons/basemiddle.png') repeat-x center;
+  background-size: auto 100%;
+  filter: hue-rotate(var(--btn-hue));
+  z-index: 1; /* Base is at the bottom */
+}
+.pixel-btn::before, .pixel-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 32px;
+  background-size: 100% 100%;
+  filter: hue-rotate(var(--btn-hue));
+  z-index: 1; 
+}
+.pixel-btn::before { left: 0; background-image: url('assets/ui/Luna/Buttons/baseleft.png'); }
+.pixel-btn::after { right: 0; background-image: url('assets/ui/Luna/Buttons/baseright.png'); }
+
+/* --- 2. THE HOVER GLOW LAYER (Middle - Additive Blend) --- */
+.btn-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2; /* Sitting ON TOP of the base, but BELOW the text */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  /* 'plus-lighter' is often better than 'screen' for pixel art glows! */
+  mix-blend-mode: plus-lighter; 
+  filter: hue-rotate(var(--btn-hue));
+}
+.pixel-btn:hover .btn-glow { opacity: 1; }
+
+.btn-glow-mid {
+  position: absolute;
+  top: 0; left: 18px; right: 18px; bottom: 0;
+  background: url('assets/ui/Luna/Buttons/basemiddleadd.png') repeat-x center;
+  background-size: auto 100%;
+}
+/* By attaching the glow caps to the .btn-glow element, they will safely sit in layer 2 */
+.btn-glow::before, .btn-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 32px;
+  background-size: 100% 100%;
+}
+.btn-glow::before { left: 0; background-image: url('assets/ui/Luna/Buttons/baseleftadd.png'); }
+.btn-glow::after { right: 0; background-image: url('assets/ui/Luna/Buttons/baserightaddt.png'); }
+
+/* --- 3. THE TEXT (Top) --- */
+.btn-text {
+  position: relative;
+  z-index: 3; /* Sitting safely at the very front */
+  color: #fff !important;
+  font-family: "Mario-Kart-DS", sans-serif !important;
+  font-size: 18px; /* Bumped to 18px as requested */
+  letter-spacing: 1px;
+  text-transform: none; 
+  text-shadow: 1px 1px 0 #000;
+  margin-top: 4px; 
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Navigation)
+   ========================================= */
+@media (max-width: 800px) {
+  .pixel-nav {
+    flex-wrap: wrap; /* Allows the buttons to drop to a new line */
+  }
+  
+  .pixel-btn {
+    flex: 1 1 auto; /* Stops forcing them to be exactly equal width */
+    min-width: 120px; /* Ensures they don't get too tiny before wrapping */
+  }
+  
+  /* Optional: Shrink the header text a bit more on mobile so it doesn't overflow */
+  .comm-status {
+    font-size: clamp(32px, 6vw, 60px); 
+  }
+}
+
+/* --- COLOR UTILITIES (Aura & Hue Shift) --- */
+.tier-orange { --tier-aura: rgba(255, 170, 0, 0.8);  --tier-hue: 0deg; }
+.tier-red    { --tier-aura: rgba(255, 50, 50, 0.8);  --tier-hue: -35deg; }
+.tier-blue   { --tier-aura: rgba(50, 150, 255, 0.8); --tier-hue: 190deg; }
+.tier-purple { --tier-aura: rgba(180, 50, 255, 0.8); --tier-hue: 260deg; }
+.tier-green  { --tier-aura: rgba(50, 255, 50, 0.8);  --tier-hue: 90deg; }
+.tier-cyan   { --tier-aura: rgba(50, 255, 255, 0.8); --tier-hue: 150deg; }
+.tier-pink   { --tier-aura: rgba(255, 100, 200, 0.8);--tier-hue: 310deg; }
+
+/* =========================================
+   DIAGONAL COMMISSION TIERS (2X SCALED)
+   ========================================= */
+.comm-tier-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px; 
+  margin: 60px auto;
+  position: relative;
+  z-index: 10;
+  /* Removed filter and transition from here! */
+}
+
+/* =========================================
+   THE "TETRIS" DIAGONAL LOCKS
+   ========================================= */
+
+/* 1. When Halfbody/Magazines (Inverted) comes after Icons/Fullbody (Standard) */
+/* This pulls the Inverted layouts WAY up into the empty air pocket! */
+.comm-tier-container:not(.align-bottom) + .comm-tier-container.align-bottom {
+  margin-top: -240px; /* Adjust this to pull Halfbody closer to Icons */
+}
+
+/* 2. When Icons/Fullbody (Standard) comes after Halfbody/Magazines (Inverted) */
+/* Since their tall sides might touch, keep this gap smaller or positive */
+.comm-tier-container.align-bottom + .comm-tier-container:not(.align-bottom) {
+  margin-top: 0%; /* Adjust this to fix the gap going back to a normal window */
+}
+
+/* Base structural locks - EXACTLY 2X YOUR SPRITE SIZES */
+.tier-gallery {
+  width: 562px;  /* 281 * 2 */
+  height: 576px; /* 288 * 2 */
+  position: relative;
+  isolation: isolate; 
+}
+
+.tier-price {
+  width: 326px;  /* 163 * 2 */
+  height: 576px; /* 288 * 2 */
+  position: relative;
+  isolation: isolate;
+}
+
+/* --- LAYER 2 & 3: The Pixel Art Frames & Glows --- */
+.tier-bg, .tier-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* Forces the sprite to exactly map to the container's 2x pixels */
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Override for the Price Window to prevent stretching */
+.tier-price .tier-bg, 
+.tier-price .tier-glow {
+  /* Instead of stretching, scale width to 100% and let height adjust naturally */
+  background-size: 100% auto; 
+  /* Pin it to the top so it aligns with the left window */
+  background-position: top center; 
+}
+
+.tier-bg {
+  z-index: 1; 
+  pointer-events: none; 
+  filter: hue-rotate(var(--tier-hue, 0deg)) drop-shadow(0 10px 15px rgba(0,0,0,0.6)) drop-shadow(0 0 0px var(--tier-aura, transparent));
+  transition: filter 0.3s ease;
+}
+
+/* Hovering over the container expands the glow ONLY on the frames */
+.comm-tier-container:hover .tier-bg {
+  /* Forces the hue to stay shifted during the hover shadow expansion! */
+  filter: hue-rotate(var(--tier-hue, 0deg)) drop-shadow(0 10px 15px rgba(0,0,0,0.6)) drop-shadow(0 0 20px var(--tier-aura, transparent));
+}
+
+/* --- LAYER 3: The Additive Highlight Glow --- */
+.tier-glow {
+  z-index: 2; 
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: color-dodge; /* Makes the glow pop more naturally */
+  transition: opacity 0.3s ease; /* Smooth fade-in before the pulse starts */
+  filter: hue-rotate(var(--tier-hue, 0deg)); 
+}
+
+/* 1. When hovering, trigger the pulse animation instead of just staying at 1! */
+.comm-tier-container:hover .tier-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+  /* Keep the color shift active! */
+  filter: hue-rotate(var(--tier-hue, 0deg)); 
+}
+
+/* 2. Override the Price Windows so they use a dimmer pulse to match! */
+.comm-tier-container:hover .tier-price .tier-glow,
+.comm-tier-container:hover .tier-price-halfbody .tier-glow,
+.comm-tier-container:hover .tier-price-square .tier-glow {
+  animation: pulseDimGlow 2.5s ease-in-out infinite;
+}
+
+/* =========================================
+   GLOW ANIMATION KEYFRAMES
+   ========================================= */
+
+/* Normal Pulse for the Art Gallery */
+@keyframes pulseGlow {
+  0%   { opacity: 0.1; }
+  50%  { opacity: 0.9; }
+  100% { opacity: 0.1; }
+}
+
+/* Dimmer Pulse for the Price Window (Fixes the brightness mismatch!) */
+@keyframes pulseDimGlow {
+  0%   { opacity: 0.05; }
+  50%  { opacity: 0.7; } /* Peaks lower so it doesn't blind you */
+  100% { opacity: 0.05; }
+}
+
+/* --- LAYER 1: The Content (Under the frames) --- */
+.tier-content-gallery, .tier-content-price {
+  position: absolute;
+  z-index: 3; 
+  overflow: hidden; 
+}
+
+.tier-content-gallery {
+  /* Keeps the hole strictly inside the pixel art frame borders! */
+  top: 30px; bottom: 30px; left: 14px; right: 14px;
+  display: flex;          
+  align-items: center;    
+}
+
+.tier-content-price {
+  top: 40px; bottom: 60px; left: 40px; right: 30px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/* --- THE SCROLLING IMAGES --- */
+.gallery-track {
+  display: flex;
+  width: max-content;
+  
+  /* THE FIX: Pulls the physical starting point to the left so it starts off-screen! */
+  /* Adjust this number (-100px, -200px) until the first image is hidden behind the window frame */
+  margin-left: -150px; 
+  
+  transform-origin: left center; 
+  animation: panGallery 45s linear infinite;
+  will-change: transform;
+  transform: rotate(-15deg) translateY(-10px) translateZ(0);
+}
+
+.gallery-track img {
+  height: 350px; /* Reduced so they fit perfectly inside the transparent hole */
+  margin-right: 15px;
+  width: auto;
+  border: none !important; 
+  outline: none !important;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 1) !important;
+  pointer-events: none !important; 
+  flex-shrink: 0;
+}
+
+@keyframes panGallery {
+  /* Add translateZ(0) to the keyframes as well */
+  0%   { transform: rotate(-15deg) translateY(115px) translateX(0) translateZ(0); }
+  100% { transform: rotate(-15deg) translateY(115px) translateX(-50%) translateZ(0); }
+}
+
+@media (max-width: 1000px) {
+  .comm-tier-container { flex-wrap: wrap; }
+}
+
+/* --- ALIGNMENT MODIFIERS --- */
+/* Add this class to any container to lock the smaller window to the bottom! */
+.align-bottom {
+  align-items: flex-end !important;
+}
+
+/* --- HALFBODY SIZES (Fill in your 2x dimensions!) --- */
+.tier-price-halfbody {
+  width: 326px;  /* REPLACE: Your Left Sprite Width x 2 */
+  height: 400px; /* REPLACE: Your Left Sprite Height x 2 */
+  position: relative;
+  isolation: isolate;
+}
+
+.tier-gallery-halfbody {
+  width: 562px;  /* REPLACE: Your Right Sprite Width x 2 */
+  height: 576px; /* REPLACE: Your Right Sprite Height x 2 */
+  position: relative;
+  isolation: isolate; 
+}
+
+/* =========================================
+   HALFBODY TIER (Dedicated Inverted Layout)
+   ========================================= */
+
+/* The Containers (Make sure these match your new Halfbody sprites x 2!) */
+.tier-price-halfbody {
+  width: 326px;  /* MAKE SURE THIS IS EXACTLY 2x YOUR PNG WIDTH */
+  height: 420px; /* MAKE SURE THIS IS EXACTLY 2x YOUR PNG HEIGHT */
+  position: relative;
+  isolation: isolate;
+}
+
+.tier-gallery-halfbody {
+  width: 562px;  /* Replace with 2x your right sprite width */
+  height: 576px; /* Replace with 2x your right sprite height */
+  position: relative;
+  isolation: isolate; 
+}
+
+/* Force backgrounds to NEVER clip on the halfbody section */
+.tier-price-halfbody .tier-bg,
+.tier-price-halfbody .tier-glow,
+.tier-gallery-halfbody .tier-bg,
+.tier-gallery-halfbody .tier-glow {
+  background-size: 100% 100% !important;
+  background-position: center !important;
+}
+
+/* --- THE UNIQUE HOLES FOR HALFBODY --- */
+/* Adjust these insets so the text fits inside the left sprite's hole */
+.tier-content-price-halfbody {
+  position: absolute;
+  z-index: 3;
+  /* Increased top to push it down, increased left to push it inward */
+  top: 120px; 
+  bottom: 40px; 
+  left: 45px; 
+  right: 35px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Adjust these insets so the images fit inside the right sprite's hole */
+.tier-content-gallery-halfbody {
+  position: absolute;
+  z-index: 3;
+  /* NO NEGATIVE NUMBERS! This keeps the art safely inside the frame. */
+  top: 30px; bottom: 30px; left: 14px; right: 14px; 
+  display: flex;          
+  align-items: center;    
+  overflow: hidden; 
+}
+
+/* --- HALFBODY SCROLLING TRACK --- */
+.gallery-track-halfbody {
+  display: flex;
+  width: max-content;
+  transform-origin: left center; 
+  animation: panGalleryHalfbody 45s linear infinite;
+  
+  /* 1. Tell the browser this element is going to animate constantly */
+  will-change: transform;
+  
+  /* 2. Add translateZ(0) to the end to force Hardware Acceleration! */
+  transform: rotate(-15deg) translateY(-10px) translateZ(0);
+}
+
+.gallery-track-halfbody img {
+  height: 350px; /* Reduced so they fit perfectly inside the transparent hole */
+  margin-right: 15px;
+  width: auto;
+  border: none !important; 
+  outline: none !important;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 1) !important;
+  pointer-events: none !important; 
+}
+
+/* The Independent Halfbody Keyframe */
+@keyframes panGalleryHalfbody {
+  /* Add translateZ(0) to the keyframes as well */
+  0%   { transform: rotate(-15deg) translateY(75px) translateX(0) translateZ(0); }
+  100% { transform: rotate(-15deg) translateY(75px) translateX(-50%) translateZ(0); }
+}
+
+/* =========================================
+   SQUARE TIER (Backgrounds / Final Tiers)
+   ========================================= */
+
+/* The Containers (Exactly 2x your new sprite sizes) */
+.tier-price-square {
+  width: 326px;  
+  height: 484px; 
+  position: relative;
+  isolation: isolate;
+}
+
+.tier-gallery-square {
+  width: 562px;  
+  height: 484px; 
+  position: relative;
+  isolation: isolate; 
+}
+
+/* Force backgrounds to NEVER clip on the square section */
+.tier-price-square .tier-bg,
+.tier-price-square .tier-glow,
+.tier-gallery-square .tier-bg,
+.tier-gallery-square .tier-glow {
+  background-size: 100% 100% !important;
+  background-position: center !important;
+}
+
+/* --- THE UNIQUE HOLES FOR SQUARE WINDOWS --- */
+.tier-content-price-square {
+  position: absolute;
+  z-index: 3;
+  top: 40px; bottom: 30px; left: 30px; right: 30px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  /* Added flex to easily center your animated sprite! */
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.tier-content-gallery-square {
+  position: absolute;
+  z-index: 3;
+  top: 30px; bottom: 15px; left: 14px; right: 14px; 
+  display: flex;          
+  align-items: center;    
+  overflow: hidden; 
+}
+
+/* --- STRAIGHT SCROLLING TRACK (No Rotation!) --- */
+.gallery-track-square {
+  display: flex;
+  gap: 15px;
+  width: max-content;
+  /* No tilt, just smooth horizontal panning */
+  animation: panGallerySquare 40s linear infinite;
+}
+
+.gallery-track-square img {
+  height: 400px; /* Adjust this so it fits perfectly inside the square hole */
+  width: auto;
+  border: none !important; 
+  outline: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important; 
+}
+
+/* The Flat Animation Keyframe */
+@keyframes panGallerySquare {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* TETRIS OVERRIDE: Prevent square windows from clipping into diagonal ones above */
+.comm-tier-container.square-layout {
+  margin-top: 60px !important; 
+}
+
+/* =========================================
+   STANDALONE TEXT WINDOW FIX
+   ========================================= */
+
+/* 1. Force the single window to the dead-center of the page */
+.standalone-text-window {
+  display: flex;
+  justify-content: center !important; 
+  align-items: center;
+  
+  /* Gives the window some breathing room from the sections above and below it */
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+/* 2. Format the text nicely inside the square bucket */
+.standalone-content {
+  width: 100%;
+  height: 100%;
+  padding: 40px; /* Keeps the text away from the window borders */
+  box-sizing: border-box;
+  
+  color: #fff;
+  text-align: center;
+}
+
+.standalone-content h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.standalone-content p {
+  margin: 5px 0;
+  line-height: 1.6;
+}
+
+/* =========================================
+   TOS TIER (Single Large Window)
+   ========================================= */
+
+/* The Container (Exactly 2x your new sprite sizes) */
+.tier-single {
+  width: 912px;  /* 456 * 2 */
+  height: 800px; /* 400 * 2 */
+  position: relative;
+  isolation: isolate;
+}
+
+/* Force backgrounds to NEVER clip on the single window */
+.tier-single .tier-bg,
+.tier-single .tier-glow {
+  background-size: 100% 100% !important;
+  background-position: center !important;
+}
+
+/* --- THE TEXT HOLE FOR TOS --- */
+.tier-content-single {
+  position: absolute;
+  z-index: 3;
+  /* Adjust these insets to perfectly fit the transparent center of your sprite */
+  top: 40px; bottom: 80px; left: 60px; right: 60px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+
+.tos-box-1 {
+  max-width: 100%;
+  margin: auto;
+  padding: 10px;
+}
+.tos-box-2 {
+  max-width: 95%;
+  margin: auto;
+  padding: 10px;
+}
+.tos-box-3 {
+  padding: 10px;
+  max-width: 90%;
+  margin: auto;
+}
+.tos-box-4 {
+  padding: 10px;
+  max-width: 85%;
+  margin: auto;
+}
+.tos-box-5 {
+  padding: 10px;
+  max-width: 80%;
+  margin: auto;
+}
+.tos-box-6 {
+  padding: 10px;
+  max-width: 75%;
+  margin: auto;
+}
+.tos-box-7 {
+  padding: 10px;
+  max-width: 70%;
+  margin: auto;
+}
+
+
+/* TETRIS OVERRIDE: Prevent the single window from clipping into the square ones above */
+.comm-tier-container.tos-layout {
+  margin-top: 60px !important; 
+}
+
+/* 1. Pause all galleries by default while downloading */
+.gallery-track, 
+.gallery-track-halfbody, 
+.gallery-track-square {
+  animation-play-state: paused !important;
+}
+
+/* 2. Unpause them when JS adds this class to the body! */
+body.images-loaded .gallery-track, 
+body.images-loaded .gallery-track-halfbody, 
+body.images-loaded .gallery-track-square {
+  animation-play-state: running !important;
+}
+
+/* =========================================
+   STATIC GALLERY IMAGE (Non-Scrolling)
+   ========================================= */
+.static-gallery-img {
+  width: 100%;
+  height: 100%;
+  
+  /* 'cover' ensures the image perfectly fills the window hole without squishing.
+     If you don't want it to crop the edges of your art, change this to 'contain' */
+  object-fit: cover; 
+  
+  display: block;
+  /* Just in case the track tries to rotate it */
+  transform: none !important; 
+}
+/* =========================================
+   MOBILE RESPONSIVENESS (Phones & Tablets)
+   ========================================= */
+
+/* 1. TABLETS: Just stack them vertically! */
+@media (max-width: 900px) {
+  .comm-tier-container {
+    flex-direction: column !important;
+    align-items: center !important; 
+    gap: 10px !important; 
+  }
+}
+
+@media (max-width: 500px) {
+  
+  /* =========================================
+     DISABLE WATERFALL SPLASH ON MOBILE
+     ========================================= */
+  #splash-zone {
+    display: none !important;
+  }
+  .comm-tier-container:not(.align-bottom) + .comm-tier-container.align-bottom {
+    /* Play with this number! Try -100px, -150px, etc. until the gap is perfect */
+    margin-top: -600px !important; 
+  }
+  .comm-tier-container.align-bottom + .comm-tier-container:not(.align-bottom) {
+  margin-top: -390px !important; /* Adjust this to fix the gap going back to a normal window */
+  }
+
+  /* =========================================
+     PERFECT CENTERING & SCALING
+     ========================================= */
+  .comm-tier-container {
+    position: relative;
+    /* This combo forces the box to the absolute dead-center of the screen! */
+    left: 50% !important;
+    transform: translateX(-50%) scale(0.65) !important; 
+    transform-origin: top center;
+    
+    width: max-content; /* Keeps the internal pixel art rigid */
+  }
 }

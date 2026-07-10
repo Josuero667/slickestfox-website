@@ -55,8 +55,8 @@
             "color": "#752a50"
         },
         {
-            "src": "assets/art/main/Cayl Comission.png",
-            "title": "Cayl Comission",
+            "src": "assets/art/main/Cayl Commission.png",
+            "title": "Cayl Commission",
             "year": "2025",
             "color": "#989473"
         },
@@ -89,6 +89,12 @@
             "title": "Cosmofox Commission Final Collar",
             "year": "2024",
             "color": "#6561a7"
+        },
+        {
+            "src": "assets/art/main/crooked commission.png",
+            "title": "Crooked Commission",
+            "year": "2026",
+            "color": "#a37452"
         },
         {
             "src": "assets/art/main/crtrlndn commission.png",
@@ -155,6 +161,12 @@
             "title": "Gab Commission Final",
             "year": "2025",
             "color": "#679266"
+        },
+        {
+            "src": "assets/art/main/Gab snep watermark.png",
+            "title": "Gab Snep Watermark",
+            "year": "2025",
+            "color": "#837dab"
         },
         {
             "src": "assets/art/main/gayslop 2 RENDERED.png",
@@ -349,6 +361,12 @@
             "color": "#633628"
         },
         {
+            "src": "assets/art/main/mslw.png",
+            "title": "Mslw",
+            "year": "2026",
+            "color": "#b68c80"
+        },
+        {
             "src": "assets/art/main/Myocat Commission Watermark.png",
             "title": "Myocat Commission Watermark",
             "year": "2026",
@@ -391,6 +409,12 @@
             "color": "#5d3f3a"
         },
         {
+            "src": "assets/art/main/phloppie Commission.png",
+            "title": "Phloppie Commission",
+            "year": "2026",
+            "color": "#cb88bc"
+        },
+        {
             "src": "assets/art/main/Pizzaz Comission Final.png",
             "title": "Pizzaz Comission Final",
             "year": "2025",
@@ -401,6 +425,12 @@
             "title": "Prototypefox Comission Final",
             "year": "2025",
             "color": "#76462e"
+        },
+        {
+            "src": "assets/art/main/rain commission.png",
+            "title": "Rain Commission",
+            "year": "2026",
+            "color": "#5d7573"
         },
         {
             "src": "assets/art/main/randomlab.png",
@@ -607,6 +637,12 @@
             "color": "#8681a0"
         },
         {
+            "src": "assets/art/main/Vaitimao Kissing YCH.png",
+            "title": "Vaitimao Kissing Ych",
+            "year": "2025",
+            "color": "#826070"
+        },
+        {
             "src": "assets/art/main/Valde Commission.png",
             "title": "Valde Commission",
             "year": "2026",
@@ -635,6 +671,12 @@
             "title": "Xander",
             "year": "2026",
             "color": "#c7a29a"
+        },
+        {
+            "src": "assets/art/main/Xavior.png",
+            "title": "Xavior",
+            "year": "2026",
+            "color": "#43484f"
         },
         {
             "src": "assets/art/main/Zomdox Christmas Comission Final.png",
