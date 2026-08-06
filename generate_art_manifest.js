@@ -26,8 +26,15 @@ function rel(p){
 	if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
 
 	const files = walkTopLevel(IN_DIR);
-	const images = files.map(f => ({ src: rel(f), title: toTitle(path.basename(f)) }))
-		.sort((a, b) => a.src.localeCompare(b.src));
+	const images = files.map(f => {
+		const srcRel = rel(f);
+		const baseName = path.basename(f, path.extname(f));
+		const previewRel = `assets/art/previews/${baseName}.webp`;
+		const previewAbs = path.join(process.cwd(), 'assets', 'art', 'previews', `${baseName}.webp`);
+		const obj = { src: srcRel, title: toTitle(path.basename(f)) };
+		if (fs.existsSync(previewAbs)) obj.preview = previewRel;
+		return obj;
+	}).sort((a, b) => a.src.localeCompare(b.src));
 
 	const json = { images };
 	fs.writeFileSync(OUT_FILE, JSON.stringify(json, null, '\t'));

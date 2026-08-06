@@ -4,697 +4,813 @@
             "src": "assets/art/main/affection.png",
             "title": "Affection",
             "year": "2025",
-            "color": "#938980"
+            "color": "#938980",
+            "preview": "assets/art/previews/affection.webp"
         },
         {
             "src": "assets/art/main/Alpina.png",
             "title": "Alpina",
             "year": "2026",
-            "color": "#965e5f"
+            "color": "#965e5f",
+            "preview": "assets/art/previews/Alpina.webp"
         },
         {
             "src": "assets/art/main/AshleyHaruki Commission.png",
             "title": "Ashleyharuki Commission",
             "year": "2026",
-            "color": "#775f38"
+            "color": "#775f38",
+            "preview": "assets/art/previews/AshleyHaruki Commission.webp"
         },
         {
             "src": "assets/art/main/asriel x ralsei.png",
             "title": "Asriel X Ralsei",
             "year": "2024",
-            "color": "#827159"
+            "color": "#827159",
+            "preview": "assets/art/previews/asriel x ralsei.webp"
         },
         {
             "src": "assets/art/main/Beaunne commission.png",
             "title": "Beaunne Commission",
             "year": "2026",
-            "color": "#764b3e"
+            "color": "#764b3e",
+            "preview": "assets/art/previews/Beaunne commission.webp"
         },
         {
             "src": "assets/art/main/birthday 22.png",
             "title": "Birthday 22",
             "year": "2026",
-            "color": "#cd947f"
+            "color": "#cd947f",
+            "preview": "assets/art/previews/birthday 22.webp"
         },
         {
             "src": "assets/art/main/buffie Commission.png",
             "title": "Buffie Commission",
             "year": "2026",
-            "color": "#b39a9b"
+            "color": "#b39a9b",
+            "preview": "assets/art/previews/buffie Commission.webp"
         },
         {
             "src": "assets/art/main/cand draw shit V2.png",
             "title": "Cand Draw Shit V2",
             "year": "2024",
-            "color": "#7a747a"
+            "color": "#7a747a",
+            "preview": "assets/art/previews/cand draw shit V2.webp"
         },
         {
             "src": "assets/art/main/catnap & dogday actually kiss.png",
             "title": "Catnap & Dogday Actually Kiss",
             "year": "2024",
-            "color": "#752a50"
+            "color": "#752a50",
+            "preview": "assets/art/previews/catnap & dogday actually kiss.webp"
         },
         {
             "src": "assets/art/main/Cayl Commission.png",
             "title": "Cayl Commission",
             "year": "2025",
-            "color": "#989473"
+            "color": "#989473",
+            "preview": "assets/art/previews/Cayl Commission.webp"
         },
         {
             "src": "assets/art/main/Celerity Commission [Watermark].png",
             "title": "Celerity Commission [Watermark]",
             "year": "2026",
-            "color": "#7b779a"
+            "color": "#7b779a",
+            "preview": "assets/art/previews/Celerity Commission [Watermark].webp"
         },
         {
             "src": "assets/art/main/chriss_1337 Commission Final.png",
             "title": "Chriss 1337 Commission Final",
             "year": "2024",
-            "color": "#ac7aa2"
+            "color": "#ac7aa2",
+            "preview": "assets/art/previews/chriss_1337 Commission Final.webp"
         },
         {
             "src": "assets/art/main/clay icon.png",
             "title": "Clay Icon",
             "year": "2026",
-            "color": "#eba3b2"
+            "color": "#eba3b2",
+            "preview": "assets/art/previews/clay icon.webp"
         },
         {
             "src": "assets/art/main/cold.png",
             "title": "Cold",
             "year": "2025",
-            "color": "#a4a4a4"
+            "color": "#a4a4a4",
+            "preview": "assets/art/previews/cold.webp"
         },
         {
             "src": "assets/art/main/CosmoFox Commission Final Collar.png",
             "title": "Cosmofox Commission Final Collar",
             "year": "2024",
-            "color": "#6561a7"
+            "color": "#6561a7",
+            "preview": "assets/art/previews/CosmoFox Commission Final Collar.webp"
         },
         {
             "src": "assets/art/main/crooked commission.png",
             "title": "Crooked Commission",
             "year": "2026",
-            "color": "#a37452"
+            "color": "#a37452",
+            "preview": "assets/art/previews/crooked commission.webp"
         },
         {
             "src": "assets/art/main/crtrlndn commission.png",
             "title": "Crtrlndn Commission",
             "year": "2026",
-            "color": "#646059"
+            "color": "#646059",
+            "preview": "assets/art/previews/crtrlndn commission.webp"
         },
         {
             "src": "assets/art/main/Dani Commission.png",
             "title": "Dani Commission",
             "year": "2026",
-            "color": "#9c8b77"
+            "color": "#9c8b77",
+            "preview": "assets/art/previews/Dani Commission.webp"
         },
         {
             "src": "assets/art/main/DeimosTheWolf Commission FINAL.png",
             "title": "Deimosthewolf Commission Final",
             "year": "2024",
-            "color": "#cda6e5"
+            "color": "#cda6e5",
+            "preview": "assets/art/previews/DeimosTheWolf Commission FINAL.webp"
         },
         {
             "src": "assets/art/main/deltarune roaring knight fight.png",
             "title": "Deltarune Roaring Knight Fight",
             "year": "2025",
-            "color": "#796ea0"
+            "color": "#796ea0",
+            "preview": "assets/art/previews/deltarune roaring knight fight.webp"
         },
         {
             "src": "assets/art/main/demondevor commission.png",
             "title": "Demondevor Commission",
             "year": "2026",
-            "color": "#493a43"
+            "color": "#493a43",
+            "preview": "assets/art/previews/demondevor commission.webp"
         },
         {
             "src": "assets/art/main/devious.png",
             "title": "Devious",
             "year": "2024",
-            "color": "#cdb8e0"
+            "color": "#cdb8e0",
+            "preview": "assets/art/previews/devious.webp"
         },
         {
             "src": "assets/art/main/dog doodles.png",
             "title": "Dog Doodles",
             "year": "2024",
-            "color": "#f1d99a"
+            "color": "#f1d99a",
+            "preview": "assets/art/previews/dog doodles.webp"
         },
         {
             "src": "assets/art/main/eevee glasses.png",
             "title": "Eevee Glasses",
             "year": "2024",
-            "color": "#a87351"
+            "color": "#a87351",
+            "preview": "assets/art/previews/eevee glasses.webp"
         },
         {
             "src": "assets/art/main/fox curled up.png",
             "title": "Fox Curled Up",
             "year": "2024",
-            "color": "#8d554a"
+            "color": "#8d554a",
+            "preview": "assets/art/previews/fox curled up.webp"
         },
         {
             "src": "assets/art/main/Frizk fanart.png",
             "title": "Frizk Fanart",
             "year": "2024",
-            "color": "#446767"
+            "color": "#446767",
+            "preview": "assets/art/previews/Frizk fanart.webp"
         },
         {
             "src": "assets/art/main/gab Commission Final.png",
             "title": "Gab Commission Final",
             "year": "2025",
-            "color": "#679266"
+            "color": "#679266",
+            "preview": "assets/art/previews/gab Commission Final.webp"
         },
         {
             "src": "assets/art/main/Gab snep watermark.png",
             "title": "Gab Snep Watermark",
             "year": "2025",
-            "color": "#837dab"
+            "color": "#837dab",
+            "preview": "assets/art/previews/Gab snep watermark.webp"
         },
         {
             "src": "assets/art/main/gayslop 2 RENDERED.png",
             "title": "Gayslop 2 Rendered",
             "year": "2025",
-            "color": "#88615a"
+            "color": "#88615a",
+            "preview": "assets/art/previews/gayslop 2 RENDERED.webp"
         },
         {
             "src": "assets/art/main/gayslop 3.png",
             "title": "Gayslop 3",
             "year": "2025",
-            "color": "#c1a9a9"
+            "color": "#c1a9a9",
+            "preview": "assets/art/previews/gayslop 3.webp"
         },
         {
             "src": "assets/art/main/gayslop 4.png",
             "title": "Gayslop 4",
             "year": "2025",
-            "color": "#b78482"
+            "color": "#b78482",
+            "preview": "assets/art/previews/gayslop 4.webp"
         },
         {
             "src": "assets/art/main/gayslop 5.png",
             "title": "Gayslop 5",
             "year": "2026",
-            "color": "#905d61"
+            "color": "#905d61",
+            "preview": "assets/art/previews/gayslop 5.webp"
         },
         {
             "src": "assets/art/main/gayslop 6.png",
             "title": "Gayslop 6",
             "year": "2026",
-            "color": "#a46846"
+            "color": "#a46846",
+            "preview": "assets/art/previews/gayslop 6.webp"
         },
         {
             "src": "assets/art/main/GLUNGUS.png",
             "title": "Glungus",
             "year": "2025",
-            "color": "#71523d"
+            "color": "#71523d",
+            "preview": "assets/art/previews/GLUNGUS.webp"
         },
         {
             "src": "assets/art/main/goo creature.png",
             "title": "Goo Creature",
             "year": "2026",
-            "color": "#428b8a"
+            "color": "#428b8a",
+            "preview": "assets/art/previews/goo creature.webp"
         },
         {
             "src": "assets/art/main/IKA YEAH RIGHT.png",
             "title": "Ika Yeah Right",
             "year": "2026",
-            "color": "#89776c"
+            "color": "#89776c",
+            "preview": "assets/art/previews/IKA YEAH RIGHT.webp"
         },
         {
             "src": "assets/art/main/Ikarii bd.png",
             "title": "Ikarii Bd",
             "year": "2026",
-            "color": "#dfaca9"
+            "color": "#dfaca9",
+            "preview": "assets/art/previews/Ikarii bd.webp"
         },
         {
             "src": "assets/art/main/ismitxu.png",
             "title": "Ismitxu",
             "year": "2026",
-            "color": "#949693"
+            "color": "#949693",
+            "preview": "assets/art/previews/ismitxu.webp"
         },
         {
             "src": "assets/art/main/java Icon.png",
             "title": "Java Icon",
             "year": "2026",
-            "color": "#8b7166"
+            "color": "#8b7166",
+            "preview": "assets/art/previews/java Icon.webp"
         },
         {
             "src": "assets/art/main/Komet Comission Final.png",
             "title": "Komet Comission Final",
             "year": "2025",
-            "color": "#40363b"
+            "color": "#40363b",
+            "preview": "assets/art/previews/Komet Comission Final.webp"
         },
         {
             "src": "assets/art/main/LiteKitsune Comission.png",
             "title": "Litekitsune Comission",
             "year": "2025",
-            "color": "#5d5563"
+            "color": "#5d5563",
+            "preview": "assets/art/previews/LiteKitsune Comission.webp"
         },
         {
             "src": "assets/art/main/lixnoe comm.png",
             "title": "Lixnoe Comm",
             "year": "2026",
-            "color": "#64463d"
+            "color": "#64463d",
+            "preview": "assets/art/previews/lixnoe comm.webp"
         },
         {
             "src": "assets/art/main/lucario underwater.png",
             "title": "Lucario Underwater",
             "year": "2024",
-            "color": "#30597d"
+            "color": "#30597d",
+            "preview": "assets/art/previews/lucario underwater.webp"
         },
         {
             "src": "assets/art/main/macchi beach.png",
             "title": "Macchi Beach",
             "year": "2026",
-            "color": "#b969a3"
+            "color": "#b969a3",
+            "preview": "assets/art/previews/macchi beach.webp"
         },
         {
             "src": "assets/art/main/macchi bed guitar.png",
             "title": "Macchi Bed Guitar",
             "year": "2025",
-            "color": "#5e4448"
+            "color": "#5e4448",
+            "preview": "assets/art/previews/macchi bed guitar.webp"
         },
         {
             "src": "assets/art/main/Macchi doodles.png",
             "title": "Macchi Doodles",
             "year": "2025",
-            "color": "#e4e2e2"
+            "color": "#e4e2e2",
+            "preview": "assets/art/previews/Macchi doodles.webp"
         },
         {
             "src": "assets/art/main/macchi fashion magazine.png",
             "title": "Macchi Fashion Magazine",
             "year": "2026",
-            "color": "#704f3c"
+            "color": "#704f3c",
+            "preview": "assets/art/previews/macchi fashion magazine.webp"
         },
         {
             "src": "assets/art/main/macchi guitar playing V2.png",
             "title": "Macchi Guitar Playing V2",
             "year": "2025",
-            "color": "#734e3e"
+            "color": "#734e3e",
+            "preview": "assets/art/previews/macchi guitar playing V2.webp"
         },
         {
             "src": "assets/art/main/macchi harness.png",
             "title": "Macchi Harness",
             "year": "2025",
-            "color": "#e2b393"
+            "color": "#e2b393",
+            "preview": "assets/art/previews/macchi harness.webp"
         },
         {
             "src": "assets/art/main/macchi monster.png",
             "title": "Macchi Monster",
             "year": "2026",
-            "color": "#d0997c"
+            "color": "#d0997c",
+            "preview": "assets/art/previews/macchi monster.webp"
         },
         {
             "src": "assets/art/main/macchi paw.png",
             "title": "Macchi Paw",
             "year": "2025",
-            "color": "#c4a89d"
+            "color": "#c4a89d",
+            "preview": "assets/art/previews/macchi paw.webp"
         },
         {
             "src": "assets/art/main/macchi ref.png",
             "title": "Macchi Ref",
             "year": "2025",
-            "color": "#b0846c"
+            "color": "#b0846c",
+            "preview": "assets/art/previews/macchi ref.webp"
         },
         {
             "src": "assets/art/main/Macchi subway.png",
             "title": "Macchi Subway",
             "year": "2025",
-            "color": "#a68358"
+            "color": "#a68358",
+            "preview": "assets/art/previews/Macchi subway.webp"
         },
         {
             "src": "assets/art/main/macchi tuff dark mode.png",
             "title": "Macchi Tuff Dark Mode",
             "year": "2026",
-            "color": "#696664"
+            "color": "#696664",
+            "preview": "assets/art/previews/macchi tuff dark mode.webp"
         },
         {
             "src": "assets/art/main/macchi underwater.png",
             "title": "Macchi Underwater",
             "year": "2025",
-            "color": "#5b5250"
+            "color": "#5b5250",
+            "preview": "assets/art/previews/macchi underwater.webp"
         },
         {
             "src": "assets/art/main/macchi.png",
             "title": "Macchi",
             "year": "2025",
-            "color": "#9c8f8a"
+            "color": "#9c8f8a",
+            "preview": "assets/art/previews/macchi.webp"
         },
         {
             "src": "assets/art/main/MadeInBatter Commission Final.png",
             "title": "Madeinbatter Commission Final",
             "year": "2024",
-            "color": "#a6645c"
+            "color": "#a6645c",
+            "preview": "assets/art/previews/MadeInBatter Commission Final.webp"
         },
         {
             "src": "assets/art/main/mixen.png",
             "title": "Mixen",
             "year": "2026",
-            "color": "#aca085"
+            "color": "#aca085",
+            "preview": "assets/art/previews/mixen.webp"
         },
         {
             "src": "assets/art/main/Mizu Commission v2.png",
             "title": "Mizu Commission V2",
             "year": "2026",
-            "color": "#2b4534"
+            "color": "#2b4534",
+            "preview": "assets/art/previews/Mizu Commission v2.webp"
         },
         {
             "src": "assets/art/main/monhuntqq Comission.png",
             "title": "Monhuntqq Comission",
             "year": "2025",
-            "color": "#633628"
+            "color": "#633628",
+            "preview": "assets/art/previews/monhuntqq Comission.webp"
         },
         {
             "src": "assets/art/main/mslw.png",
             "title": "Mslw",
             "year": "2026",
-            "color": "#b68c80"
+            "color": "#b68c80",
+            "preview": "assets/art/previews/mslw.webp"
         },
         {
             "src": "assets/art/main/Myocat Commission Watermark.png",
             "title": "Myocat Commission Watermark",
             "year": "2026",
-            "color": "#74859c"
+            "color": "#74859c",
+            "preview": "assets/art/previews/Myocat Commission Watermark.webp"
         },
         {
             "src": "assets/art/main/Nacc Comission.png",
             "title": "Nacc Comission",
             "year": "2025",
-            "color": "#9176b6"
+            "color": "#9176b6",
+            "preview": "assets/art/previews/Nacc Comission.webp"
         },
         {
             "src": "assets/art/main/NERVOUS CULTIST.png",
             "title": "Nervous Cultist",
             "year": "2026",
-            "color": "#796979"
+            "color": "#796979",
+            "preview": "assets/art/previews/NERVOUS CULTIST.webp"
         },
         {
             "src": "assets/art/main/new art style.png",
             "title": "New Art Style",
             "year": "2024",
-            "color": "#695626"
+            "color": "#695626",
+            "preview": "assets/art/previews/new art style.webp"
         },
         {
             "src": "assets/art/main/new style.png",
             "title": "New Style",
             "year": "2024",
-            "color": "#c7c7c7"
+            "color": "#c7c7c7",
+            "preview": "assets/art/previews/new style.webp"
         },
         {
             "src": "assets/art/main/newer oc.png",
             "title": "Newer Oc",
             "year": "2025",
-            "color": "#9c7e57"
+            "color": "#9c7e57",
+            "preview": "assets/art/previews/newer oc.webp"
         },
         {
             "src": "assets/art/main/Nican Commission.png",
             "title": "Nican Commission",
             "year": "2026",
-            "color": "#5d3f3a"
+            "color": "#5d3f3a",
+            "preview": "assets/art/previews/Nican Commission.webp"
         },
         {
             "src": "assets/art/main/phloppie Commission.png",
             "title": "Phloppie Commission",
             "year": "2026",
-            "color": "#cb88bc"
+            "color": "#cb88bc",
+            "preview": "assets/art/previews/phloppie Commission.webp"
         },
         {
             "src": "assets/art/main/Pizzaz Comission Final.png",
             "title": "Pizzaz Comission Final",
             "year": "2025",
-            "color": "#6b2b89"
+            "color": "#6b2b89",
+            "preview": "assets/art/previews/Pizzaz Comission Final.webp"
         },
         {
             "src": "assets/art/main/PrototypeFox Comission Final.png",
             "title": "Prototypefox Comission Final",
             "year": "2025",
-            "color": "#76462e"
+            "color": "#76462e",
+            "preview": "assets/art/previews/PrototypeFox Comission Final.webp"
         },
         {
             "src": "assets/art/main/rain commission.png",
             "title": "Rain Commission",
             "year": "2026",
-            "color": "#5d7573"
+            "color": "#5d7573",
+            "preview": "assets/art/previews/rain commission.webp"
         },
         {
             "src": "assets/art/main/randomlab.png",
             "title": "Randomlab",
             "year": "2026",
-            "color": "#8f8c8a"
+            "color": "#8f8c8a",
+            "preview": "assets/art/previews/randomlab.webp"
         },
         {
             "src": "assets/art/main/Rev Ref Sheet.png",
             "title": "Rev Ref Sheet",
             "year": "2025",
-            "color": "#988265"
+            "color": "#988265",
+            "preview": "assets/art/previews/Rev Ref Sheet.webp"
         },
         {
             "src": "assets/art/main/roon commission.png",
             "title": "Roon Commission",
             "year": "2026",
-            "color": "#859e96"
+            "color": "#859e96",
+            "preview": "assets/art/previews/roon commission.webp"
         },
         {
             "src": "assets/art/main/sebastian solace.png",
             "title": "Sebastian Solace",
             "year": "2024",
-            "color": "#323537"
+            "color": "#323537",
+            "preview": "assets/art/previews/sebastian solace.webp"
         },
         {
             "src": "assets/art/main/sebastian tail.png",
             "title": "Sebastian Tail",
             "year": "2024",
-            "color": "#2b2e31"
+            "color": "#2b2e31",
+            "preview": "assets/art/previews/sebastian tail.webp"
         },
         {
             "src": "assets/art/main/sequoia commission.png",
             "title": "Sequoia Commission",
             "year": "2026",
-            "color": "#7b7b74"
+            "color": "#7b7b74",
+            "preview": "assets/art/previews/sequoia commission.webp"
         },
         {
             "src": "assets/art/main/serp icon.png",
             "title": "Serp Icon",
             "year": "2025",
-            "color": "#c78b76"
+            "color": "#c78b76",
+            "preview": "assets/art/previews/serp icon.webp"
         },
         {
             "src": "assets/art/main/serp truesona.png",
             "title": "Serp Truesona",
             "year": "2024",
-            "color": "#8faec2"
+            "color": "#8faec2",
+            "preview": "assets/art/previews/serp truesona.webp"
         },
         {
             "src": "assets/art/main/serpertine art.png",
             "title": "Serpertine Art",
             "year": "2024",
-            "color": "#9a7f6d"
+            "color": "#9a7f6d",
+            "preview": "assets/art/previews/serpertine art.webp"
         },
         {
             "src": "assets/art/main/Shae the Fox Comission Final.png",
             "title": "Shae The Fox Comission Final",
             "year": "2024",
-            "color": "#6b3b25"
+            "color": "#6b3b25",
+            "preview": "assets/art/previews/Shae the Fox Comission Final.webp"
         },
         {
             "src": "assets/art/main/Shiba Comission Final.png",
             "title": "Shiba Comission Final",
             "year": "2025",
-            "color": "#8e7878"
+            "color": "#8e7878",
+            "preview": "assets/art/previews/Shiba Comission Final.webp"
         },
         {
             "src": "assets/art/main/skate cat.PNG",
             "title": "Skate Cat",
             "year": "2026",
-            "color": "#eeeeee"
+            "color": "#eeeeee",
+            "preview": "assets/art/previews/skate cat.webp"
         },
         {
             "src": "assets/art/main/slix closeup.png",
             "title": "Slix Closeup",
             "year": "2024",
-            "color": "#7881be"
+            "color": "#7881be",
+            "preview": "assets/art/previews/slix closeup.webp"
         },
         {
             "src": "assets/art/main/Slix doodles.png",
             "title": "Slix Doodles",
             "year": "2024",
-            "color": "#ededed"
+            "color": "#ededed",
+            "preview": "assets/art/previews/Slix doodles.webp"
         },
         {
             "src": "assets/art/main/slix hoodie.png",
             "title": "Slix Hoodie",
             "year": "2024",
-            "color": "#9a9fb0"
+            "color": "#9a9fb0",
+            "preview": "assets/art/previews/slix hoodie.webp"
         },
         {
             "src": "assets/art/main/Slix Ref Sheet.png",
             "title": "Slix Ref Sheet",
             "year": "2024",
-            "color": "#b5cfe6"
+            "color": "#b5cfe6",
+            "preview": "assets/art/previews/Slix Ref Sheet.webp"
         },
         {
             "src": "assets/art/main/slix sexy.png",
             "title": "Slix Sexy",
             "year": "2024",
-            "color": "#9490a4"
+            "color": "#9490a4",
+            "preview": "assets/art/previews/slix sexy.webp"
         },
         {
             "src": "assets/art/main/smell 2.png",
             "title": "Smell 2",
             "year": "2026",
-            "color": "#c69e8b"
+            "color": "#c69e8b",
+            "preview": "assets/art/previews/smell 2.webp"
         },
         {
             "src": "assets/art/main/Smell fanart.png",
             "title": "Smell Fanart",
             "year": "2026",
-            "color": "#c7aa9a"
+            "color": "#c7aa9a",
+            "preview": "assets/art/previews/Smell fanart.webp"
         },
         {
             "src": "assets/art/main/susie.png",
             "title": "Susie",
             "year": "2025",
-            "color": "#6e3d32"
+            "color": "#6e3d32",
+            "preview": "assets/art/previews/susie.webp"
         },
         {
             "src": "assets/art/main/Swirlz Commission.png",
             "title": "Swirlz Commission",
             "year": "2026",
-            "color": "#3d665b"
+            "color": "#3d665b",
+            "preview": "assets/art/previews/Swirlz Commission.webp"
         },
         {
             "src": "assets/art/main/sylvius beach FINAL.png",
             "title": "Sylvius Beach Final",
             "year": "2024",
-            "color": "#b09cd0"
+            "color": "#b09cd0",
+            "preview": "assets/art/previews/sylvius beach FINAL.webp"
         },
         {
             "src": "assets/art/main/Sylvius doodles.png",
             "title": "Sylvius Doodles",
             "year": "2024",
-            "color": "#aeaaba"
+            "color": "#aeaaba",
+            "preview": "assets/art/previews/Sylvius doodles.webp"
         },
         {
             "src": "assets/art/main/sylvius drawing.png",
             "title": "Sylvius Drawing",
             "year": "2026",
-            "color": "#6847a6"
+            "color": "#6847a6",
+            "preview": "assets/art/previews/sylvius drawing.webp"
         },
         {
             "src": "assets/art/main/sylvius new art.png",
             "title": "Sylvius New Art",
             "year": "2026",
-            "color": "#e9e9e9"
+            "color": "#e9e9e9",
+            "preview": "assets/art/previews/sylvius new art.webp"
         },
         {
             "src": "assets/art/main/Sylvius pfp remake.png",
             "title": "Sylvius Pfp Remake",
             "year": "2025",
-            "color": "#785f7d"
+            "color": "#785f7d",
+            "preview": "assets/art/previews/Sylvius pfp remake.webp"
         },
         {
             "src": "assets/art/main/sylvius sketch 2.png",
             "title": "Sylvius Sketch 2",
             "year": "2024",
-            "color": "#cccccc"
+            "color": "#cccccc",
+            "preview": "assets/art/previews/sylvius sketch 2.webp"
         },
         {
             "src": "assets/art/main/Thanks for 5k no logo.png",
             "title": "Thanks For 5K No Logo",
             "year": "2025",
-            "color": "#a78b7f"
+            "color": "#a78b7f",
+            "preview": "assets/art/previews/Thanks for 5k no logo.webp"
         },
         {
             "src": "assets/art/main/toastiethefox Commission.png",
             "title": "Toastiethefox Commission",
             "year": "2026",
-            "color": "#649cbb"
+            "color": "#649cbb",
+            "preview": "assets/art/previews/toastiethefox Commission.webp"
         },
         {
             "src": "assets/art/main/tsumi cuh cat Commission.png",
             "title": "Tsumi Cuh Cat Commission",
             "year": "2026",
-            "color": "#bfb6ee"
+            "color": "#bfb6ee",
+            "preview": "assets/art/previews/tsumi cuh cat Commission.webp"
         },
         {
             "src": "assets/art/main/Tsumi Icon.png",
             "title": "Tsumi Icon",
             "year": "2025",
-            "color": "#c0a2f3"
+            "color": "#c0a2f3",
+            "preview": "assets/art/previews/Tsumi Icon.webp"
         },
         {
             "src": "assets/art/main/Ulv1s Commission Final.png",
             "title": "Ulv1S Commission Final",
             "year": "2024",
-            "color": "#382f51"
+            "color": "#382f51",
+            "preview": "assets/art/previews/Ulv1s Commission Final.webp"
         },
         {
             "src": "assets/art/main/Unsainted Ref Sheet.png",
             "title": "Unsainted Ref Sheet",
             "year": "2026",
-            "color": "#9a78ab"
+            "color": "#9a78ab",
+            "preview": "assets/art/previews/Unsainted Ref Sheet.webp"
         },
         {
             "src": "assets/art/main/utamote commission.png",
             "title": "Utamote Commission",
             "year": "2026",
-            "color": "#8681a0"
+            "color": "#8681a0",
+            "preview": "assets/art/previews/utamote commission.webp"
         },
         {
             "src": "assets/art/main/Vaitimao Kissing YCH.png",
             "title": "Vaitimao Kissing Ych",
             "year": "2025",
-            "color": "#826070"
+            "color": "#826070",
+            "preview": "assets/art/previews/Vaitimao Kissing YCH.webp"
         },
         {
             "src": "assets/art/main/Valde Commission.png",
             "title": "Valde Commission",
             "year": "2026",
-            "color": "#6b6a78"
+            "color": "#6b6a78",
+            "preview": "assets/art/previews/Valde Commission.webp"
         },
         {
             "src": "assets/art/main/Vgeito Commission.png",
             "title": "Vgeito Commission",
             "year": "2026",
-            "color": "#765e5d"
+            "color": "#765e5d",
+            "preview": "assets/art/previews/Vgeito Commission.webp"
         },
         {
             "src": "assets/art/main/Vincent Commission.png",
             "title": "Vincent Commission",
             "year": "2025",
-            "color": "#a0b3b0"
+            "color": "#a0b3b0",
+            "preview": "assets/art/previews/Vincent Commission.webp"
         },
         {
             "src": "assets/art/main/webfishing guy rtx.png",
             "title": "Webfishing Guy Rtx",
             "year": "2024",
-            "color": "#733920"
+            "color": "#733920",
+            "preview": "assets/art/previews/webfishing guy rtx.webp"
         },
         {
             "src": "assets/art/main/Xander.png",
             "title": "Xander",
             "year": "2026",
-            "color": "#c7a29a"
+            "color": "#c7a29a",
+            "preview": "assets/art/previews/Xander.webp"
         },
         {
             "src": "assets/art/main/Xavior.png",
             "title": "Xavior",
             "year": "2026",
-            "color": "#43484f"
+            "color": "#43484f",
+            "preview": "assets/art/previews/Xavior.webp"
         },
         {
             "src": "assets/art/main/Zomdox Christmas Comission Final.png",
             "title": "Zomdox Christmas Comission Final",
             "year": "2024",
-            "color": "#5f412b"
+            "color": "#5f412b",
+            "preview": "assets/art/previews/Zomdox Christmas Comission Final.webp"
         },
         {
             "src": "assets/art/main/Zomdox Halloween Comission Final.png",
             "title": "Zomdox Halloween Comission Final",
             "year": "2024",
-            "color": "#574c58"
+            "color": "#574c58",
+            "preview": "assets/art/previews/Zomdox Halloween Comission Final.webp"
         },
         {
             "src": "assets/art/main/Zomdox Wallpaper Commission Final - Contrast.png",
             "title": "Zomdox Wallpaper Commission Final   Contrast",
             "year": "2024",
-            "color": "#5c347e"
+            "color": "#5c347e",
+            "preview": "assets/art/previews/Zomdox Wallpaper Commission Final - Contrast.webp"
         }
     ]
 }

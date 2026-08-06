@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
@@ -372,7 +372,7 @@
           const img = document.createElement("img");
           img.loading="lazy"; img.decoding="async";
           if(!IS_FILE) img.crossOrigin="anonymous";
-          img.src = it.src; img.alt = it.title || "Artwork"; img.tabIndex = 0;
+          img.src = it.preview || it.src; img.alt = it.title || "Artwork"; img.tabIndex = 0;
 
           fig.addEventListener("pointermove",(e)=>{
             const r=fig.getBoundingClientRect();
@@ -442,6 +442,7 @@
                 // ADDED: Extract the 'year' property here
                 allImages = data.images.map(it=>({ 
                     src: String(it.src||"").trim(), 
+                    preview: String(it.preview||"").trim(),
                     title: String(it.title||""), 
                     color: String(it.color||""),
                     year: String(it.year || "2024") // Fallback to 2024 if empty
@@ -457,6 +458,7 @@
           try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
           allImages = Array.isArray(data.images) ? data.images.map(it=>({ 
               src: String(it.src||"").trim(), 
+              preview: String(it.preview||"").trim(),
               title: String(it.title||""), 
               color: String(it.color||""),
               year: String(it.year || "2024") // Fallback to 2024 if empty
