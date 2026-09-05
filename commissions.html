@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.9" />
@@ -30,15 +31,15 @@
 
     /* Kills the +o pattern and default color from style.css */
     body.comm-page {
-      background: transparent !important; 
+      background: transparent !important;
     }
 
     /* =========================================
        LAYER 0: SCROLLING ANGLED CHECKERBOARD 
        ========================================= */
     :root {
-      --bg-base: #0f111a; 
-      --bg-check: #171a26; 
+      --bg-base: #0f111a;
+      --bg-check: #171a26;
     }
 
     .layer-0-checkerboard {
@@ -47,23 +48,28 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background-color: var(--bg-base); 
+      background-color: var(--bg-base);
       background-image:
         linear-gradient(45deg, var(--bg-check) 25%, transparent 25%),
         linear-gradient(-45deg, var(--bg-check) 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, var(--bg-check) 75%),
         linear-gradient(-45deg, transparent 75%, var(--bg-check) 75%);
-      background-size: 32px 32px; 
+      background-size: 32px 32px;
       background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
-      transform: rotate(-10deg); 
+      transform: rotate(-10deg);
       z-index: -10;
       animation: panCheckerboard 20s linear infinite;
-      pointer-events: none; 
+      pointer-events: none;
     }
 
     @keyframes panCheckerboard {
-      0% { background-position: 0 0, 0 16px, 16px -16px, -16px 0px; }
-      100% { background-position: 32px 32px, 32px 48px, 48px 16px, 16px 32px; }
+      0% {
+        background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
+      }
+
+      100% {
+        background-position: 32px 32px, 32px 48px, 48px 16px, 16px 32px;
+      }
     }
 
     /* =========================================
@@ -74,12 +80,14 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 96%; /* Bumbed up from 90% */
-      max-width: 1600px; /* Bumped up from 1200px to give you way more room */
+      width: 96%;
+      /* Bumbed up from 90% */
+      max-width: 1600px;
+      /* Bumped up from 1200px to give you way more room */
       height: 100vh;
-      background-color: var(--bg-base); 
-      z-index: -9; 
-      box-shadow: 0 0 60px rgba(0,0,0,0.9); 
+      background-color: var(--bg-base);
+      z-index: -9;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
       pointer-events: none;
     }
 
@@ -97,11 +105,17 @@
       text-align: center;
       margin: 10px 0 18px;
       letter-spacing: 2px;
-      text-shadow: 4px 4px 0px rgba(0,0,0,0.8) !important; 
+      text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8) !important;
       text-transform: uppercase;
     }
-    .comm-status.open { color: #5cffb0; }
-    .comm-status.closed { color: #ff6b6b; }
+
+    .comm-status.open {
+      color: #5cffb0;
+    }
+
+    .comm-status.closed {
+      color: #ff6b6b;
+    }
 
     /* =========================================
        PIXEL 3-SLICE NAVIGATION BUTTONS
@@ -109,8 +123,8 @@
     .pixel-nav {
       display: flex;
       justify-content: center;
-      flex-wrap: nowrap; 
-      width: 100%;       
+      flex-wrap: nowrap;
+      width: 100%;
       gap: 12px;
       margin: 30px 0;
       position: relative;
@@ -123,52 +137,84 @@
       align-items: center;
       justify-content: center;
       height: 32px;
-      padding: 0 18px; 
+      padding: 0 18px;
       text-decoration: none;
       cursor: pointer;
-      image-rendering: pixelated; 
+      image-rendering: pixelated;
       image-rendering: crisp-edges;
-      
-      flex: 1 1 0; 
-      white-space: nowrap; 
+
+      flex: 1 1 0;
+      white-space: nowrap;
       box-sizing: border-box;
-      
+
       background: transparent !important;
       border: none !important;
       outline: none !important;
       box-shadow: none !important;
-      
-      isolation: isolate; 
-      
+
+      isolation: isolate;
+
       --btn-hue: 0deg;
-      --btn-glow-aura: rgba(255, 165, 0, 0); 
-      
+      --btn-glow-aura: rgba(255, 165, 0, 0);
+
       transition: filter 0.2s ease-out;
-      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5)) drop-shadow(0 0 0px var(--btn-glow-aura));
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 0px var(--btn-glow-aura));
     }
 
     .pixel-btn:hover {
-      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5)) drop-shadow(0 0 10px var(--btn-glow-aura));
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px var(--btn-glow-aura));
     }
 
-    .btn-orange { --btn-hue: 0deg; --btn-glow-aura: rgba(255, 170, 0, 0.8); }
-    .btn-red    { --btn-hue: -35deg; --btn-glow-aura: rgba(255, 50, 50, 0.8); }
-    .btn-blue   { --btn-hue: 190deg; --btn-glow-aura: rgba(50, 150, 255, 0.8); }
-    .btn-purple { --btn-hue: 260deg; --btn-glow-aura: rgba(180, 50, 255, 0.8); }
-    .btn-green  { --btn-hue: 90deg; --btn-glow-aura: rgba(50, 255, 50, 0.8); }
-    .btn-cyan   { --btn-hue: 150deg; --btn-glow-aura: rgba(50, 255, 255, 0.8); }
-    .btn-pink   { --btn-hue: 310deg; --btn-glow-aura: rgba(255, 100, 200, 0.8); }
+    .btn-orange {
+      --btn-hue: 0deg;
+      --btn-glow-aura: rgba(255, 170, 0, 0.8);
+    }
+
+    .btn-red {
+      --btn-hue: -35deg;
+      --btn-glow-aura: rgba(255, 50, 50, 0.8);
+    }
+
+    .btn-blue {
+      --btn-hue: 190deg;
+      --btn-glow-aura: rgba(50, 150, 255, 0.8);
+    }
+
+    .btn-purple {
+      --btn-hue: 260deg;
+      --btn-glow-aura: rgba(180, 50, 255, 0.8);
+    }
+
+    .btn-green {
+      --btn-hue: 90deg;
+      --btn-glow-aura: rgba(50, 255, 50, 0.8);
+    }
+
+    .btn-cyan {
+      --btn-hue: 150deg;
+      --btn-glow-aura: rgba(50, 255, 255, 0.8);
+    }
+
+    .btn-pink {
+      --btn-hue: 310deg;
+      --btn-glow-aura: rgba(255, 100, 200, 0.8);
+    }
 
     /* --- 1. THE BASE LAYER (Bottom) --- */
     .pixel-btn-bg {
       position: absolute;
-      top: 0; left: 18px; right: 18px; bottom: 0;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      bottom: 0;
       background: url('assets/ui/luna/Buttons/basemiddle.png') repeat-x center;
       background-size: auto 100%;
       filter: hue-rotate(var(--btn-hue));
-      z-index: 1; 
+      z-index: 1;
     }
-    .pixel-btn::before, .pixel-btn::after {
+
+    .pixel-btn::before,
+    .pixel-btn::after {
       content: '';
       position: absolute;
       top: 0;
@@ -176,56 +222,83 @@
       height: 32px;
       background-size: 100% 100%;
       filter: hue-rotate(var(--btn-hue));
-      z-index: 1; 
+      z-index: 1;
     }
-    .pixel-btn::before { left: 0; background-image: url('assets/ui/luna/Buttons/baseleft.png'); }
-    .pixel-btn::after { right: 0; background-image: url('assets/ui/luna/Buttons/baseright.png'); }
+
+    .pixel-btn::before {
+      left: 0;
+      background-image: url('assets/ui/luna/Buttons/baseleft.png');
+    }
+
+    .pixel-btn::after {
+      right: 0;
+      background-image: url('assets/ui/luna/Buttons/baseright.png');
+    }
 
     /* --- 2. THE HOVER GLOW LAYER (Middle) --- */
     .btn-glow {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 2; 
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.15s ease-out;
-      mix-blend-mode: screen; 
+      mix-blend-mode: screen;
       filter: hue-rotate(var(--btn-hue));
     }
-    .pixel-btn:hover .btn-glow { opacity: 1; }
+
+    .pixel-btn:hover .btn-glow {
+      opacity: 1;
+    }
 
     .btn-glow-mid {
       position: absolute;
-      top: 0; left: 18px; right: 18px; bottom: 0;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      bottom: 0;
       background: url('assets/ui/luna/Buttons/basemiddleadd.png') repeat-x center;
       background-size: auto 100%;
-      image-rendering: pixelated; 
+      image-rendering: pixelated;
       image-rendering: crisp-edges;
     }
-    .btn-glow::before, .btn-glow::after {
+
+    .btn-glow::before,
+    .btn-glow::after {
       content: '';
       position: absolute;
       top: 0;
       width: 18px;
       height: 32px;
       background-size: 100% 100%;
-      image-rendering: pixelated; 
+      image-rendering: pixelated;
       image-rendering: crisp-edges;
     }
-    .btn-glow::before { left: 0; background-image: url('assets/ui/luna/Buttons/baseleftadd.png'); }
-    .btn-glow::after { right: 0; background-image: url('assets/ui/luna/Buttons/baserightadd.png'); }
+
+    .btn-glow::before {
+      left: 0;
+      background-image: url('assets/ui/luna/Buttons/baseleftadd.png');
+    }
+
+    .btn-glow::after {
+      right: 0;
+      background-image: url('assets/ui/luna/Buttons/baserightadd.png');
+    }
 
     /* --- 3. THE TEXT (Top) --- */
     .btn-text {
       position: relative;
-      z-index: 3; 
+      z-index: 3;
       color: #fff !important;
       font-family: "Mario-Kart-DS", sans-serif !important;
       font-size: 18px;
       letter-spacing: 1px;
-      text-transform: none; 
+      text-transform: none;
       text-shadow: 1px 1px 0 #000;
-      margin-top: 4px; 
+      margin-top: 4px;
     }
 
     /* =========================================
@@ -233,49 +306,51 @@
        ========================================= */
     @media (max-width: 800px) {
       .pixel-nav {
-        flex-wrap: wrap; 
+        flex-wrap: wrap;
       }
+
       .pixel-btn {
-        flex: 1 1 auto; 
-        min-width: 120px; 
+        flex: 1 1 auto;
+        min-width: 120px;
       }
+
       .comm-status {
-        font-size: clamp(32px, 6vw, 60px); 
+        font-size: clamp(32px, 6vw, 60px);
       }
     }
 
-      /* =========================================
+    /* =========================================
     CENTER WATERFALL (2x Scaled)
     ========================================= */
     .waterfall-center {
       position: absolute;
       /* Starts just below your "COMMISSIONS OPEN" sign */
-      top: 150px; 
-      bottom: 0; 
-      
+      top: 150px;
+      bottom: 0;
+
       /* Centers the pillar perfectly in the middle of the screen */
       left: 50%;
       transform: translateX(-50%);
 
       /* 2x Pixel Math: 244px * 2 */
-      width: 488px; 
-      
+      width: 488px;
+
       /* Points to your animated file */
       background-image: url('assets/ui/luna/windows/waterfall.webp');
-      
+
       /* CRITICAL: Forces the sprite to draw at exactly 2x scale before tiling! */
-      background-size: 488px 224px; 
-      
+      background-size: 488px 224px;
+
       /* Tiles endlessly downward */
-      background-repeat: repeat-y; 
+      background-repeat: repeat-y;
       background-position: top center;
-      
+
       /* Keeps the upscaled pixels razor sharp */
       image-rendering: pixelated;
       image-rendering: crisp-edges;
-      
+
       /* Safely tucked behind your commission windows */
-      z-index: 0; 
+      z-index: 0;
       pointer-events: none;
 
       opacity: 0.2;
@@ -288,174 +363,197 @@
       }
     }
 
-  /* =========================================
+    /* =========================================
     SCATTERED BACKGROUND FLOWERS (2x)
     ========================================= */
-  .bg-flower {
-    position: absolute;
-    width: 64px; 
-    height: 64px; 
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    z-index: 0; 
-    pointer-events: none; 
-    
-    /* ADD THIS: Tells the browser to prepare for fast animations! */
-    will-change: transform;
-  }
+    .bg-flower {
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      z-index: 0;
+      pointer-events: none;
+
+      /* ADD THIS: Tells the browser to prepare for fast animations! */
+      will-change: transform;
+    }
+
     /* =========================================
     FULL-WIDTH QUARANTINE ZONES
     ========================================= */
-  #window-container {
-    position: absolute;
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    overflow: hidden; 
-    pointer-events: none;
-    /* Pulled forward so the main background doesn't swallow it! */
-    z-index: 2; 
-  }
+    #window-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      pointer-events: none;
+      /* Pulled forward so the main background doesn't swallow it! */
+      z-index: 2;
+    }
 
-  #flower-container {
-    position: absolute;
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    overflow: hidden; 
-    pointer-events: none;
-    /* Placed slightly in front of the windows */
-    z-index: 3; 
-  }
+    #flower-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      pointer-events: none;
+      /* Placed slightly in front of the windows */
+      z-index: 3;
+    }
 
-  /* =========================================
+    /* =========================================
     PARALLAX BACKGROUND WINDOWS
     ========================================= */
-  .bg-window-frame {
-    position: absolute;
-    background-color: #13b5f5; /* Sky Blue */
-    
-    /* DELETED the border and box-shadow completely! */
-    border: none;
-    box-shadow: none;
-    
-    overflow: hidden; 
-  }
+    .bg-window-frame {
+      position: absolute;
+      background-color: #13b5f5;
+      /* Sky Blue */
 
-  /* The Field Sprite Inside */
-  .bg-window-field {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0; 
-    
-    /* Replace with EXACTLY 2x your sprite's size! */
-    background-size: 188px 512px; 
-    background-repeat: repeat-y;
-    
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    will-change: background-position;
-  }
+      /* DELETED the border and box-shadow completely! */
+      border: none;
+      box-shadow: none;
 
-  /* =========================================
+      overflow: hidden;
+    }
+
+    /* The Field Sprite Inside */
+    .bg-window-field {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      /* Replace with EXACTLY 2x your sprite's size! */
+      background-size: 188px 512px;
+      background-repeat: repeat-y;
+
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      will-change: background-position;
+    }
+
+    /* =========================================
     WATERFALL SPLASH ZONE (DUAL PARTICLES)
     ========================================= */
-  #splash-zone {
-    position: absolute;
-    bottom: -20px; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1200px; 
-    height: 150px;
-    pointer-events: none;
-    z-index: 5; 
-    overflow: visible;
-  }
+    #splash-zone {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1200px;
+      height: 150px;
+      pointer-events: none;
+      z-index: 5;
+      overflow: visible;
+    }
 
-  /* 1. THE MIST SPRITE (Drifts and slows down) */
-  .splash-sprite {
-    position: absolute;
-    bottom: 10px;
-    
-    /* PERFECT 2x LOCK: 32px native * 2 = 64px */
-    width: 64px;
-    height: 64px;
-    background-image: url('assets/ui/luna/windows/splash.png'); /* UPDATE THIS */
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    /* 1. THE MIST SPRITE (Drifts and slows down) */
+    .splash-sprite {
+      position: absolute;
+      bottom: 10px;
 
-    z-index: 5;
-    
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    
-    pointer-events: none;
+      /* PERFECT 2x LOCK: 32px native * 2 = 64px */
+      width: 64px;
+      height: 64px;
+      background-image: url('assets/ui/luna/windows/splash.png');
+      /* UPDATE THIS */
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
 
-    /* ease-out causes it to launch fast, then slow down to a stop! */
-    animation: spriteDrift forwards ease-out;
-    will-change: transform, opacity;
-  }
+      z-index: 5;
 
-  /* 2. THE WATER DROPLETS (Heavy, affected by gravity) */
-  .splash-droplet {
-    position: absolute;
-    bottom: 15px;
-    
-    /* PERFECT 2x LOCK: 2px native * 2 = 4px */
-    width: 4px;
-    height: 4px;
-    background-color: #00e1ff; /* Pale glowing cyan */
-    box-shadow: 0 0 4px #ffc9c9; /* Soft water glow */
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
 
-    z-index: 5;
+      pointer-events: none;
 
-    pointer-events: none;
-    
-    animation: dropletGravity forwards ease-in-out;
-    will-change: transform, opacity;
-  }
+      /* ease-out causes it to launch fast, then slow down to a stop! */
+      animation: spriteDrift forwards ease-out;
+      will-change: transform, opacity;
+    }
 
-  /* =========================================
+    /* 2. THE WATER DROPLETS (Heavy, affected by gravity) */
+    .splash-droplet {
+      position: absolute;
+      bottom: 15px;
+
+      /* PERFECT 2x LOCK: 2px native * 2 = 4px */
+      width: 4px;
+      height: 4px;
+      background-color: #00e1ff;
+      /* Pale glowing cyan */
+      box-shadow: 0 0 4px #ffc9c9;
+      /* Soft water glow */
+
+      z-index: 5;
+
+      pointer-events: none;
+
+      animation: dropletGravity forwards ease-in-out;
+      will-change: transform, opacity;
+    }
+
+    /* =========================================
     PARTICLE KEYFRAMES
     ========================================= */
 
-  /* The Sprite: Drifts far, slows down, no gravity fall */
-  @keyframes spriteDrift {
-    0% { 
-      transform: translate(0, 0) rotate(0deg); 
-      /* Uses the JS variable to set a random starting opacity! */
-      opacity: var(--start-opacity); 
-    }
-    100% { 
-      transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); 
-      opacity: 0; 
-    }
-  }
+    /* The Sprite: Drifts far, slows down, no gravity fall */
+    @keyframes spriteDrift {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        /* Uses the JS variable to set a random starting opacity! */
+        opacity: var(--start-opacity);
+      }
 
-  /* The Droplet: Shoots up, gravity pulls it back down */
-  @keyframes dropletGravity {
-    0% { transform: translate(0, 0); opacity: 0; }
-    10% { opacity: 1; }
-    
-    /* THE PEAK */
-    40% { transform: translate(calc(var(--tx) * 0.6), var(--ty)); }
-    
-    80% { opacity: 1; }
-    
-    /* THE FALL: Plummets down (+120px) */
-    100% { transform: translate(var(--tx), calc(var(--ty) + 120px)); opacity: 0; }
-  }
+      100% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+        opacity: 0;
+      }
+    }
+
+    /* The Droplet: Shoots up, gravity pulls it back down */
+    @keyframes dropletGravity {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      /* THE PEAK */
+      40% {
+        transform: translate(calc(var(--tx) * 0.6), var(--ty));
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      /* THE FALL: Plummets down (+120px) */
+      100% {
+        transform: translate(var(--tx), calc(var(--ty) + 120px));
+        opacity: 0;
+      }
+    }
   </style>
 </head>
+
 <body class="comm-page">
 
-      
+
   <div id="window-container"></div>
-  
+
   <div id="flower-container"></div>
-  
+
   <div class="layer-0-checkerboard"></div>
 
   <header class="site-header">
@@ -477,64 +575,79 @@
   </header>
 
   <div class="layer-0-5-center-mask"></div>
-  
-  <main class="container" style="position: relative;"> 
+
+  <main class="container" style="position: relative;">
 
     <section class="intro">
       <h3 style="color: white; text-shadow: 2px 2px 0 #000;">Commission Pricing and Terms of Service</h3>
-      <div class="comm-status open">COMMISSIONS OPEN</div>
+      <div class="comm-status closed">COMMISSIONS CLOSED</div>
     </section>
 
     <nav class="pixel-nav">
-      
+
       <a href="#icons" class="pixel-btn btn-orange">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">icons</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
       <a href="#halfbodies" class="pixel-btn btn-red">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">half body</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
       <a href="#fullbodies" class="pixel-btn btn-blue">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">full body</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
       <a href="#magazines" class="pixel-btn btn-purple">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">magazines</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
       <a href="#emotes" class="pixel-btn btn-green">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">emotes & stickers</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
       <a href="#backgrounds" class="pixel-btn btn-cyan">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">backgrounds</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
       <a href="#tos" class="pixel-btn btn-pink">
         <div class="pixel-btn-bg"></div>
         <span class="btn-text">tos</span>
-        <div class="btn-glow"><div class="btn-glow-mid"></div></div>
+        <div class="btn-glow">
+          <div class="btn-glow-mid"></div>
+        </div>
       </a>
 
     </nav>
 
-    <div class="waterfall-center"></div> <div id="splash-zone"></div>
+    <div class="waterfall-center"></div>
+    <div id="splash-zone"></div>
 
-    <div id="icons" class="comm-tier-container tier-orange"]>
-      
+    <div id="icons" class="comm-tier-container tier-orange" ]>
+
       <div class="tier-gallery">
         <div class="tier-content-gallery">
           <div class="gallery-track">
@@ -559,10 +672,12 @@
 
       <div class="tier-price">
         <div class="tier-content-price">
-          <h4 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 5px 0; color: #ffaa00; text-shadow: 3px 3px 0 #000;">icons</h4>
+          <h4
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 5px 0; color: #ffaa00; text-shadow: 3px 3px 0 #000;">
+            icons</h4>
           <p style="margin: 0; font-weight: bold; font-size: 24px;">$30 USD</p>
           <ul style="padding-left: 20px; font-size: 18px; margin-top: 15px; line-height: 1.5; margin: 10px 20px 0 0px;">
-          A portrait/icon focused on your character’s face, perfect for a profile picture! 
+            A portrait/icon focused on your character’s face, perfect for a profile picture!
           </ul>
         </div>
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow1price.png');"></div>
@@ -571,23 +686,25 @@
 
     </div>
     <div id="halfbodies" class="comm-tier-container tier-red align-bottom">
-      
+
       <div class="tier-price-halfbody">
-        
+
         <div class="tier-content-price-halfbody">
-          <h4 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 5px 0; color: #ff3232; text-shadow: 3px 3px 0 #000;">half body</h4>
+          <h4
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 5px 0; color: #ff3232; text-shadow: 3px 3px 0 #000;">
+            half body</h4>
           <p style="margin: 0; font-weight: bold; font-size: 24px;">$45 USD</p>
           <ul style="padding-left: 20px; font-size: 18px; margin-top: 15px; line-height: 1.5; margin: 0 20px 0 0px;">
-            An artwork of your character from the hips up, or any other close-up you'd like! 
+            An artwork of your character from the hips up, or any other close-up you'd like!
           </ul>
         </div>
-        
+
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow2price.png');"></div>
         <div class="tier-glow" style="background-image: url('assets/ui/luna/windows/tiltedwindow2priceadd.png');"></div>
       </div>
 
       <div class="tier-gallery-halfbody">
-        
+
         <div class="tier-content-gallery-halfbody">
           <div class="gallery-track-halfbody">
             <img src="assets/art/previews/Alpina.webp" alt="Art">
@@ -605,14 +722,14 @@
             <img src="assets/art/previews/gab Commission Final.webp" alt="Art">
           </div>
         </div>
-        
+
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow2.png');"></div>
         <div class="tier-glow" style="background-image: url('assets/ui/luna/windows/tiltedwindow2add.png');"></div>
       </div>
 
     </div>
     <div id="fullbodies" class="comm-tier-container tier-blue">
-      
+
       <div class="tier-gallery">
         <div class="tier-content-gallery">
           <div class="gallery-track">
@@ -639,10 +756,13 @@
 
       <div class="tier-price">
         <div class="tier-content-price">
-          <h4 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 15px 0; color: #3296ff; text-shadow: 3px 3px 0 #000;">full body</h4>
+          <h4
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 15px 0; color: #3296ff; text-shadow: 3px 3px 0 #000;">
+            full body</h4>
           <p style="margin: 0; font-weight: bold; font-size: 24px;">$65 USD</p>
           <ul style="padding-left: 20px; font-size: 18px; margin-top: 15px; line-height: 1.5;">
-            A full-body artwork of your character where the entire figure is visible. This allows me to capture dynamic poses and showcase your character to its full extent! 
+            A full-body artwork of your character where the entire figure is visible. This allows me to capture dynamic
+            poses and showcase your character to its full extent!
           </ul>
         </div>
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow1price.png');"></div>
@@ -652,13 +772,16 @@
     </div>
 
     <div id="magazines" class="comm-tier-container tier-purple align-bottom">
-      
+
       <div class="tier-price-halfbody">
         <div class="tier-content-price-halfbody">
-          <h4 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 5px 0; color: #b432ff; text-shadow: 3px 3px 0 #000;">magazines</h4>
+          <h4
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 5px 0; color: #b432ff; text-shadow: 3px 3px 0 #000;">
+            magazines</h4>
           <p style="margin: 0; font-weight: bold; font-size: 24px;">$85 USD</p>
           <ul style="padding-left: 20px; font-size: 18px; margin-top: 15px; line-height: 1.5;">
-            A stylish magazine cover featuring your character, complete with custom text, headlines, and graphic design elements.
+            A stylish magazine cover featuring your character, complete with custom text, headlines, and graphic design
+            elements.
           </ul>
         </div>
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow2price.png');"></div>
@@ -691,12 +814,12 @@
       </div>
 
     </div>
-     <div id="emotes" class="comm-tier-container tier-green">
-      
+    <div id="emotes" class="comm-tier-container tier-green">
+
       <div class="tier-gallery">
         <div class="tier-content-gallery">
           <div class="tier-content-gallery">
-  
+
             <img src="assets/art/previews/emotes.webp" alt="Static Art Example" class="static-gallery-img">
 
           </div>
@@ -707,7 +830,9 @@
 
       <div class="tier-price">
         <div class="tier-content-price">
-          <h3 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 10px 0 0 0; color: #32ff32cc; text-shadow: 3px 3px 0 #000; line-height: 1;">emotes & emojis</h3>
+          <h3
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 10px 0 0 0; color: #32ff32cc; text-shadow: 3px 3px 0 #000; line-height: 1;">
+            emotes & emojis</h3>
           <p style="margin: 0; font-weight: bold; font-size: 24px;">$10 USD / Each!</p>
           <ul style="padding-left: 20px; font-size: 18px; margin-top: 5px; line-height: 1.4;">
             <strong>Perfect for Discord or Twitch!</strong>
@@ -721,10 +846,12 @@
       </div>
     </div>
     <div id="magazines" class="comm-tier-container tier-green align-bottom">
-      
+
       <div class="tier-price-halfbody">
         <div class="tier-content-price-halfbody">
-          <h3 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 10px 0 0 0; color: #32ff32cc; text-shadow: 3px 3px 0 #000; line-height: 1;">stickers</h3>
+          <h3
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 10px 0 0 0; color: #32ff32cc; text-shadow: 3px 3px 0 #000; line-height: 1;">
+            stickers</h3>
           <p style="margin: 0; font-weight: bold; font-size: 24px;">$15 USD</p>
           <ul style="padding-left: 20px; font-size: 18px; margin-top: 5px; line-height: 1.6;">
             <strong>Perfect for Telegram, Discord, or Messages!</strong>
@@ -765,29 +892,35 @@
     </div>
 
     <div id="backgrounds" class="comm-tier-container tier-cyan square-layout">
-      
+
       <div class="tier-price-square">
-        
+
         <div class="tier-content-price-square">
-          <h4 style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 10px 0; color: #32cfff; text-shadow: 3px 3px 0 #000; text-align: center;">backgrounds</h4>
+          <h4
+            style="font-family: 'Mario-Kart-DS'; font-size: 40px; margin: 0 0 10px 0; color: #32cfff; text-shadow: 3px 3px 0 #000; text-align: center;">
+            backgrounds</h4>
           <audio id="clickSound">
             <source src="assets/ui/sfx/plup.mp3" type="audio/mpeg">
           </audio>
           <p style="margin: 0; font-weight: bold; font-size: 24px; text-align: center;">$50-80 USD+</p>
-          
-          <img src="assets/ui/luna/windows/macchiplant.webp" alt="Animated Sprite" style="margin-top: 20px; height: 246px; image-rendering: pixelated; image-rendering: crisp-edges;"onclick="document.getElementById('clickSound').play()">
 
-          <ul style="padding-left: 20px; font-size: 16px; margin-top: 20px; line-height: 1.5; width: 100%; text-align: center; margin: 0px 20px 0px 0px;">
-            A fully rendered background or scene for your artwork! This is an <strong>additional cost</strong> on top of the <strong>base price</strong> &#40Price depends on complexity&#41.
+          <img src="assets/ui/luna/windows/macchiplant.webp" alt="Animated Sprite"
+            style="margin-top: 20px; height: 246px; image-rendering: pixelated; image-rendering: crisp-edges;"
+            onclick="document.getElementById('clickSound').play()">
+
+          <ul
+            style="padding-left: 20px; font-size: 16px; margin-top: 20px; line-height: 1.5; width: 100%; text-align: center; margin: 0px 20px 0px 0px;">
+            A fully rendered background or scene for your artwork! This is an <strong>additional cost</strong> on top of
+            the <strong>base price</strong> &#40Price depends on complexity&#41.
           </ul>
         </div>
-        
+
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow3price.png');"></div>
         <div class="tier-glow" style="background-image: url('assets/ui/luna/windows/tiltedwindow3priceadd.png');"></div>
       </div>
 
       <div class="tier-gallery-square">
-        
+
         <div class="tier-content-gallery-square">
           <div class="gallery-track-square">
             <img src="assets/art/previews/Dani Commission.webp" alt="Art">
@@ -796,17 +929,17 @@
             <img src="assets/art/previews/PrototypeFox Comission Final.webp" alt="Art">
             <img src="assets/art/previews/Komet Comission Final.webp" alt="Art">
             <img src="assets/art/previews/AshleyHaruki Commission.webp" alt="Art">
-            
+
             <img src="assets/art/previews/Dani Commission.webp" alt="Art">
             <img src="assets/art/previews/Nican Commission.webp" alt="Art">
             <img src="assets/art/previews/macchi beach.webp" alt="Art">
             <img src="assets/art/previews/PrototypeFox Comission Final.webp" alt="Art">
             <img src="assets/art/previews/Komet Comission Final.webp" alt="Art">
             <img src="assets/art/previews/AshleyHaruki Commission.webp" alt="Art">
-          
+
           </div>
         </div>
-        
+
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow3.png');"></div>
         <div class="tier-glow" style="background-image: url('assets/ui/luna/windows/tiltedwindow3add.png');"></div>
       </div>
@@ -815,20 +948,27 @@
     <div class="comm-tier-container standalone-text-window layer-5 tier-pink">
 
       <div class="tier-gallery-square">
-        
+
         <div class="tier-content-gallery-square">
           <div class="standalone-content">
-            <h4 style="font-family: 'Mario-Kart-DS'; font-size: 32px; margin: 0 0 10px 0; color: #ffaa00; text-shadow: 3px 3px 0 #000; text-align: center;">additional characters</h4>
+            <h4
+              style="font-family: 'Mario-Kart-DS'; font-size: 32px; margin: 0 0 10px 0; color: #ffaa00; text-shadow: 3px 3px 0 #000; text-align: center;">
+              additional characters</h4>
             <p style="font-size: 18px; line-height: 1.6; margin: 0; text-align: center;">
-              Add another character to your artwork! This could be the same character or a different one (FB or HB only) – 50%+ of Base Price
+              Add another character to your artwork! This could be the same character or a different one (FB or HB only)
+              – 50%+ of Base Price
             </p>
-            <h4 style="font-family: 'Mario-Kart-DS'; font-size: 32px; margin: 10px 0 10px 0; color: #ffaa00; text-shadow: 3px 3px 0 #000; text-align: center;">nsfw & alts</h4>
+            <h4
+              style="font-family: 'Mario-Kart-DS'; font-size: 32px; margin: 10px 0 10px 0; color: #ffaa00; text-shadow: 3px 3px 0 #000; text-align: center;">
+              nsfw & alts</h4>
             <p style="font-size: 18px; line-height: 1.5; margin: 0; text-align: center;">
-              I draw NSFW content! I won’t draw extreme fetishes or anything I’m uncomfortable with, visit my NSFW twitter for examples: @slickestfxxx!<br> Any type of alt for an artwork (That changes lineart) is <strong>$5-$15</strong> additional, price depends on complexity!
+              I draw NSFW content! I won’t draw extreme fetishes or anything I’m uncomfortable with, visit my NSFW
+              twitter for examples: @slickestfxxx!<br> Any type of alt for an artwork (That changes lineart) is
+              <strong>$5-$15</strong> additional, price depends on complexity!
             </p>
           </div>
         </div>
-        
+
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow3.png');"></div>
         <div class="tier-glow" style="background-image: url('assets/ui/luna/windows/tiltedwindow3add.png');"></div>
 
@@ -836,66 +976,86 @@
 
     </div>
     <div id="tos" class="comm-tier-container tier-pink tos-layout">
-      
+
       <div class="tier-single">
-        
+
         <div class="tier-content-single">
-          
-          <h4 style="font-family: 'Mario-Kart-DS'; font-size: 42px; margin: 0; color: #ff3e7e; text-shadow: 4px 4px 0 #000;">TERMS OF SERVICE</h4>
+
+          <h4
+            style="font-family: 'Mario-Kart-DS'; font-size: 42px; margin: 0; color: #ff3e7e; text-shadow: 4px 4px 0 #000;">
+            TERMS OF SERVICE</h4>
 
           <div class="tos-box-1" style="font-size: 14px; line-height: 1.5;">
             <strong>Requesting</strong><br>
-            Contact me through my Twitter or Instagram DMs, I'll try to respond as soon as possible and let me know what you are requesting in the initial message!
+            Contact me through my Twitter or Instagram DMs, I'll try to respond as soon as possible and let me know what
+            you are requesting in the initial message!
           </div>
           <div class="tos-box-2" style="font-size: 14px; line-height: 1.5;">
             <strong>Payment & Process</strong><br>
-            Payment is done through my Ko-fi donation feature or PayPal. I ask for a 50% Price deposit before I can begin the sketch, with the remaining 50% due after the sketch is delivered. All prices are in USD
+            Payment is done through my Ko-fi donation feature or PayPal. I ask for a 50% Price deposit before I can
+            begin the sketch, with the remaining 50% due after the sketch is delivered. All prices are in USD
           </div>
 
           <div class="tos-box-3" style="font-size: 14px; line-height: 1.5;">
             <strong>Refunds & Usage</strong><br>
-            Refunds will not be issued once you’ve personally approved the sketch and I’ve started working on the lineart, coloring, or rendering. Minor adjustments are free. These commissions are for personal use only unless commercial rights are discussed. crediting me when posting is greatly aprecciated!
+            Refunds will not be issued once you’ve personally approved the sketch and I’ve started working on the
+            lineart, coloring, or rendering. Minor adjustments are free. These commissions are for personal use only
+            unless commercial rights are discussed. crediting me when posting is greatly aprecciated!
           </div>
 
           <div class="tos-box-4" style="font-size: 14px; line-height: 1.5;">
             <strong>Revisions</strong><br>
-            I’ll update you on the artwork's progress when necessary, or anytime if you ask. You can request revisions as needed, but please note that changes during the final rendering stage are difficult and not encouraged.
+            I’ll update you on the artwork's progress when necessary, or anytime if you ask. You can request revisions
+            as needed, but please note that changes during the final rendering stage are difficult and not encouraged.
           </div>
 
           <div class="tos-box-5" style="font-size: 14px; line-height: 1.5;">
             <strong>Turnover & Delivery</strong><br>
-            I aim to deliver the first sketch in less than two weeks, and will probably start focusedly working on it after the sketch is delivered. You’re welcome to check in on the progress anytime! I usually won't take more than 5 weeks to complete a commission!
+            I aim to deliver the first sketch in less than two weeks, and will probably start focusedly working on it
+            after the sketch is delivered. You’re welcome to check in on the progress anytime! I usually won't take more
+            than 5 weeks to complete a commission!
           </div>
 
           <div class="tos-box-6" style="font-size: 14px; line-height: 1.5;">
             <strong>Social Media</strong><br>
-            I automatically assume the right to post any artwork I create on social media, If you would like me to not post any artwork let me know beforehand!
+            I automatically assume the right to post any artwork I create on social media, If you would like me to not
+            post any artwork let me know beforehand!
           </div>
 
           <div class="tos-box-7" style="font-size: 12px; line-height: 1.5;">
             <strong>Artificial Intelligence</strong><br>
-            I strictly prohibit the use of my work for any form of generative AI processing, including but not limited to machine learning training, dataset inclusion, or algorithmic modification. This work is licensed for personal use only; I expressly forbid any commercial exploitation, unauthorized monetization, or the creation of derivative works for profit.
+            I strictly prohibit the use of my work for any form of generative AI processing, including but not limited
+            to machine learning training, dataset inclusion, or algorithmic modification. This work is licensed for
+            personal use only; I expressly forbid any commercial exploitation, unauthorized monetization, or the
+            creation of derivative works for profit.
           </div>
 
         </div>
-        
+
         <div class="tier-bg" style="background-image: url('assets/ui/luna/windows/tiltedwindow4.png');"></div>
         <div class="tier-glow" style="background-image: url('assets/ui/luna/windows/tiltedwindow4add.png');"></div>
       </div>
 
     </div>
-    
+
   </main>
 
   <footer>
     <nav class="social-links" aria-label="Social media">
-      <a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
-      <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
-      <a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
-      <a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
-      <a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
-      <a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
-      <a href="https://ko-fi.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Ko-fi"><img src="assets/ui/icons/kofi.svg" alt="Ko-fi"></a>
+      <a href="https://www.youtube.com/@slickestfoxmusic" target="_blank" rel="noopener noreferrer" title="YouTube"><img
+          src="assets/ui/icons/youtube.svg" alt="YouTube"></a>
+      <a href="https://x.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Twitter/X"><img
+          src="assets/ui/icons/x.svg" alt="Twitter/X"></a>
+      <a href="https://open.spotify.com/artist/17hpq2F1PbhkhDZnDShktW?si=8e27d656f1104a62" target="_blank"
+        rel="noopener noreferrer" title="Spotify"><img src="assets/ui/icons/spotify.svg" alt="Spotify"></a>
+      <a href="https://www.tiktok.com/@slickestfox" target="_blank" rel="noopener noreferrer" title="TikTok"><img
+          src="assets/ui/icons/tiktok.svg" alt="TikTok"></a>
+      <a href="https://www.instagram.com/slickestfox/" target="_blank" rel="noopener noreferrer" title="Instagram"><img
+          src="assets/ui/icons/instagram.svg" alt="Instagram"></a>
+      <a href="https://sylviumlighting.etsy.com" target="_blank" rel="noopener noreferrer" title="Etsy"><img
+          src="assets/ui/icons/etsy.svg" alt="Etsy"></a>
+      <a href="https://ko-fi.com/slickestfox" target="_blank" rel="noopener noreferrer" title="Ko-fi"><img
+          src="assets/ui/icons/kofi.svg" alt="Ko-fi"></a>
     </nav>
     <p>© 2025 slickestfox</p>
   </footer>
@@ -909,137 +1069,137 @@
   </script>
 
   <script>
-  (function(){
-    function setMuteIcon(){
-      var btn = document.getElementById('mute-btn');
-      if (!btn) return;
-      try {
-        var m = localStorage.getItem('siteAudioMuted') === '1';
-        var v = parseFloat(localStorage.getItem('siteAudioVolume') || '0.5');
-        if (isNaN(v)) v = 0.5;
-        btn.textContent = (m || v === 0) ? '🔇' : '🔊';
-      } catch { btn.textContent = '🔊'; }
-    }
-    document.addEventListener('DOMContentLoaded', function(){
-      setMuteIcon();
-      var btn = document.getElementById('mute-btn');
-      if (!btn) return;
-      var obs = new MutationObserver(setMuteIcon);
-      obs.observe(btn, { childList: true, characterData: true, subtree: true });
-      window.addEventListener('storage', setMuteIcon);
-    });
-  })();
+    (function () {
+      function setMuteIcon() {
+        var btn = document.getElementById('mute-btn');
+        if (!btn) return;
+        try {
+          var m = localStorage.getItem('siteAudioMuted') === '1';
+          var v = parseFloat(localStorage.getItem('siteAudioVolume') || '0.5');
+          if (isNaN(v)) v = 0.5;
+          btn.textContent = (m || v === 0) ? '🔇' : '🔊';
+        } catch { btn.textContent = '🔊'; }
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        setMuteIcon();
+        var btn = document.getElementById('mute-btn');
+        if (!btn) return;
+        var obs = new MutationObserver(setMuteIcon);
+        obs.observe(btn, { childList: true, characterData: true, subtree: true });
+        window.addEventListener('storage', setMuteIcon);
+      });
+    })();
   </script>
 
   <script>
-  (() => {
-    const LS_MUTE_KEY = 'siteAudioMuted';
-    const LS_VOL_KEY = 'siteAudioVolume';
-    let audioEl = null;
+    (() => {
+      const LS_MUTE_KEY = 'siteAudioMuted';
+      const LS_VOL_KEY = 'siteAudioVolume';
+      let audioEl = null;
 
-    const loadPrefs = () => {
-      let muted = true; let vol = 0.5;
-      try {
-        const m = localStorage.getItem(LS_MUTE_KEY);
-        const v = localStorage.getItem(LS_VOL_KEY);
-        if (m !== null) muted = (m === '1');
-        if (v !== null) { const nv = Math.max(0, Math.min(1, parseFloat(v))); if (!Number.isNaN(nv)) vol = nv; }
-      } catch {}
-      return { muted, vol };
-    };
-    const saveMute = (m) => { try { localStorage.setItem(LS_MUTE_KEY, m ? '1' : '0'); } catch {} };
-    const saveVol  = (v) => { try { localStorage.setItem(LS_VOL_KEY, String(v)); } catch {} };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      let data = {}; try { data = JSON.parse(document.getElementById('loop-data').textContent); } catch {}
-      const loops = Array.isArray(data.loops) ? data.loops : [];
-      if (!loops.length) return;
-      const src = loops[(Math.random() * loops.length) | 0].src;
-
-      audioEl = new Audio(src);
-      audioEl.loop = true;
-
-      const { muted, vol } = loadPrefs();
-      audioEl.volume = vol;
-      audioEl.muted = muted;
-      audioEl.play().catch(() => {});
-
-      const onFirstGesture = () => {
-        if (!audioEl) return;
-        if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(() => {}); }
-        window.removeEventListener('pointerdown', onFirstGesture);
-        window.removeEventListener('keydown', onFirstGesture);
+      const loadPrefs = () => {
+        let muted = true; let vol = 0.5;
+        try {
+          const m = localStorage.getItem(LS_MUTE_KEY);
+          const v = localStorage.getItem(LS_VOL_KEY);
+          if (m !== null) muted = (m === '1');
+          if (v !== null) { const nv = Math.max(0, Math.min(1, parseFloat(v))); if (!Number.isNaN(nv)) vol = nv; }
+        } catch { }
+        return { muted, vol };
       };
-      window.addEventListener('pointerdown', onFirstGesture, { passive: true });
-      window.addEventListener('keydown', onFirstGesture);
+      const saveMute = (m) => { try { localStorage.setItem(LS_MUTE_KEY, m ? '1' : '0'); } catch { } };
+      const saveVol = (v) => { try { localStorage.setItem(LS_VOL_KEY, String(v)); } catch { } };
 
-      const controls = document.createElement('div');
-      controls.id = 'music-controls';
-      const btn = document.createElement('button');
-      btn.id = 'mute-btn';
-      btn.textContent = (muted || vol === 0) ? '🔇' : '🔊';
-      const slider = document.createElement('input');
-      slider.type = 'range';
-      slider.id = 'volume-slider';
-      slider.min = '0'; slider.max = '1'; slider.step = '0.01';
-      slider.value = String(vol);
+      document.addEventListener('DOMContentLoaded', () => {
+        let data = {}; try { data = JSON.parse(document.getElementById('loop-data').textContent); } catch { }
+        const loops = Array.isArray(data.loops) ? data.loops : [];
+        if (!loops.length) return;
+        const src = loops[(Math.random() * loops.length) | 0].src;
 
-      btn.addEventListener('click', () => {
-        if (!audioEl) return;
-        audioEl.muted = !audioEl.muted;
-        saveMute(audioEl.muted);
-        btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
-        if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(() => {}); }
-      });
+        audioEl = new Audio(src);
+        audioEl.loop = true;
 
-      slider.addEventListener('input', () => {
-        if (!audioEl) return;
-        const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
-        audioEl.volume = v;
-        saveVol(v);
-        btn.textContent = (audioEl.muted || v === 0) ? '🔇' : '🔊';
-      });
+        const { muted, vol } = loadPrefs();
+        audioEl.volume = vol;
+        audioEl.muted = muted;
+        audioEl.play().catch(() => { });
 
-      window.addEventListener('storage', (e) => {
-        if (!audioEl) return;
-        if (e.key === LS_MUTE_KEY && e.newValue != null) {
-          audioEl.muted = (e.newValue === '1');
+        const onFirstGesture = () => {
+          if (!audioEl) return;
+          if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(() => { }); }
+          window.removeEventListener('pointerdown', onFirstGesture);
+          window.removeEventListener('keydown', onFirstGesture);
+        };
+        window.addEventListener('pointerdown', onFirstGesture, { passive: true });
+        window.addEventListener('keydown', onFirstGesture);
+
+        const controls = document.createElement('div');
+        controls.id = 'music-controls';
+        const btn = document.createElement('button');
+        btn.id = 'mute-btn';
+        btn.textContent = (muted || vol === 0) ? '🔇' : '🔊';
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.id = 'volume-slider';
+        slider.min = '0'; slider.max = '1'; slider.step = '0.01';
+        slider.value = String(vol);
+
+        btn.addEventListener('click', () => {
+          if (!audioEl) return;
+          audioEl.muted = !audioEl.muted;
+          saveMute(audioEl.muted);
           btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
-          if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(() => {}); }
-        }
-        if (e.key === LS_VOL_KEY && e.newValue != null) {
-          const v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
-          if (!Number.isNaN(v)) { audioEl.volume = v; slider.value = String(v); }
-          btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
-        }
-      });
+          if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(() => { }); }
+        });
 
-      controls.appendChild(btn);
-      controls.appendChild(slider);
-      document.body.appendChild(controls);
-    });
-  })();
+        slider.addEventListener('input', () => {
+          if (!audioEl) return;
+          const v = Math.max(0, Math.min(1, parseFloat(slider.value)));
+          audioEl.volume = v;
+          saveVol(v);
+          btn.textContent = (audioEl.muted || v === 0) ? '🔇' : '🔊';
+        });
+
+        window.addEventListener('storage', (e) => {
+          if (!audioEl) return;
+          if (e.key === LS_MUTE_KEY && e.newValue != null) {
+            audioEl.muted = (e.newValue === '1');
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
+            if (!audioEl.muted && audioEl.paused) { audioEl.play().catch(() => { }); }
+          }
+          if (e.key === LS_VOL_KEY && e.newValue != null) {
+            const v = Math.max(0, Math.min(1, parseFloat(e.newValue)));
+            if (!Number.isNaN(v)) { audioEl.volume = v; slider.value = String(v); }
+            btn.textContent = (audioEl.muted || audioEl.volume == 0) ? '🔇' : '🔊';
+          }
+        });
+
+        controls.appendChild(btn);
+        controls.appendChild(slider);
+        document.body.appendChild(controls);
+      });
+    })();
   </script>
 
   <script>
     // ==========================================
     // PARALLAX FLOWER GENERATOR
     // ==========================================
-    window.addEventListener('load', function() {
-      
-      const flowerCount = 40; 
-      const pageHeight = document.documentElement.scrollHeight; 
+    window.addEventListener('load', function () {
+
+      const flowerCount = 40;
+      const pageHeight = document.documentElement.scrollHeight;
       const container = document.getElementById('flower-container');
-      
+
       // ==========================================
       // THE MISSING FIX: Force the container to be the height of the page!
       // Without this, overflow: hidden cuts off all the flowers.
       // ==========================================
       container.style.height = `${pageHeight}px`;
-      
+
       // We need an array to store all our generated flowers
-      const flowers = []; 
-  
+      const flowers = [];
+
       for (let i = 0; i < flowerCount; i++) {
         const flower = document.createElement('div');
         flower.className = 'bg-flower';
@@ -1051,7 +1211,7 @@
         flower.style.top = `${yPos}px`;
 
         // Spawns flowers between 1% and 15% from the edge
-        const edgeDistance = 1 + (Math.random() * 14); 
+        const edgeDistance = 1 + (Math.random() * 14);
         if (Math.random() > 0.5) {
           flower.style.left = `${edgeDistance}%`;
         } else {
@@ -1059,8 +1219,8 @@
         }
 
         const rotation = Math.random() * 360;
-        
-        const speed = (Math.random() * 0.5) - 0.15; 
+
+        const speed = (Math.random() * 0.5) - 0.15;
 
         flower.dataset.rotation = rotation;
         flower.dataset.speed = speed;
@@ -1068,27 +1228,27 @@
         flower.style.transform = `rotate(${rotation}deg)`;
 
         container.appendChild(flower);
-        flowers.push(flower); 
+        flowers.push(flower);
       }
 
       // THE SCROLL LISTENER
-      let ticking = false; 
+      let ticking = false;
 
       window.addEventListener('scroll', () => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
-            
-            const scrolled = window.scrollY; 
-            
+
+            const scrolled = window.scrollY;
+
             flowers.forEach(flower => {
               const speed = parseFloat(flower.dataset.speed);
               const rotation = parseFloat(flower.dataset.rotation);
-              
+
               const yOffset = scrolled * speed;
-              
+
               flower.style.transform = `translateY(${yOffset}px) rotate(${rotation}deg)`;
             });
-            
+
             ticking = false;
           });
           ticking = true;
@@ -1096,21 +1256,21 @@
       });
 
     });
-    </script>
-    <script>
+  </script>
+  <script>
     // ==========================================
     // PARALLAX WINDOW GENERATOR (LEFT/RIGHT SYNCED)
     // ==========================================
-    window.addEventListener('load', function() {
-      
-      const windowCount = 10; 
-      const pageHeight = document.documentElement.scrollHeight; 
-      
+    window.addEventListener('load', function () {
+
+      const windowCount = 10;
+      const pageHeight = document.documentElement.scrollHeight;
+
       // Force container height so it doesn't clip
       document.getElementById('window-container').style.height = `${pageHeight}px`;
 
       const container = document.getElementById('window-container');
-      const fields = []; 
+      const fields = [];
 
       for (let i = 0; i < windowCount; i++) {
         const win = document.createElement('div');
@@ -1123,7 +1283,7 @@
 
         const yPos = 400 + Math.random() * (pageHeight - 800);
         win.style.top = `${yPos}px`;
-        
+
         // Create the field for inside the window
         const field = document.createElement('div');
         field.className = 'bg-window-field';
@@ -1131,7 +1291,7 @@
         // ==========================================
         // THE LEFT / RIGHT LOGIC
         // ==========================================
-        const edgeDistance = 2 + (Math.random() * 10); 
+        const edgeDistance = 2 + (Math.random() * 10);
         const isLeft = Math.random() > 0.5;
 
         if (isLeft) {
@@ -1145,30 +1305,30 @@
         }
 
         // We assign the exact same speed to all windows so they feel like one unified background
-        const speed = 0.25; 
+        const speed = 0.25;
         field.dataset.speed = speed;
 
         win.appendChild(field);
         container.appendChild(win);
-        fields.push(field); 
+        fields.push(field);
       }
 
       // SCROLL LISTENER (The Infinite Texture Trick)
-      let tickingWindows = false; 
+      let tickingWindows = false;
       window.addEventListener('scroll', () => {
         if (!tickingWindows) {
           window.requestAnimationFrame(() => {
-            const scrolled = window.scrollY; 
-            
+            const scrolled = window.scrollY;
+
             fields.forEach(field => {
               const speed = parseFloat(field.dataset.speed);
-              
+
               // Instead of moving the whole image, we just scroll the texture!
               // It will tile infinitely and never run out of bounds.
               const textureOffset = scrolled * speed;
               field.style.backgroundPosition = `center ${textureOffset}px`;
             });
-            
+
             tickingWindows = false;
           });
           tickingWindows = true;
@@ -1194,19 +1354,19 @@
     // ==========================================
     // DUAL SPLASH EMITTER (Sprites + Droplets)
     // ==========================================
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
       const splashZone = document.getElementById('splash-zone');
       if (!splashZone) return;
 
       function spawnParticle() {
         // 1. CHOOSE PARTICLE TYPE: 30% chance for Mist Sprite, 70% chance for Droplet
-        const isSprite = Math.random() < 0.3; 
-        
+        const isSprite = Math.random() < 0.3;
+
         const particle = document.createElement('div');
         particle.className = isSprite ? 'splash-sprite' : 'splash-droplet';
 
         // Spawn in the center-ish area of the 600px zone (30% to 70% width)
-        const leftPos = 30 + (Math.random() * 40); 
+        const leftPos = 30 + (Math.random() * 40);
         particle.style.left = `${leftPos}%`;
 
         let duration;
@@ -1214,14 +1374,14 @@
         if (isSprite) {
           // --- MIST SPRITE PHYSICS ---
           // tx: Launches MUCH further horizontally (-250px to +250px)
-          const tx = (Math.random() - 0.5) * 500; 
-          
+          const tx = (Math.random() - 0.5) * 500;
+
           // ty: Drifts upwards/outwards slowly
-          const ty = -20 - (Math.random() * 60); 
-          
+          const ty = -20 - (Math.random() * 60);
+
           // rot: Spins gently
           const rot = (Math.random() - 0.5) * 90;
-          
+
           // Random starting opacity (between 0.3 and 0.8)
           const startOpacity = 0.3 + (Math.random() * 0.5);
 
@@ -1232,14 +1392,14 @@
 
           // Takes a long time to drift and fade (1.5s to 3s)
           duration = 1.5 + (Math.random() * 1.5);
-          
+
         } else {
           // --- WATER DROPLET PHYSICS ---
           // tx: Tighter horizontal spread (-100px to +100px)
-          const tx = (Math.random() - 0.5) * 400; 
-          
+          const tx = (Math.random() - 0.5) * 400;
+
           // ty: Shoots higher up (-40px to -100px) before falling
-          const ty = -40 - (Math.random() * 160); 
+          const ty = -40 - (Math.random() * 160);
 
           particle.style.setProperty('--tx', `${tx}px`);
           particle.style.setProperty('--ty', `${ty}px`);
@@ -1261,5 +1421,6 @@
       setInterval(spawnParticle, 80);
     });
   </script>
-  </body>
+</body>
+
 </html>
