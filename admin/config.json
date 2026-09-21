@@ -3,7 +3,7 @@
     "name": "github",
     "repo": "Josuero667/slickestfox-website",
     "branch": "main",
-    "base_url": "",
+    "base_url": "https://slickestfox-editor-auth.joshuarivera8506.workers.dev",
     "auth_endpoint": "auth"
   },
   "site_url": "https://slickestfox.com",
