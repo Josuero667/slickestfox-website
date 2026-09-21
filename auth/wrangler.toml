@@ -1,0 +1,10 @@
+name = "slickestfox-editor-auth"
+main = "worker.mjs"
+compatibility_date = "2026-09-20"
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://slickestfox.com"
+GITHUB_REPO = "Josuero667/slickestfox-website"
+ALLOWED_LOGIN = "Josuero667"
+# Add GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET as Worker secrets.

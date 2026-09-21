@@ -1,2 +1,11 @@
 .tmp.drivedownload/
 .tmp.driveupload/
+_site/
+.local-backups/
+__pycache__/
+.dev.vars
+.env
+.env.*
+!.env.example
+node_modules/
+.wrangler/

@@ -1,0 +1,83 @@
+{
+  "backend": {
+    "name": "github",
+    "repo": "Josuero667/slickestfox-website",
+    "branch": "main",
+    "base_url": "",
+    "auth_endpoint": "auth"
+  },
+  "site_url": "https://slickestfox.com",
+  "display_url": "https://slickestfox.com",
+  "logo_url": "/assets/favicon/android-chrome-192x192.png",
+  "publish_mode": "simple",
+  "media_folder": "assets/posts/uploads",
+  "public_folder": "assets/posts/uploads",
+  "media_processing": { "enabled": false },
+  "collections": [
+    {
+      "name": "artwork",
+      "label": "Artwork",
+      "description": "Upload from your computer to capture the file's last-modified date. Save publishes the gallery after automatic image processing. Hidden artwork is not shown on the website, but files remain in GitHub.",
+      "files": [{
+        "name": "gallery",
+        "label": "Gallery",
+        "file": "assets/art/data/images.json",
+        "fields": [{
+          "label": "Artwork",
+          "name": "images",
+          "widget": "list",
+          "summary": "{{fields.title}} · {{fields.date}}",
+          "collapsed": true,
+          "fields": [
+            { "label": "Title", "name": "title", "widget": "string" },
+            { "label": "Image", "name": "src", "widget": "image", "media_folder": "/assets/art/uploads", "public_folder": "assets/art/uploads", "media_library": { "config": { "max_file_size": 40000000 } }, "hint": "Choose an image from your computer. Its last-modified date is captured when saving. PNG, JPEG, WebP, GIF and AVIF are supported." },
+            { "label": "Date", "name": "date", "widget": "string", "required": false, "pattern": ["^\\d{4}-\\d{2}-\\d{2}$", "Use YYYY-MM-DD"], "hint": "Filled from the uploaded file's last-modified date when saved. Existing library images keep their saved date." },
+            { "label": "Use my date instead of the file date", "name": "date_override", "widget": "boolean", "default": false, "required": false },
+            { "label": "Color override", "name": "color", "widget": "string", "required": false, "pattern": ["^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$", "Use a hex color such as #ffd166"], "hint": "Leave blank for an automatic color. Existing colors are preserved unless cleared." },
+            { "label": "Show in gallery", "name": "published", "widget": "boolean", "default": true, "required": false },
+            { "name": "year", "widget": "hidden", "required": false },
+            { "name": "file_modified", "widget": "hidden", "required": false },
+            { "name": "preview", "widget": "hidden", "required": false }
+          ]
+        }]
+      }]
+    },
+    {
+      "name": "blog",
+      "label": "Blog posts",
+      "files": [{
+        "name": "posts",
+        "label": "Macchi-Posting",
+        "file": "assets/data/posts.json",
+        "fields": [{
+          "name": "posts", "label": "Posts", "widget": "list", "collapsed": true,
+          "summary": "{{fields.title}} · {{fields.date}}",
+          "fields": [
+            { "name": "id", "label": "Post ID", "widget": "string", "hint": "A unique short name, for example september-sketches.", "pattern": ["^[a-zA-Z0-9_-]+$", "Use letters, numbers, hyphens or underscores"] },
+            { "name": "title", "label": "Title", "widget": "string" },
+            { "name": "date", "label": "Date", "widget": "datetime", "format": "YYYY-MM-DD", "date_format": "YYYY-MM-DD", "time_format": false },
+            { "name": "content", "label": "Post", "widget": "text", "hint": "Supports [b]bold[/b], [small]small text[/small], [color=#ffd166]color[/color], links and line breaks." },
+            { "name": "image", "label": "Picture", "widget": "image", "required": false },
+            { "name": "tags", "label": "Tags", "widget": "list", "required": false },
+            { "name": "published", "label": "Show on website", "widget": "boolean", "default": true, "required": false },
+            { "name": "size", "label": "Size", "widget": "select", "options": ["small", "medium", "large"], "default": "medium", "required": false },
+            { "name": "maxWidth", "label": "Maximum width", "widget": "number", "value_type": "int", "default": 560, "min": 200, "max": 1200, "required": false }
+          ]
+        }]
+      }]
+    },
+    {
+      "name": "settings",
+      "label": "Site settings",
+      "files": [{
+        "name": "settings",
+        "label": "Commissions and gallery order",
+        "file": "assets/data/settings.json",
+        "fields": [
+          { "name": "commissions_open", "label": "Commissions open", "widget": "boolean", "default": false },
+          { "name": "gallery_sort", "label": "Artwork order within each year", "widget": "select", "options": [{ "label": "My chosen order (drag artwork entries)", "value": "manual" }, { "label": "Newest file date first", "value": "date" }, { "label": "Color / hue", "value": "color" }], "default": "manual" }
+        ]
+      }]
+    }
+  ]
+}

@@ -433,35 +433,34 @@
         const JSON_PATH = 'assets/art/data/images.json';
         let loaded = false;
 
-        if (!IS_FILE){
-          try{
-            const res = await fetch(JSON_PATH, { cache: 'no-store' });
-            if (res.ok){
-              const data = await res.json();
-              if (Array.isArray(data.images)){
-                // ADDED: Extract the 'year' property here
-                allImages = data.images.map(it=>({ 
-                    src: String(it.src||"").trim(), 
-                    preview: String(it.preview||"").trim(),
-                    title: String(it.title||""), 
-                    color: String(it.color||""),
-                    year: String(it.year || "2024") // Fallback to 2024 if empty
-                }));
-                loaded = true;
-              }
+        try {
+          const res = await fetch(JSON_PATH, { cache: 'no-store' });
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data.images)) {
+              allImages = data.images.filter(it => it.published !== false).map(it => ({
+                src: String(it.src || "").trim(),
+                preview: String(it.preview || "").trim(),
+                title: String(it.title || ""),
+                color: String(it.color || ""),
+                year: String(it.date ? it.date.slice(0, 4) : it.year || "Unknown")
+              }));
+              loaded = true;
             }
-          } catch {}
+          }
+        } catch (err) {
+          console.warn("Could not fetch images.json via fetch:", err);
         }
 
         if (!loaded){
           let data={images:[]};
           try{ data = JSON.parse($("#images-data")?.textContent || "{}"); }catch{}
-          allImages = Array.isArray(data.images) ? data.images.map(it=>({ 
+          allImages = Array.isArray(data.images) ? data.images.filter(it => it.published !== false).map(it=>({
               src: String(it.src||"").trim(), 
               preview: String(it.preview||"").trim(),
               title: String(it.title||""), 
               color: String(it.color||""),
-              year: String(it.year || "2024") // Fallback to 2024 if empty
+              year: String(it.date ? it.date.slice(0, 4) : it.year || "Unknown")
           })) : [];
         }
 
