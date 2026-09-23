@@ -12,72 +12,420 @@
   "publish_mode": "simple",
   "media_folder": "assets/posts/uploads",
   "public_folder": "assets/posts/uploads",
-  "media_processing": { "enabled": false },
+  "media_processing": {
+    "enabled": false
+  },
   "collections": [
     {
       "name": "artwork",
       "label": "Artwork",
       "description": "Upload from your computer to capture the file's last-modified date. Save publishes the gallery after automatic image processing. Hidden artwork is not shown on the website, but files remain in GitHub.",
-      "files": [{
-        "name": "gallery",
-        "label": "Gallery",
-        "file": "assets/art/data/images.json",
-        "fields": [{
-          "label": "Artwork",
-          "name": "images",
-          "widget": "list",
-          "summary": "{{fields.title}} · {{fields.date}}",
-          "collapsed": true,
+      "files": [
+        {
+          "name": "gallery",
+          "label": "Gallery",
+          "file": "assets/art/data/images.json",
           "fields": [
-            { "label": "Title", "name": "title", "widget": "string" },
-            { "label": "Image", "name": "src", "widget": "image", "media_folder": "/assets/art/uploads", "public_folder": "assets/art/uploads", "media_library": { "config": { "max_file_size": 40000000 } }, "hint": "Choose an image from your computer. Its last-modified date is captured when saving. PNG, JPEG, WebP, GIF and AVIF are supported." },
-            { "label": "Date", "name": "date", "widget": "string", "required": false, "pattern": ["^\\d{4}-\\d{2}-\\d{2}$", "Use YYYY-MM-DD"], "hint": "Filled from the uploaded file's last-modified date when saved. Existing library images keep their saved date." },
-            { "label": "Use my date instead of the file date", "name": "date_override", "widget": "boolean", "default": false, "required": false },
-            { "label": "Color override", "name": "color", "widget": "string", "required": false, "pattern": ["^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$", "Use a hex color such as #ffd166"], "hint": "Leave blank for an automatic color. Existing colors are preserved unless cleared." },
-            { "label": "Show in gallery", "name": "published", "widget": "boolean", "default": true, "required": false },
-            { "name": "year", "widget": "hidden", "required": false },
-            { "name": "file_modified", "widget": "hidden", "required": false },
-            { "name": "preview", "widget": "hidden", "required": false }
+            {
+              "label": "Artwork",
+              "name": "images",
+              "widget": "list",
+              "summary": "{{fields.title}} Â· {{fields.date}}",
+              "collapsed": true,
+              "fields": [
+                {
+                  "label": "Title",
+                  "name": "title",
+                  "widget": "string",
+                  "required": false,
+                  "hint": "Defaults to the filename without its extension. You can change it."
+                },
+                {
+                  "label": "Image",
+                  "name": "src",
+                  "widget": "image",
+                  "media_folder": "/assets/art/uploads",
+                  "public_folder": "assets/art/uploads",
+                  "media_library": {
+                    "config": {
+                      "max_file_size": 40000000
+                    }
+                  },
+                  "hint": "Choose an image from your computer. Its last-modified date is captured when saving. PNG, JPEG, WebP, GIF and AVIF are supported."
+                },
+                {
+                  "label": "Date",
+                  "name": "date",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^\\d{4}-\\d{2}-\\d{2}$",
+                    "Use YYYY-MM-DD"
+                  ],
+                  "hint": "Filled from the uploaded file's last-modified date when saved. Existing library images keep their saved date."
+                },
+                {
+                  "label": "Use my date instead of the file date",
+                  "name": "date_override",
+                  "widget": "boolean",
+                  "default": false,
+                  "required": false
+                },
+                {
+                  "label": "Color override",
+                  "name": "color",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$",
+                    "Use a hex color such as #ffd166"
+                  ],
+                  "hint": "Leave blank for an automatic color. Existing colors are preserved unless cleared."
+                },
+                {
+                  "label": "Show in gallery",
+                  "name": "published",
+                  "widget": "boolean",
+                  "default": true,
+                  "required": false
+                },
+                {
+                  "name": "year",
+                  "widget": "hidden",
+                  "required": false
+                },
+                {
+                  "name": "file_modified",
+                  "widget": "hidden",
+                  "required": false
+                },
+                {
+                  "name": "preview",
+                  "widget": "hidden",
+                  "required": false
+                }
+              ],
+              "add_to_top": true,
+              "bulk_artwork": true
+            }
           ]
-        }]
-      }]
+        }
+      ]
     },
     {
       "name": "blog",
       "label": "Blog posts",
-      "files": [{
-        "name": "posts",
-        "label": "Macchi-Posting",
-        "file": "assets/data/posts.json",
-        "fields": [{
-          "name": "posts", "label": "Posts", "widget": "list", "collapsed": true,
-          "summary": "{{fields.title}} · {{fields.date}}",
+      "files": [
+        {
+          "name": "posts",
+          "label": "Macchi-Posting",
+          "file": "assets/data/posts.json",
           "fields": [
-            { "name": "id", "label": "Post ID", "widget": "string", "hint": "A unique short name, for example september-sketches.", "pattern": ["^[a-zA-Z0-9_-]+$", "Use letters, numbers, hyphens or underscores"] },
-            { "name": "title", "label": "Title", "widget": "string" },
-            { "name": "date", "label": "Date", "widget": "datetime", "format": "YYYY-MM-DD", "date_format": "YYYY-MM-DD", "time_format": false },
-            { "name": "content", "label": "Post", "widget": "text", "hint": "Supports [b]bold[/b], [small]small text[/small], [color=#ffd166]color[/color], links and line breaks." },
-            { "name": "image", "label": "Picture", "widget": "image", "required": false },
-            { "name": "tags", "label": "Tags", "widget": "list", "required": false },
-            { "name": "published", "label": "Show on website", "widget": "boolean", "default": true, "required": false },
-            { "name": "size", "label": "Size", "widget": "select", "options": ["small", "medium", "large"], "default": "medium", "required": false },
-            { "name": "maxWidth", "label": "Maximum width", "widget": "number", "value_type": "int", "default": 560, "min": 200, "max": 1200, "required": false }
+            {
+              "name": "posts",
+              "label": "Posts",
+              "widget": "list",
+              "collapsed": true,
+              "summary": "{{fields.title}} Â· {{fields.date}}",
+              "fields": [
+                {
+                  "name": "id",
+                  "label": "Post ID",
+                  "widget": "string",
+                  "hint": "A unique short name, for example september-sketches.",
+                  "pattern": [
+                    "^[a-zA-Z0-9_-]+$",
+                    "Use letters, numbers, hyphens or underscores"
+                  ]
+                },
+                {
+                  "name": "title",
+                  "label": "Title",
+                  "widget": "string"
+                },
+                {
+                  "name": "date",
+                  "label": "Date",
+                  "widget": "datetime",
+                  "format": "YYYY-MM-DD",
+                  "date_format": "YYYY-MM-DD",
+                  "time_format": false
+                },
+                {
+                  "name": "content",
+                  "label": "Post",
+                  "widget": "text",
+                  "hint": "Supports [b]bold[/b], [small]small text[/small], [color=#ffd166]color[/color], links and line breaks."
+                },
+                {
+                  "name": "image",
+                  "label": "Picture",
+                  "widget": "image",
+                  "required": false
+                },
+                {
+                  "name": "tags",
+                  "label": "Tags",
+                  "widget": "list",
+                  "required": false
+                },
+                {
+                  "name": "published",
+                  "label": "Show on website",
+                  "widget": "boolean",
+                  "default": true,
+                  "required": false
+                },
+                {
+                  "name": "size",
+                  "label": "Size",
+                  "widget": "select",
+                  "options": [
+                    "small",
+                    "medium",
+                    "large"
+                  ],
+                  "default": "medium",
+                  "required": false
+                },
+                {
+                  "name": "maxWidth",
+                  "label": "Maximum width",
+                  "widget": "number",
+                  "value_type": "int",
+                  "default": 560,
+                  "min": 200,
+                  "max": 1200,
+                  "required": false
+                }
+              ],
+              "add_to_top": true
+            }
           ]
-        }]
-      }]
+        }
+      ]
+    },
+    {
+      "name": "commissions",
+      "label": "Commission tiers",
+      "files": [
+        {
+          "name": "commissions",
+          "label": "Prices, descriptions and example images",
+          "file": "assets/data/commissions.json",
+          "fields": [
+            {
+              "name": "tiers",
+              "label": "Tiers",
+              "widget": "list",
+              "collapsed": true,
+              "allow_add": false,
+              "allow_remove": false,
+              "allow_reorder": false,
+              "summary": "{{fields.title}} · {{fields.price}}",
+              "fields": [
+                {
+                  "name": "id",
+                  "widget": "hidden"
+                },
+                {
+                  "name": "title",
+                  "label": "Title",
+                  "widget": "string"
+                },
+                {
+                  "name": "price",
+                  "label": "Price",
+                  "widget": "string"
+                },
+                {
+                  "name": "description",
+                  "label": "Description and packages",
+                  "widget": "text",
+                  "hint": "Use a new line for each package and **text** for bold."
+                },
+                {
+                  "name": "images",
+                  "label": "Gallery images",
+                  "widget": "list",
+                  "collapsed": true,
+                  "summary": "{{fields.alt}}",
+                  "min": 1,
+                  "hint": "Add each image once; scrolling tracks repeat automatically. Keep one image in the emotes box.",
+                  "fields": [
+                    {
+                      "name": "src",
+                      "label": "Image",
+                      "widget": "image",
+                      "media_folder": "/assets/commissions/uploads",
+                      "public_folder": "assets/commissions/uploads"
+                    },
+                    {
+                      "name": "alt",
+                      "label": "Image description",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "music",
+      "label": "Music releases",
+      "files": [
+        {
+          "name": "releases",
+          "label": "Releases and tracks",
+          "file": "assets/data/releases.json",
+          "fields": [
+            {
+              "name": "releases",
+              "label": "Releases",
+              "widget": "list",
+              "add_to_top": true,
+              "collapsed": true,
+              "summary": "{{fields.title}} · {{fields.year}}",
+              "fields": [
+                {
+                  "name": "id",
+                  "label": "Release ID",
+                  "widget": "string",
+                  "required": false,
+                  "hint": "Created automatically for new releases."
+                },
+                {
+                  "name": "title",
+                  "label": "Release title",
+                  "widget": "string"
+                },
+                {
+                  "name": "year",
+                  "label": "Release year",
+                  "widget": "number",
+                  "value_type": "int",
+                  "min": 1900,
+                  "max": 2200
+                },
+                {
+                  "name": "cover",
+                  "label": "Cover artwork",
+                  "widget": "image",
+                  "media_folder": "/assets/music/covers",
+                  "public_folder": "assets/music/covers"
+                },
+                {
+                  "name": "flash_color",
+                  "label": "Pulse color",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$",
+                    "Use a hex color such as #ffd166"
+                  ],
+                  "hint": "Leave blank to use the cover color."
+                },
+                {
+                  "name": "spotify_album",
+                  "label": "Release link (Spotify, YouTube, etc.)",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^https://",
+                    "Use a full https:// link"
+                  ]
+                },
+                {
+                  "name": "tracks",
+                  "label": "Tracks",
+                  "widget": "list",
+                  "collapsed": true,
+                  "summary": "{{fields.title}}",
+                  "min": 1,
+                  "fields": [
+                    {
+                      "name": "title",
+                      "label": "Track title",
+                      "widget": "string"
+                    },
+                    {
+                      "name": "spotify_url",
+                      "label": "Track link",
+                      "widget": "string",
+                      "required": false,
+                      "pattern": [
+                        "^https://",
+                        "Use a full https:// link"
+                      ]
+                    },
+                    {
+                      "name": "preview_url",
+                      "label": "Audio preview",
+                      "widget": "file",
+                      "required": false,
+                      "media_folder": "/assets/music/previews",
+                      "public_folder": "assets/music/previews",
+                      "hint": "Upload an MP3, OGG or WAV preview, or insert its HTTPS URL."
+                    },
+                    {
+                      "name": "bpm",
+                      "label": "BPM",
+                      "widget": "number",
+                      "required": false,
+                      "value_type": "float",
+                      "min": 1,
+                      "max": 400
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "settings",
       "label": "Site settings",
-      "files": [{
-        "name": "settings",
-        "label": "Commissions and gallery order",
-        "file": "assets/data/settings.json",
-        "fields": [
-          { "name": "commissions_open", "label": "Commissions open", "widget": "boolean", "default": false },
-          { "name": "gallery_sort", "label": "Artwork order within each year", "widget": "select", "options": [{ "label": "My chosen order (drag artwork entries)", "value": "manual" }, { "label": "Newest file date first", "value": "date" }, { "label": "Color / hue", "value": "color" }], "default": "manual" }
-        ]
-      }]
+      "files": [
+        {
+          "name": "settings",
+          "label": "Commissions and gallery order",
+          "file": "assets/data/settings.json",
+          "fields": [
+            {
+              "name": "commissions_open",
+              "label": "Commissions open",
+              "widget": "boolean",
+              "default": false
+            },
+            {
+              "name": "gallery_sort",
+              "label": "Artwork order within each year",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "My chosen order (drag artwork entries)",
+                  "value": "manual"
+                },
+                {
+                  "label": "Newest file date first",
+                  "value": "date"
+                },
+                {
+                  "label": "Color / hue",
+                  "value": "color"
+                }
+              ],
+              "default": "manual"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

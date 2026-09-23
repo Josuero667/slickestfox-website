@@ -1,0 +1,220 @@
+{
+  "tiers": [
+    {
+      "id": "icons",
+      "title": "icons",
+      "price": "$35 USD",
+      "description": "A portrait/icon focused on your character’s face, perfect for a profile picture!",
+      "images": [
+        {
+          "src": "assets/art/previews/clay icon.webp",
+          "alt": "icons example"
+        },
+        {
+          "src": "assets/art/previews/phloppie Commission.webp",
+          "alt": "icons example"
+        },
+        {
+          "src": "assets/art/previews/Xavior.webp",
+          "alt": "icons example"
+        },
+        {
+          "src": "assets/art/previews/Sylvius pfp remake.webp",
+          "alt": "icons example"
+        },
+        {
+          "src": "assets/art/previews/mslw.webp",
+          "alt": "icons example"
+        },
+        {
+          "src": "assets/art/previews/sequoia commission.webp",
+          "alt": "icons example"
+        }
+      ]
+    },
+    {
+      "id": "halfbodies",
+      "title": "half body",
+      "price": "$55 USD",
+      "description": "An artwork of your character from the hips up, or any other close-up you'd like!",
+      "images": [
+        {
+          "src": "assets/art/previews/Alpina.webp",
+          "alt": "half body example"
+        },
+        {
+          "src": "assets/art/previews/Swirlz Commission.webp",
+          "alt": "half body example"
+        },
+        {
+          "src": "assets/art/previews/Vincent Commission.webp",
+          "alt": "half body example"
+        },
+        {
+          "src": "assets/art/previews/Cayl Commission.webp",
+          "alt": "half body example"
+        },
+        {
+          "src": "assets/art/previews/toastiethefox Commission.webp",
+          "alt": "half body example"
+        },
+        {
+          "src": "assets/art/previews/gab Commission Final.webp",
+          "alt": "half body example"
+        }
+      ]
+    },
+    {
+      "id": "fullbodies",
+      "title": "full body",
+      "price": "$75 USD",
+      "description": "A full-body artwork of your character where the entire figure is visible. This allows me to capture dynamic\nposes and showcase your character to its full extent!",
+      "images": [
+        {
+          "src": "assets/art/previews/roon commission.webp",
+          "alt": "full body example"
+        },
+        {
+          "src": "assets/art/previews/mixen.webp",
+          "alt": "full body example"
+        },
+        {
+          "src": "assets/art/previews/macchi underwater.webp",
+          "alt": "full body example"
+        },
+        {
+          "src": "assets/art/previews/Celerity Commission [Watermark].webp",
+          "alt": "full body example"
+        },
+        {
+          "src": "assets/art/previews/Myocat Commission Watermark.webp",
+          "alt": "full body example"
+        },
+        {
+          "src": "assets/art/previews/AshleyHaruki Commission.webp",
+          "alt": "full body example"
+        },
+        {
+          "src": "assets/art/previews/Pizzaz Comission Final.webp",
+          "alt": "full body example"
+        }
+      ]
+    },
+    {
+      "id": "magazines",
+      "title": "magazines",
+      "price": "$90 USD",
+      "description": "A stylish magazine cover featuring your character, complete with custom text, headlines, and graphic design\nelements.",
+      "images": [
+        {
+          "src": "assets/art/previews/randomlab.webp",
+          "alt": "magazines example"
+        },
+        {
+          "src": "assets/art/previews/buffie Commission.webp",
+          "alt": "magazines example"
+        },
+        {
+          "src": "assets/art/previews/demondevor commission.webp",
+          "alt": "magazines example"
+        },
+        {
+          "src": "assets/art/previews/macchi fashion magazine.webp",
+          "alt": "magazines example"
+        },
+        {
+          "src": "assets/art/previews/Beaunne commission.webp",
+          "alt": "magazines example"
+        },
+        {
+          "src": "assets/art/previews/goo creature.webp",
+          "alt": "magazines example"
+        },
+        {
+          "src": "assets/art/previews/rain commission.webp",
+          "alt": "magazines example"
+        }
+      ]
+    },
+    {
+      "id": "emotes",
+      "title": "emotes & emojis",
+      "price": "$12 USD / Each!",
+      "description": "**Perfect for Discord or Twitch!**\nPackages\n6 Emotes → **$60 USD**\n10 Emotes → **$100 USD**",
+      "images": [
+        {
+          "src": "assets/art/previews/emotes.webp",
+          "alt": "emotes & emojis example"
+        }
+      ]
+    },
+    {
+      "id": "stickers",
+      "title": "stickers",
+      "price": "$15 USD",
+      "description": "**Perfect for Telegram, Discord, or Messages!**\nPackages\n3 Sticker → **$40 USD**\n6 Stickers: → **$75 USD**",
+      "images": [
+        {
+          "src": "assets/art/additional/hugYCH.gif",
+          "alt": "stickers example"
+        },
+        {
+          "src": "assets/art/previews/MacchiLove.webp",
+          "alt": "stickers example"
+        },
+        {
+          "src": "assets/art/additional/kissYCH.gif",
+          "alt": "stickers example"
+        },
+        {
+          "src": "assets/art/previews/Zomdox Eating.webp",
+          "alt": "stickers example"
+        },
+        {
+          "src": "assets/art/additional/goodBoyYCH.gif",
+          "alt": "stickers example"
+        },
+        {
+          "src": "assets/art/previews/Zomdox Flustered.webp",
+          "alt": "stickers example"
+        },
+        {
+          "src": "assets/art/previews/Zomdox Sus.webp",
+          "alt": "stickers example"
+        }
+      ]
+    },
+    {
+      "id": "backgrounds",
+      "title": "backgrounds",
+      "price": "$40-90+ USD+",
+      "description": "A fully rendered background or scene for your artwork! This is an **additional cost** on top of\nthe **base price** (Price depends on complexity).",
+      "images": [
+        {
+          "src": "assets/art/previews/Dani Commission.webp",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/art/previews/Nican Commission.webp",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/art/previews/macchi beach.webp",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/art/previews/PrototypeFox Comission Final.webp",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/art/previews/Komet Comission Final.webp",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/art/previews/AshleyHaruki Commission.webp",
+          "alt": "backgrounds example"
+        }
+      ]
+    }
+  ]
+}

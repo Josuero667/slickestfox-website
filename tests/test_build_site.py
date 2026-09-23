@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from PIL import Image
-from scripts.build_site import prepare_art, local_asset, build
+from scripts.build_site import prepare_art, local_asset, build, render_commissions
 
 
 class ArtworkBuildTests(unittest.TestCase):
@@ -93,6 +93,33 @@ class ArtworkBuildTests(unittest.TestCase):
         (self.root / 'commissions.html').write_text(f'<img src="{item["src"]}">')
         build(self.root)
         self.assertEqual((self.out / item['src']).read_bytes(), (self.root / item['src']).read_bytes())
+
+    def test_commission_edits_render_escape_text_and_repeat_track_once(self):
+        item = self.picture('uploads/new.png', 'blue')
+        (self.root / 'assets/data').mkdir()
+        tier = {'id': 'icons', 'title': '<script>bad</script>', 'price': '$99',
+                'description': '**Package**\nTwo portraits', 'images': [{'src': item['src'], 'alt': 'A "quote"'}]}
+        (self.root / 'assets/data/commissions.json').write_text(json.dumps({'tiers': [tier]}))
+        page = self.out / 'commissions.html'
+        page.write_text(''.join(f'<!-- cms:icons:{f} -->old<!-- /cms:icons:{f} -->' for f in ('title','price','description','images')))
+        render_commissions(self.root, self.out)
+        result = page.read_text()
+        self.assertIn('$99', result)
+        self.assertNotIn('<script>', result)
+        self.assertIn('<strong>Package</strong><br>Two portraits', result)
+        self.assertEqual(result.count('<img '), 2)
+        self.assertIn('A &quot;quote&quot;', result)
+        self.assertTrue((self.out / item['src']).exists())
+        render_commissions(self.root, self.out)
+        self.assertEqual(page.read_text().count('<img '), 2)
+
+    def test_commission_missing_image_stops_publication(self):
+        (self.root / 'assets/data').mkdir()
+        (self.out / 'commissions.html').write_text('')
+        tier = {'id': 'icons', 'title': 'Icons', 'price': '$99', 'description': '', 'images': [{'src': 'assets/missing.png'}]}
+        (self.root / 'assets/data/commissions.json').write_text(json.dumps({'tiers': [tier]}))
+        with self.assertRaisesRegex(ValueError, 'missing'):
+            render_commissions(self.root, self.out)
 
 
 if __name__ == '__main__':

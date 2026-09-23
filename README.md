@@ -5,12 +5,16 @@ Static website hosted on GitHub Pages, with a Decap editor at `/admin/`.
 ## Everyday updates
 
 1. Open `https://slickestfox.com/admin/` and sign in with your GitHub account.
-2. Open **Artwork → Gallery**, **Blog posts → Macchi-Posting**, or **Site settings**.
+2. Choose **Artwork**, **Blog posts**, **Commission tiers**, **Music releases**, or **Site settings**.
 3. Add or edit content and publish. GitHub builds previews and deploys the website.
 4. Wait for **Publish website** in the repository's Actions tab to finish. A saved
    editor entry is committed content; it is not proof that deployment succeeded.
 
 Artwork uploads capture the original browser File's last-modified timestamp.
+Use **Upload multiple artworks** to select several images together. Each becomes
+an entry at the top, with its filename (without extension) as the default title.
+Batch uploads use unique storage names so duplicate filenames cannot overwrite
+one another. Review the entries and click **Publish → Publish now**.
 The date uses the uploader's local calendar date, and its year determines the
 gallery tab. You can enable the date override for corrections. Dates are saved
 in the manifest because Git does not preserve file modification times. Upload
@@ -27,7 +31,18 @@ Original artwork stays in GitHub. The public gallery gets 600px WebP previews an
 up-to-2400px display images; animated originals retain animation in the large view.
 Unrelated files in the image folders are never automatically added to the gallery.
 Use PNG, JPEG, WebP, GIF or AVIF, with files below 40 MB. Give different artworks
-different filenames to avoid replacing an existing upload.
+different filenames when using the individual media-library uploader to avoid
+replacing an existing upload.
+
+**Commission tiers** edits the existing seven boxes: titles, prices, descriptions,
+and gallery images. Add each gallery image once; the build repeats the scrolling
+tracks automatically. Keep one image for the static emotes box. Descriptions
+support line breaks and **bold** text. Layout and decorative frames stay intact.
+
+**Music releases** edits the existing music manifest: cover, title, release year,
+release link, pulse color, and tracks. Each track has a title, optional listening
+link, uploaded audio preview (MP3/OGG/WAV), and BPM. New release IDs are generated
+automatically. The existing music player handles playback and cover colors.
 
 ## One-time activation
 
@@ -40,7 +55,7 @@ The code does not contain any OAuth client secret.
 ```sh
 python -m pip install -r scripts/requirements.txt
 python -m unittest discover -s tests
-node --test auth/worker.test.mjs
+node --test auth/worker.test.mjs tests/editor.test.mjs
 python scripts/build_site.py
 python -m http.server 4173 --directory _site
 ```

@@ -2,6 +2,7 @@
 import colorsys
 from datetime import date as calendar_date
 import hashlib
+import html as html_lib
 import json
 from pathlib import Path
 import re
@@ -37,6 +38,45 @@ def hue(item):
     if len(value) == 3:
         value = ''.join(c * 2 for c in value)
     return colorsys.rgb_to_hsv(*(int(value[i:i+2], 16) / 255 for i in (0, 2, 4)))[0]
+
+
+def render_commissions(root, output):
+    root, output = root.resolve(), output.resolve()
+    data_path = root / 'assets/data/commissions.json'
+    if not data_path.exists():
+        return
+    page = output / 'commissions.html'
+    html = page.read_text(encoding='utf-8')
+    seen = set()
+    for tier in read_json(root, 'assets/data/commissions.json')['tiers']:
+        key = tier['id']
+        if key in seen or not re.fullmatch(r'[a-z]+', key):
+            raise ValueError('Invalid or duplicate commission tier')
+        seen.add(key)
+        description = html_lib.escape(tier['description'])
+        description = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', description)
+        pictures = []
+        for item in tier['images']:
+            asset = local_asset(root, item['src'])
+            target = output / asset.relative_to(root)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if not target.exists():
+                shutil.copy2(asset, target)
+            cls = ' class="static-gallery-img"' if key == 'emotes' else ''
+            pictures.append(f'<img src="{html_lib.escape(item["src"].lstrip("/"), quote=True)}" alt="{html_lib.escape(item.get("alt", tier["title"]), quote=True)}"{cls}>')
+        # Duplicate the track automatically for the existing seamless animation.
+        values = {'title': html_lib.escape(tier['title']), 'price': html_lib.escape(tier['price']),
+                  'description': description.replace('\n', '<br>'),
+                  'images': '\n'.join(pictures if key == 'emotes' else pictures * 2)}
+        for field, value in values.items():
+            pattern = rf'(<!-- cms:{key}:{field} -->).*?(<!-- /cms:{key}:{field} -->)'
+            html, count = re.subn(pattern, lambda m: m[1] + value + m[2], html, flags=re.S)
+            if count != 1:
+                raise ValueError(f'Missing commission template slot: {key}:{field}')
+    expected = set(re.findall(r'<!-- cms:([a-z]+):title -->', html))
+    if seen != expected:
+        raise ValueError('Commission tiers must match the page layout')
+    page.write_text(html, encoding='utf-8')
 
 
 def prepare_art(root, output, settings):
@@ -120,6 +160,7 @@ def build(root=ROOT, output=None):
             return [n for n in names if n in ('main', 'additional', 'uploads', 'generated')]
         return [n for n in names if n.endswith('.aseprite')]
     shutil.copytree(root / 'assets', output / 'assets', ignore=ignore_assets)
+    render_commissions(root, output)
     # Commission examples are referenced directly, outside the gallery manifest.
     for page in output.glob('*.html'):
         for source in re.findall(r'''(?:src|href)=["'](/?assets/art/(?:main|additional|uploads)/[^"']+)["']''', page.read_text(encoding='utf-8-sig')):
