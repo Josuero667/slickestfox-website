@@ -30,7 +30,7 @@
               "label": "Artwork",
               "name": "images",
               "widget": "list",
-              "summary": "{{fields.title}} Â· {{fields.date}}",
+              "summary": "{{fields.title}} - {{fields.date}}",
               "collapsed": true,
               "fields": [
                 {
@@ -126,7 +126,7 @@
               "label": "Posts",
               "widget": "list",
               "collapsed": true,
-              "summary": "{{fields.title}} Â· {{fields.date}}",
+              "summary": "{{fields.title}} - {{fields.date}}",
               "fields": [
                 {
                   "name": "id",
