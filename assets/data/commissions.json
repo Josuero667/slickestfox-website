@@ -15,11 +15,11 @@
           "alt": "icons example"
         },
         {
-          "src": "assets/art/previews/Xavior.webp",
+          "src": "assets/commissions/uploads/aurantium.png",
           "alt": "icons example"
         },
         {
-          "src": "assets/art/previews/Sylvius pfp remake.webp",
+          "src": "assets/commissions/uploads/sonex-icon-water.png",
           "alt": "icons example"
         },
         {
@@ -35,12 +35,19 @@
     {
       "id": "halfbodies",
       "title": "half body",
-      "price": "$55 USD",
+      "price": "$60 USD",
       "description": "An artwork of your character from the hips up, or any other close-up you'd like!",
       "images": [
         {
           "src": "assets/art/previews/Alpina.webp",
           "alt": "half body example"
+        },
+        {
+          "src": "assets/commissions/uploads/belphassax-halfbody.png",
+          "alt": "half body example"
+        },
+        {
+          "src": "assets/commissions/uploads/vgeito-commission-no-saliva.png"
         },
         {
           "src": "assets/art/previews/Swirlz Commission.webp",
@@ -55,10 +62,6 @@
           "alt": "half body example"
         },
         {
-          "src": "assets/art/previews/toastiethefox Commission.webp",
-          "alt": "half body example"
-        },
-        {
           "src": "assets/art/previews/gab Commission Final.webp",
           "alt": "half body example"
         }
@@ -70,6 +73,9 @@
       "price": "$75 USD",
       "description": "A full-body artwork of your character where the entire figure is visible. This allows me to capture dynamic\nposes and showcase your character to its full extent!",
       "images": [
+        {
+          "src": "assets/commissions/uploads/momo-commission.png"
+        },
         {
           "src": "assets/art/previews/roon commission.webp",
           "alt": "full body example"
@@ -95,7 +101,7 @@
           "alt": "full body example"
         },
         {
-          "src": "assets/art/previews/Pizzaz Comission Final.webp",
+          "src": "assets/commissions/uploads/ashley-commission.png",
           "alt": "full body example"
         }
       ]
@@ -115,24 +121,30 @@
           "alt": "magazines example"
         },
         {
+          "src": "assets/commissions/uploads/prototypefox-commission.png"
+        },
+        {
           "src": "assets/art/previews/demondevor commission.webp",
           "alt": "magazines example"
         },
         {
-          "src": "assets/art/previews/macchi fashion magazine.webp",
+          "src": "assets/commissions/uploads/dergyfruit-commission.png",
           "alt": "magazines example"
         },
         {
-          "src": "assets/art/previews/Beaunne commission.webp",
+          "src": "assets/commissions/uploads/hhgyh-commission.png",
           "alt": "magazines example"
         },
         {
-          "src": "assets/art/previews/goo creature.webp",
+          "src": "assets/commissions/uploads/lavenrite.png",
           "alt": "magazines example"
         },
         {
           "src": "assets/art/previews/rain commission.webp",
           "alt": "magazines example"
+        },
+        {
+          "src": "assets/commissions/uploads/rooni-shibari.png"
         }
       ]
     },
@@ -143,7 +155,7 @@
       "description": "**Perfect for Discord or Twitch!**\nPackages\n6 Emotes → **$60 USD**\n10 Emotes → **$100 USD**",
       "images": [
         {
-          "src": "assets/art/previews/emotes.webp",
+          "src": "assets/commissions/uploads/emote-website-layout.png",
           "alt": "emotes & emojis example"
         }
       ]
@@ -191,15 +203,14 @@
       "description": "A fully rendered background or scene for your artwork! This is an **additional cost** on top of\nthe **base price** (Price depends on complexity).",
       "images": [
         {
+          "src": "assets/commissions/uploads/saigonoziro-commission.png",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/commissions/uploads/belphassax-fullbody.png"
+        },
+        {
           "src": "assets/art/previews/Dani Commission.webp",
-          "alt": "backgrounds example"
-        },
-        {
-          "src": "assets/art/previews/Nican Commission.webp",
-          "alt": "backgrounds example"
-        },
-        {
-          "src": "assets/art/previews/macchi beach.webp",
           "alt": "backgrounds example"
         },
         {
@@ -207,7 +218,11 @@
           "alt": "backgrounds example"
         },
         {
-          "src": "assets/art/previews/Komet Comission Final.webp",
+          "src": "assets/art/previews/Nican Commission.webp",
+          "alt": "backgrounds example"
+        },
+        {
+          "src": "assets/commissions/uploads/duri-nullscape.png",
           "alt": "backgrounds example"
         },
         {
