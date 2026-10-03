@@ -6,6 +6,10 @@ Static website hosted on GitHub Pages, with a Decap editor at `/admin/`.
 
 1. Open `https://slickestfox.com/admin/` and sign in with your GitHub account.
 2. Choose **Artwork**, **Blog posts**, **Commission tiers**, **Music releases**, or **Site settings**.
+
+The centered **Check Commission Status** link on the commissions page opens
+`/commission-status`, which redirects to your public progress board. Change its
+destination in **Site settings → Commission progress board link**, then publish.
 3. Add or edit content and publish. GitHub builds previews and deploys the website.
 4. Wait for **Publish website** in the repository's Actions tab to finish. A saved
    editor entry is committed content; it is not proof that deployment succeeded.

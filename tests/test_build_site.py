@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from PIL import Image
-from scripts.build_site import prepare_art, local_asset, build, render_commissions
+from scripts.build_site import prepare_art, local_asset, build, render_commissions, render_commission_redirect
 
 
 class ArtworkBuildTests(unittest.TestCase):
@@ -87,12 +87,25 @@ class ArtworkBuildTests(unittest.TestCase):
         item = self.picture('additional/example.gif', 'red')
         (self.root / 'admin').mkdir()
         (self.root / 'assets/data').mkdir()
-        (self.root / 'assets/data/settings.json').write_text('{"commissions_open": false}')
+        (self.root / 'assets/data/settings.json').write_text('{"commissions_open": false, "commission_status_url": "https://trello.com/b/example"}')
         (self.root / 'assets/data/posts.json').write_text('{"posts": []}')
         (self.root / 'assets/art/data/images.json').write_text('{"images": []}')
         (self.root / 'commissions.html').write_text(f'<img src="{item["src"]}">')
         build(self.root)
         self.assertEqual((self.out / item['src']).read_bytes(), (self.root / item['src']).read_bytes())
+        self.assertIn('https://trello.com/b/example', (self.out / 'commission-status/index.html').read_text(encoding='utf-8'))
+
+    def test_redirect_uses_updated_setting_and_escapes_query(self):
+        url = 'https://trello.com/b/new-board?one=1&two=2'
+        render_commission_redirect(self.out, {'commission_status_url': url})
+        page = (self.out / 'commission-status/index.html').read_text(encoding='utf-8')
+        self.assertIn('window.location.replace(' + json.dumps(url) + ')', page)
+        self.assertIn('href="https://trello.com/b/new-board?one=1&amp;two=2"', page)
+
+    def test_redirect_rejects_invalid_destinations(self):
+        for url in ('', 'javascript:alert(1)', '//example.com', 'https://', 'https://user:pass@example.com', 'https://example.com/\nfoo'):
+            with self.subTest(url=url), self.assertRaises(ValueError):
+                render_commission_redirect(self.out, {'commission_status_url': url})
 
     def test_commission_edits_render_escape_text_and_repeat_track_once(self):
         item = self.picture('uploads/new.png', 'blue')

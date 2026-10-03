@@ -404,6 +404,13 @@
               "default": false
             },
             {
+              "name": "commission_status_url",
+              "label": "Commission progress board link",
+              "widget": "string",
+              "hint": "Public board opened by /commission-status. Publish changes to update the redirect.",
+              "pattern": ["^https://[^\\s]+$", "Use a full https:// link"]
+            },
+            {
               "name": "gallery_sort",
               "label": "Artwork order within each year",
               "widget": "select",

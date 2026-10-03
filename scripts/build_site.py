@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import shutil
 import stat
+from urllib.parse import urlsplit
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,6 +78,33 @@ def render_commissions(root, output):
     if seen != expected:
         raise ValueError('Commission tiers must match the page layout')
     page.write_text(html, encoding='utf-8')
+
+
+def render_commission_redirect(output, settings):
+    url = settings.get('commission_status_url', '')
+    if not isinstance(url, str):
+        raise ValueError('Commission status URL must be an HTTPS URL')
+    parsed = urlsplit(url)
+    if (parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password
+            or re.search(r'[\s<>"\\]', url)):
+        raise ValueError('Commission status URL must be an HTTPS URL')
+    escaped = html_lib.escape(url, quote=True)
+    script_url = json.dumps(url).replace('<', '\\u003c')
+    page = output / 'commission-status' / 'index.html'
+    page.parent.mkdir(parents=True, exist_ok=True)
+    page.write_text(f'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Commission Status | SlickestFox</title>
+  <meta http-equiv="refresh" content="0; url={escaped}">
+  <script>window.location.replace({script_url});</script>
+</head>
+<body><p>Opening the commission board… <a href="{escaped}">Continue to commission status</a></p></body>
+</html>
+''', encoding='utf-8')
 
 
 def prepare_art(root, output, settings):
@@ -169,6 +197,7 @@ def build(root=ROOT, output=None):
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(asset, target)
     settings = read_json(root, 'assets/data/settings.json')
+    render_commission_redirect(output, settings)
     if type(settings.get('commissions_open')) is not bool:
         raise ValueError('commissions_open must be true or false')
     prepare_art(root, output, settings)

@@ -131,6 +131,26 @@
       z-index: 10;
     }
 
+    .commission-progress {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      margin: -8px 0 28px;
+    }
+
+    .commission-progress a {
+      display: inline-block;
+      padding: 8px 12px;
+      color: #dce5ff;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .commission-progress a:hover,
+    .commission-progress a:focus-visible {
+      color: #55ffb3;
+    }
+
     .pixel-btn {
       position: relative;
       display: inline-flex;
@@ -643,6 +663,8 @@
       </a>
 
     </nav>
+
+    <p class="commission-progress"><a href="/commission-status">Check Commission Status</a></p>
 
     <div class="waterfall-center"></div>
     <div id="splash-zone"></div>
