@@ -1,6 +1,16 @@
 {
   "images": [
     {
+      "date_override": false,
+      "published": true,
+      "src": "assets/art/uploads/jerry.png",
+      "title": "What the Jerry doin'",
+      "file_modified": "2026-10-04T01:00:21.615Z",
+      "date": "2026-10-03",
+      "year": "2026",
+      "color": "#3DFF4F"
+    },
+    {
       "src": "assets/art/main/affection.png",
       "title": "Affection",
       "year": "2025",
