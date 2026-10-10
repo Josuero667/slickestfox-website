@@ -3,6 +3,33 @@
     {
       "date_override": false,
       "published": true,
+      "src": "assets/art/uploads/mslw-christmas.png",
+      "title": "mslw Christmas",
+      "file_modified": "2026-10-09T05:32:27.844Z",
+      "date": "2026-10-09",
+      "year": "2026"
+    },
+    {
+      "date_override": false,
+      "published": true,
+      "src": "assets/art/uploads/oculus.png",
+      "title": "Oculus Embrace",
+      "file_modified": "2026-09-25T01:06:15.503Z",
+      "date": "2026-09-24",
+      "year": "2026"
+    },
+    {
+      "date_override": false,
+      "published": true,
+      "src": "assets/art/uploads/novi-commission.png",
+      "title": "Salud Magazine",
+      "file_modified": "2026-10-09T19:07:40.491Z",
+      "date": "2026-10-09",
+      "year": "2026"
+    },
+    {
+      "date_override": false,
+      "published": true,
       "src": "assets/art/uploads/jerry.png",
       "title": "What the Jerry doin'",
       "file_modified": "2026-10-04T01:00:21.615Z",
