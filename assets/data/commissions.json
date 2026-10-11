@@ -23,7 +23,7 @@
           "alt": "icons example"
         },
         {
-          "src": "assets/art/previews/mslw.webp",
+          "src": "assets/commissions/uploads/mslw-christmas.png",
           "alt": "icons example"
         },
         {
@@ -109,7 +109,7 @@
     {
       "id": "magazines",
       "title": "magazines",
-      "price": "$90 USD",
+      "price": "$100 USD",
       "description": "A stylish magazine cover featuring your character, complete with custom text, headlines, and graphic design\nelements.",
       "images": [
         {
