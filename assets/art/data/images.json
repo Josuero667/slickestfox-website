@@ -1,6 +1,60 @@
 {
   "images": [
     {
+      "title": "Kebab Magazine",
+      "src": "assets/art/uploads/kebab-magazine-6de8d5d7-7b2a-45fd-b723-345a00d5061a.png",
+      "date": "2026-11-02",
+      "file_modified": "2026-11-02T05:24:22.570Z",
+      "year": "2026",
+      "published": true,
+      "date_override": false
+    },
+    {
+      "title": "Ace Commission",
+      "src": "assets/art/uploads/ace-commission-1fa19efb-eeb6-4557-8604-e068829d543b.png",
+      "date": "2026-11-03",
+      "file_modified": "2026-11-04T00:00:51.427Z",
+      "year": "2026",
+      "published": true,
+      "date_override": false
+    },
+    {
+      "title": "Glitch Commission",
+      "src": "assets/art/uploads/glitch-commission-a94cbbe2-b286-4248-8b08-4270da6d183a.png",
+      "date": "2026-10-30",
+      "file_modified": "2026-10-30T22:16:44.946Z",
+      "year": "2026",
+      "published": true,
+      "date_override": false
+    },
+    {
+      "title": "Corvo",
+      "src": "assets/art/uploads/corvo-6ff62311-e395-4dfa-ae1e-37cd4a13fc61.png",
+      "date": "2026-10-24",
+      "file_modified": "2026-10-24T04:00:07.959Z",
+      "year": "2026",
+      "published": true,
+      "date_override": false
+    },
+    {
+      "title": "Lavenrite LinkedVerse",
+      "src": "assets/art/uploads/lavenrite-linkedverse-d7a0aab5-c880-4eb7-a412-34195794a346.png",
+      "date": "2026-10-18",
+      "file_modified": "2026-10-18T17:13:35.030Z",
+      "year": "2026",
+      "published": true,
+      "date_override": false
+    },
+    {
+      "title": "Luis Castro Commission",
+      "src": "assets/art/uploads/luis-castro-commission-84e4ca2c-3178-42ff-9dfe-8bb1545f45b9.png",
+      "date": "2026-10-14",
+      "file_modified": "2026-10-14T13:21:34.924Z",
+      "year": "2026",
+      "published": true,
+      "date_override": false
+    },
+    {
       "date_override": false,
       "published": true,
       "src": "assets/art/uploads/mslw-christmas.png",
