@@ -1,6 +1,20 @@
 {
   "posts": [
     {
+      "published": true,
+      "size": "medium",
+      "maxWidth": 560,
+      "id": "dp-3",
+      "title": "Making music! ",
+      "date": "2026-11-04",
+      "content": "Ill be working on more music soon, I really find joy in making music and I hope i can share some of that with yall with some funky or awesome songs!",
+      "tags": [
+        "music",
+        "awesome",
+        "pluppy"
+      ]
+    },
+    {
       "size": "medium",
       "maxWidth": 560,
       "published": true,
