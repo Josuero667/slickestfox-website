@@ -113,7 +113,7 @@
       "description": "A stylish magazine cover featuring your character, complete with custom text, headlines, and graphic design\nelements.",
       "images": [
         {
-          "src": "assets/art/previews/randomlab.webp",
+          "src": "assets/commissions/uploads/ace-commission.png",
           "alt": "magazines example"
         },
         {
@@ -132,11 +132,11 @@
           "alt": "magazines example"
         },
         {
-          "src": "assets/commissions/uploads/hhgyh-commission.png",
+          "src": "assets/commissions/uploads/lavenrite-linkedverse.png",
           "alt": "magazines example"
         },
         {
-          "src": "assets/commissions/uploads/lavenrite.png",
+          "src": "assets/commissions/uploads/luis-castro-commission.png",
           "alt": "magazines example"
         },
         {
@@ -145,6 +145,9 @@
         },
         {
           "src": "assets/commissions/uploads/rooni-shibari.png"
+        },
+        {
+          "src": "assets/commissions/uploads/kebab-magazine.png"
         }
       ]
     },
